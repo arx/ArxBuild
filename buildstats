@@ -62,10 +62,14 @@ function handle_build() {
 
 function handle_context() {
 	
-	local dir="$1"
-	toroot="$2"
+	local type="$1"
+	local dir="$2"
 	
-	context=${dir##*logs/}
+	local context="${dir##*/}"
+	
+	toroot='../..'
+	
+	context=${dir##*/}
 	
 	index="$dir/index.htm"
 	
@@ -74,7 +78,9 @@ function handle_context() {
 		else return
 	fi
 	
-	html_header "Arx Build Logs" "$toroot" > "$index"
+	html_header "Arx Build Logs for $type $context" "$toroot" > "$index"
+	echo "<h1>Build logs for $type $context</h1>" >> "$index"
+	echo "<a href=\"../\">Other Logs</a><br><br>" >> "$index"
 	echo "<table cellspacing=1 cellpadding=2>" >> "$index"
 	
 	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
@@ -89,11 +95,11 @@ function handle_context() {
 echo "Updating indices..."
 
 for f in `dir -d $logs/branches/* 2> /dev/null` ; do
-	handle_context "$f" "../.."
+	handle_context 'branch' "$f"
 done
 
 for f in `dir -d $logs/commits/* 2> /dev/null` ; do
-	handle_context "$f" "../.."
+	handle_context 'commit' "$f"
 done
 
 echo "Done."
