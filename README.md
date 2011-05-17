@@ -3,6 +3,7 @@
 ## Dependencies
 
 bash
+
 gcc
 
 ## Generate build reports
