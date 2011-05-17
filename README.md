@@ -29,8 +29,8 @@ This is automatically called by 'autobuild' after each build.
 
 ## Links
 
-[https://github.com/lubosz/ArxFatalis](Arx Libertatis (Arx Fatalis port))
+[Arx Libertatis (Arx Fatalis port)](https://github.com/lubosz/ArxFatalis)
 
 Chat: \#arxfatalis on irc.freenode.net
 
-[http://arx.parpg.net/](Arx Wiki)
+[Arx Wiki](http://arx.parpg.net/)
