@@ -1,0 +1,188 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+here="$(pwd)"
+
+source "$here/common"
+
+# Build the tools if needed.
+if [ -e "$here/console2html.cpp" ] && ( [ ! -e "$here/console2html" ] || [ "$here/console2html.cpp" -nt "$here/console2html" ] ) ; then
+	echo 'Building tools..'
+	g++ "$here/console2html.cpp" -o "$here/console2html"
+fi
+
+echo 'Updating repo...'
+cd "$repo" || exit
+git fetch || exit
+git remote prune origin &> /dev/null || exit
+
+# Initialize the output directory.
+mkdir "$logs" &> /dev/null
+mkdir "$logs/branches" &> /dev/null
+mkdir "$logs/commits" &> /dev/null
+cp "$here/console.css" "$logs/console.css"
+
+function strip_linker_errors() {
+	
+	local needle="Linking CXX executable"
+	
+	sed "/${needle}/,//d" /dev/stdin
+}
+
+declare -A process
+process[gcc]=''
+process[clang]=strip_linker_errors
+process[clang_analyzer]=strip_linker_errors
+
+# Shorten long paths and make them independent of where arxbuild is installed.
+function process_paths() {
+	replace "$build" "Build" "$repo" "Arx" | replace "$here" "ArxBuild"
+}
+
+# Remove header and footer created by the script command.
+function descript() {
+	sed -e '$d;1d' | sed -e '$d'
+}
+
+function make_helper() {
+	script -c 'make -k' "$log_build" &> /dev/null
+}
+
+function timed_make() {
+	time make_helper
+}
+
+function build() {
+	
+	local compiler="$1"
+	local buildid="${compiler}"
+	local options="-DARX_BUILD_TOOLS=0 ${compiler_options[$compiler]}"
+	
+	for arg in "${@:2}" ; do
+		local buildid="${buildid}_$arg"
+		local options="$options ${compiler_options[$arg]}"
+	done
+	
+	local ref_branch="$branch_dst/$buildid.ref"
+	local ref_commit="$commit_dst/$buildid.ref"
+	
+	trap "rm $ref_branch; rm $branch_dst/$buildid*; echo 'Cancelled!'; exit" SIGHUP SIGINT SIGTERM
+	
+	if [ -e "$ref_commit" ] ; then
+		# Build already exists.
+		if [ "$branch_dst" ] && ( [ ! -e "$ref_branch" ] || [ `cat "$ref_branch"` != "$commit" ] ) ; then
+			# Record this in the branch anyway.
+			echo "$commit" > "$ref_branch"
+			touch "$logs"
+			"$here/buildstats" &> /dev/null
+		fi
+		return
+		else echo "$commit" > "$ref_commit"
+	fi
+	
+	[ ! "$branch_dst" ] || echo "$commit" > "$ref_branch"
+	
+	echo "${esc}[32m[$buildid]${esc}[0m"
+	
+	# Final log file locations.
+	local dst_raw="$commit_dst/$buildid-raw.txt"
+	local dst_html="$commit_dst/$buildid.htm"
+	local dst_plain="$commit_dst/$buildid.txt"
+	local dst_config="$commit_dst/$buildid-config.txt"
+	local dst_options="$commit_dst/$buildid-options.txt"
+	local dst_time="$commit_dst/$buildid-time.txt"
+	
+	# Clear the build directory.
+	find "$build" -mindepth 1 -delete
+	
+	echo 'Configuring...'
+	cd "$build" && cmake "$repo/$path" $options &> "$log_config" || ( process_paths < "$log_config" > "$dst_config" && echo "${esc}[31mconfigure failed${esc}[0m" ; return )
+	
+	echo 'Building...'
+	timed_make &> "$dst_time"
+	
+	echo 'Processing...'
+	
+	# Save the cmake output and used options.
+	process_paths < "$log_config" > "$dst_config"
+	echo "$options" | process_paths > "$dst_options"
+	
+	# Process the raw shell-colored log.
+	if [ "${process[$compiler]}" ]
+		then descript < "$log_build" | process_paths | "${process[$compiler]}" > "$dst_raw"
+		else descript < "$log_build" | process_paths > "$dst_raw"
+	fi
+	
+	# Produce a nice colorful html log.
+	html_header "$buildid" "../.." > "$dst_html"
+	echo "<pre>" >> "$dst_html"
+	"$here/console2html" < "$dst_raw" >> "$dst_html"
+	echo "</pre>" >> "$dst_html"
+	html_footer >> "$dst_html"
+	
+	# Procude a plain text log without shell color codes.
+	sed -r "s/${esc}\\[[0-9]*(\\;[0-9]*)*m//g" "$dst_raw" > "$dst_plain"
+	
+	# Update statistics and indices.
+	touch "$commit_dst"
+	touch "$branch_dst"
+	touch "$logs"
+	"$here/buildstats" &> /dev/null
+}
+
+function build_branch() {
+	
+	branch="$1"
+	commit=`grep "refs/remotes/origin/$branch" "$repo/.git/packed-refs" | sed 's/ .*//'`
+	
+	# Abort if the branch or commit are empty
+	if [ ! "$branch" ] || [ ! "$commit" ] ; then return ; fi
+	
+	echo "Checking out branch ${esc}[36m'$branch'${esc}[0m at commit ${esc}[34m$commit${esc}[0m ..."
+	
+	cd "$repo"
+	git checkout "origin/$branch" &> /dev/null || ( echo "error checking out branch $branch" ; return )
+	
+	# Prepare the output directories.
+	branch_dst="$logs/branches/$branch"
+	commit_dst="$logs/commits/$commit"
+	mkdir "$branch_dst" &> /dev/null
+	mkdir "$commit_dst" &> /dev/null
+	
+	# Build with different configurations.
+	
+	build 'clang' m64 dbg
+	build 'clang' unity m64 dbg
+	
+	build 'gcc' m32 dbg
+	
+	build 'gcc' m64 dbg
+	build 'gcc' unity m64 dbg
+	
+	build 'clang' m64 opt
+	build 'clang' unity m64 opt
+	
+	build 'gcc' m32 opt
+	
+	build 'gcc' m64 opt
+	build 'gcc' m64 opt xtra
+	build 'gcc' unity m64 opt
+	build 'gcc' unity m64 opt xtra
+	
+	build 'clang_analyzer' m64
+	
+}
+
+# Get a list of all branches.
+old_IFS=$IFS
+IFS=$'\n'
+branches=(`grep 'refs/remotes/origin/' "$repo/.git/packed-refs"`)
+IFS=$old_IFS
+
+# Build all remote branches.
+for f in "${branches[@]}" ; do
+	branch="${f##*/}"
+	build_branch "$branch"
+done
+
+echo "Done, logs saved to $logs"

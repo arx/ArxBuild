@@ -1,0 +1,99 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+here="$(pwd)"
+
+source "$here/common"
+
+if [ "$1" == '-f' ] ;
+	then force='1'
+	else force=''
+fi
+
+function count() {
+	
+	local file="$1"
+	local type="$2"
+	
+	grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type\\:" "$file" | grep -v "ub_arx\\.cpp" | wc -l
+}
+
+function handle_build() {
+	
+	local file="$1"
+	
+	local name="${file%.ref}"
+	local name="${name##*/}"
+	local commit=`cat "$file"`
+	
+	local loc="commits/$commit/$name"
+	local prefix="$logs/$loc"
+	
+	if [ ! -e "$prefix.txt" ] ; then
+		echo "Skipping missing/incomplete '${esc}[33m$name${esc}[0m' at commit ${esc}[34m$commit${esc}[0m"
+		return
+	fi
+	
+	local warnings=`count "$prefix.txt" 'warning'`
+	local errors=`count "$prefix.txt" 'error'`
+	
+	local time=`grep user "$prefix-time.txt"`
+	local time="${time##* }"
+	
+	local minutes=`echo "$time" | sed -r 's/^user\t(.*)m(.*)s$/\1/g'`
+	local seconds=`echo "$time" | sed -r 's/^user\t(.*)m(.*)s$/\2/g'`
+	
+	echo "$context/$name:   $warnings warnings,   $errors errors,   $minutes min $seconds s"
+	
+	local wprefix="$toroot/$loc"
+	
+	echo "<tr>" >> "$index"
+	echo "	<td><a href=\"$wprefix.htm\">$name</td>" >> "$index"
+	echo "	<td align=right class='w w$warnings'><b>$warnings</b> warnings</td>" >> "$index"
+	echo "	<td align=right class='e e$errors'><b>$errors</b> errors</td>" >> "$index"
+	echo "	<td align=right>$minutes min</td><td align=right>$seconds s</td>" >> "$index"
+	echo "	<td><a href=\"$wprefix.txt\">[txt]</a></td>" >> "$index"
+	echo "	<td><a href=\"$wprefix-raw.txt\">[raw]</a></td>" >> "$index"
+	echo "	<td><a href=\"$wprefix-options.txt\">[opt]</a></td>" >> "$index"
+	echo "	<td><a href=\"$wprefix-config.txt\">[cfg]</a></td>" >> "$index"
+	echo "</tr>" >> "$index"
+	
+}
+
+function handle_context() {
+	
+	local dir="$1"
+	toroot="$2"
+	
+	context=${dir##*logs/}
+	
+	index="$dir/index.htm"
+	
+	if [ "$dir" -nt "$index" ] || [ "$force" ]
+		then echo "Updating '${esc}[36m$context${esc}[0m'..."
+		else return
+	fi
+	
+	html_header "Arx Build Logs" "$toroot" > "$index"
+	echo "<table cellspacing=1 cellpadding=2>" >> "$index"
+	
+	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
+		handle_build "$f"
+	done
+	
+	echo "</table>" >> "$index"
+	html_footer >> "$index"
+	
+}
+
+echo "Updating indices..."
+
+for f in `dir -d $logs/branches/* 2> /dev/null` ; do
+	handle_context "$f" "../.."
+done
+
+for f in `dir -d $logs/commits/* 2> /dev/null` ; do
+	handle_context "$f" "../.."
+done
+
+echo "Done."

@@ -1,0 +1,82 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+here="$(pwd)"
+
+source "$here/common"
+
+declare -A references
+
+function reference_build() {
+	
+	local file="$1"
+	
+	local name="${file%.ref}"
+	local name="${name##*/}"
+	local commit=`cat "$file"`
+	
+	references["$commit/$name"]=1
+	
+}
+
+function reference_branch() {
+	
+	local dir="$1"
+	
+	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
+		reference_build "$f"
+	done
+	
+}
+
+function clean_build() {
+	
+	local file="$1"
+	
+	local name="${file%.ref}"
+	local name="${name##*/}"
+	local commit=`cat "$file"`
+	
+	if [ "${references["$commit/$name"]}" ] ; then
+		# Referenced, don't delete
+		return
+	fi
+	
+	rm $logs/commits/$commit/$name*
+	
+}
+
+function clean_commit() {
+	
+	local dir="$1"
+	
+	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
+		clean_build "$f"
+	done
+	
+	local commit="${dir##*/}"
+	
+	# Remove empty directories.
+	if [ "$(ls -A "$dir")" == "index.htm" ]; then
+		rm "$dir/index.htm"
+	fi
+	if [ ! "$(ls -A "$dir")" ]; then
+		echo "Removing empty commit dir ${esc}[34m$commit${esc}[0m"
+		rmdir "$dir"
+	fi
+	
+}
+
+echo "Cleaning unreferenced commit logs..."
+
+# Collect referenced commits.
+for f in `dir -d $logs/branches/* 2> /dev/null` ; do
+	reference_branch "$f"
+done
+
+# Clean unreferenced commits.
+for f in `dir -d $logs/commits/* 2> /dev/null` ; do
+	clean_commit "$f"
+done
+
+echo "Done."
