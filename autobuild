@@ -146,6 +146,7 @@ function build_branch() {
 	
 	build 'clang' m64 dbg
 	build 'clang' unity m64 dbg
+	build 'clang' m32 dbg
 	
 	build 'gcc' m32 dbg
 	
