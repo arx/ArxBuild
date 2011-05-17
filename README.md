@@ -8,6 +8,7 @@ gcc
 ## Generate build reports
 
 Initialize the git repository containing the project to be tested (location can be configured in 'config').
+
 `$ git clone git://github.com/lubosz/ArxFatalis.git repo`
 
 `$ ./autobuild`
@@ -25,6 +26,7 @@ This is automatically called by 'autobuild' after each build.
 ## Clean 
 
 Remove any build logs for commits that are not referenced by branches.
+
 `$ ./clean`
 
 ## Links
