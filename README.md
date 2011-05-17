@@ -24,7 +24,7 @@ This is automatically called by 'autobuild' after each build.
 
 ## Clean 
 
-# Remove any build logs for commits that are not referenced by branches.
+Remove any build logs for commits that are not referenced by branches.
 `$ ./clean`
 
 ## Links
