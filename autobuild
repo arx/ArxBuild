@@ -22,17 +22,10 @@ mkdir "$logs/branches" &> /dev/null
 mkdir "$logs/commits" &> /dev/null
 cp "$here/console.css" "$logs/console.css"
 
-function strip_linker_errors() {
-	
-	local needle="Linking CXX executable"
-	
-	sed "/${needle}/,//d" /dev/stdin
-}
-
 declare -A process
 process[gcc]=''
-process[clang]=strip_linker_errors
-process[clang_analyzer]=strip_linker_errors
+process[clang]=''
+process[clang_analyzer]=''
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 function process_paths() {
