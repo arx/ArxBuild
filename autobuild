@@ -49,7 +49,7 @@ function build() {
 	
 	local compiler="$1"
 	local buildid="${compiler}"
-	local options="-DARX_BUILD_TOOLS=0 ${compiler_options[$compiler]}"
+	local options="${compiler_options[$compiler]}"
 	
 	for arg in "${@:2}" ; do
 		local buildid="${buildid}_$arg"
