@@ -45,10 +45,16 @@ function timed_make() {
 	time make_helper
 }
 
+function build_cancelled() {
+	rm $commit_dst/$buildid* &> /dev/null
+	rm $branch_dst/$buildid* &> /dev/null
+	echo 'Cancelled!'; exit
+}
+
 function build() {
 	
 	local compiler="$1"
-	local buildid="${compiler}"
+	buildid="${compiler}"
 	local options="${compiler_options[$compiler]}"
 	
 	for arg in "${@:2}" ; do
@@ -59,7 +65,7 @@ function build() {
 	local ref_branch="$branch_dst/$buildid.ref"
 	local ref_commit="$commit_dst/$buildid.ref"
 	
-	trap "rm $ref_branch; rm $branch_dst/$buildid*; echo 'Cancelled!'; exit" SIGHUP SIGINT SIGTERM
+	trap "build_cancelled" SIGHUP SIGINT SIGTERM
 	
 	if [ -e "$ref_commit" ] ; then
 		# Build already exists.
@@ -93,6 +99,10 @@ function build() {
 	
 	echo 'Building...'
 	timed_make &> "$dst_time"
+	
+	if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
+		build_cancelled
+	fi
 	
 	echo 'Processing...'
 	
@@ -154,7 +164,7 @@ function build_branch() {
 	build 'gcc' unity m64 dbg
 	
 	build 'clang' m64 opt
-	build 'clang' unity m64 opt
+	# build 'clang' unity m64 opt # takes too long
 	
 	build 'gcc' m32 opt
 	
