@@ -136,15 +136,19 @@ function build() {
 function build_branch() {
 	
 	branch="$1"
-	commit=`grep "refs/remotes/origin/$branch" "$repo/.git/packed-refs" | sed 's/ .*//'`
 	
-	# Abort if the branch or commit are empty
-	if [ ! "$branch" ] || [ ! "$commit" ] ; then return ; fi
-	
-	echo "Checking out branch ${esc}[36m'$branch'${esc}[0m at commit ${esc}[34m$commit${esc}[0m ..."
+	# Abort if the branch is empty
+	if [ ! "$branch" ] ; then return ; fi
 	
 	cd "$repo"
 	git checkout "origin/$branch" &> /dev/null || ( echo "error checking out branch $branch" ; return )
+	
+	commit=`cat "$repo/.git/HEAD"`
+	
+	# Abort if the commit is empty
+	if [ ! "$commit" ] ; then return ; fi
+		
+	echo "Checked out branch ${esc}[36m'$branch'${esc}[0m at commit ${esc}[34m$commit${esc}[0m"
 	
 	# Prepare the output directories.
 	branch_dst="$logs/branches/$branch"
@@ -177,14 +181,8 @@ function build_branch() {
 	
 }
 
-# Get a list of all branches.
-old_IFS=$IFS
-IFS=$'\n'
-branches=(`grep 'refs/remotes/origin/' "$repo/.git/packed-refs"`)
-IFS=$old_IFS
-
 # Build all remote branches.
-for f in "${branches[@]}" ; do
+for f in `dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null` ; do
 	branch="${f##*/}"
 	build_branch "$branch"
 done
