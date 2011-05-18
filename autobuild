@@ -95,7 +95,7 @@ function build() {
 	find "$build" -mindepth 1 -delete
 	
 	echo 'Configuring...'
-	if cd "$build" && cmake "$repo/$path" $options &> "$log_config" ; then
+	if cd "$build" && eval "cmake \"$repo/$path\" $options" &> "$log_config" ; then
 		
 		echo 'Building...'
 		timed_make &> "$dst_time"
