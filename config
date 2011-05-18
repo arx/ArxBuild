@@ -21,6 +21,7 @@ declare -A compiler_options
 compiler_options[gcc]=''
 compiler_options[clang]="-DARX_USE_CLANG=1 -DCMAKE_CXX_FLAGS=-B$here/fakegcc/clang/"
 compiler_options[clang_analyzer]="-DARX_USE_CLANG=1 -DCMAKE_CXX_FLAGS=-B$here/fakegcc/clang-analyzer/"
+compiler_options[mingw32]="-DCMAKE_TOOLCHAIN_FILE=$here/mingw-toolchain.cmake -DCMAKE_CXX_FLAGS=-isystem=/usr/include/wine/windows -DARX_BUILD_TOOLS=0"
 compiler_options[m32]='-DARX_FORCE_32BIT=1'
 compiler_options[m64]='-DARX_FORCE_32BIT=0'
 compiler_options[dbg]='-DARX_DEBUG=1'

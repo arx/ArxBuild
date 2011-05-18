@@ -95,13 +95,20 @@ function build() {
 	find "$build" -mindepth 1 -delete
 	
 	echo 'Configuring...'
-	cd "$build" && cmake "$repo/$path" $options &> "$log_config" || ( process_paths < "$log_config" > "$dst_config" && echo "${esc}[31mconfigure failed${esc}[0m" ; return )
-	
-	echo 'Building...'
-	timed_make &> "$dst_time"
-	
-	if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
-		build_cancelled
+	if cd "$build" && cmake "$repo/$path" $options &> "$log_config" ; then
+		
+		echo 'Building...'
+		timed_make &> "$dst_time"
+		
+		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
+			build_cancelled
+		fi
+		
+	else
+		
+		echo "${esc}[31mConfigure failed!${esc}[0m"
+		echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$log_build"
+		
 	fi
 	
 	echo 'Processing...'
@@ -161,6 +168,9 @@ function build_branch() {
 	build 'clang' m64 dbg
 	build 'clang' unity m64 dbg
 	build 'clang' m32 dbg
+	
+	build 'mingw32' dbg
+	build 'mingw32' opt
 	
 	build 'gcc' m32 dbg
 	
