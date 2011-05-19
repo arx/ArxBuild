@@ -177,6 +177,8 @@ function build_branch() {
 	build 'gcc' m64 dbg
 	build 'gcc' unity m64 dbg
 	
+	build 'gcc44' m64 dbg
+	
 	build 'clang' m64 opt
 	# build 'clang' unity m64 opt # takes too long
 	
@@ -188,6 +190,8 @@ function build_branch() {
 	build 'gcc' unity m64 opt xtra
 	
 	build 'clang_analyzer' m64
+	
+	build 'gcc' m64 dbg noeditor
 	
 }
 

@@ -37,7 +37,7 @@ function handle_build() {
 	local warnings=`count "$prefix.txt" 'warning'`
 	local errors=`count "$prefix.txt" 'error'`
 	
-	local time=`grep user "$prefix-time.txt"`
+	local time=`grep user "$prefix-time.txt" 2> /dev/null`
 	local time="${time##* }"
 	
 	local minutes=`echo "$time" | sed -r 's/^user\t(.*)m(.*)s$/\1/g'`

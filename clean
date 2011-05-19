@@ -37,6 +37,11 @@ function clean_build() {
 	local name="${name##*/}"
 	local commit=`cat "$file"`
 	
+	if [ ! "$commit" ] ; then
+		# Empty commit.
+		return
+	fi
+	
 	if [ "${references["$commit/$name"]}" ] ; then
 		# Referenced, don't delete
 		return

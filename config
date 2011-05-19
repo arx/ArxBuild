@@ -19,6 +19,8 @@ path=''
 # Declare possible build options (passed to cmake).
 declare -A compiler_options
 compiler_options[gcc]=''
+compiler_options[gcc44]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.5/'
+compiler_options[gcc46]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.0/'
 compiler_options[clang]="-DARX_USE_CLANG=1 -DCMAKE_CXX_FLAGS=-B$here/fakegcc/clang/"
 compiler_options[clang_analyzer]="-DARX_USE_CLANG=1 -DCMAKE_CXX_FLAGS=-B$here/fakegcc/clang-analyzer/"
 compiler_options[mingw32]="-DCMAKE_TOOLCHAIN_FILE=$here/mingw-toolchain.cmake \"-DCMAKE_CXX_FLAGS=-isystem /usr/include/wine/windows\" -DARX_BUILD_TOOLS=0"
@@ -28,3 +30,4 @@ compiler_options[dbg]='-DARX_DEBUG=1'
 compiler_options[opt]='-DARX_DEBUG=0'
 compiler_options[xtra]='-DARX_DEBUG_EXTRA=1'
 compiler_options[unity]='-DARX_USE_UNITYBUILD=1'
+compiler_options[noeditor]='-DARX_BUILD_EDITOR=0'
