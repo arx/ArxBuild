@@ -9,6 +9,9 @@ build="$here/build"
 # Where to save the resulting logs. (must end in 'logs' for stats to work)
 logs="$here/logs"
 
+# Where to save the resulting binaries.
+bin="$here/bin"
+
 # Location of temporary log files.
 log_build="$build/buildlog"
 log_config="$build/config.txt"

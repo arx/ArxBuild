@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd "$(dirname "$0")"
 here="$(pwd)"
@@ -18,8 +18,11 @@ git remote prune origin &> /dev/null || exit
 
 # Initialize the output directory.
 mkdir "$logs" &> /dev/null
+mkdir "$bin" &> /dev/null
 mkdir "$logs/branches" &> /dev/null
 mkdir "$logs/commits" &> /dev/null
+mkdir "$bin/branches" &> /dev/null
+mkdir "$bin/commits" &> /dev/null
 cp "$here/console.css" "$logs/console.css"
 
 declare -A process
@@ -48,7 +51,7 @@ function timed_make() {
 function build_cancelled() {
 	rm $commit_dst/$buildid* &> /dev/null
 	rm $branch_dst/$buildid* &> /dev/null
-	echo 'Cancelled!'; exit
+	echo 'Build cancelled!'; exit
 }
 
 function build() {
@@ -72,8 +75,12 @@ function build() {
 		if [ "$branch_dst" ] && ( [ ! -e "$ref_branch" ] || [ `cat "$ref_branch"` != "$commit" ] ) ; then
 			# Record this in the branch anyway.
 			echo "$commit" > "$ref_branch"
-			touch "$logs"
+			touch "$branch_dst"
 			"$here/buildstats" &> /dev/null
+		fi
+		if [ "$branch_bindst" ] && [ -e "$commit_bindst/$buildid" ] ; then
+			rm "$branch_bindst/$buildid" &> /dev/null
+			ln -s "$commit_bindst/$buildid" "$branch_bindst/$buildid"
 		fi
 		return
 		else echo "$commit" > "$ref_commit"
@@ -93,6 +100,7 @@ function build() {
 	
 	# Clear the build directory.
 	find "$build" -mindepth 1 -delete
+	rm -r "$repo/bin" &> /dev/null
 	
 	echo 'Configuring...'
 	if cd "$build" && eval "cmake \"$repo/$path\" $options" &> "$log_config" ; then
@@ -102,6 +110,15 @@ function build() {
 		
 		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
 			build_cancelled
+		fi
+		
+		# Save the resulting binaries.
+		if [ -e "$repo/bin" ] ; then
+			rm -r "$repo/bin/tools" &> /dev/null
+			rm -r "$commit_bindst/$buildid" &> /dev/null
+			mv "$repo/bin" "$commit_bindst/$buildid"
+			rm "$branch_bindst/$buildid" &> /dev/null
+			ln -s "$commit_bindst/$buildid" "$branch_bindst/$buildid"
 		fi
 		
 	else
@@ -136,8 +153,10 @@ function build() {
 	# Update statistics and indices.
 	touch "$commit_dst"
 	touch "$branch_dst"
-	touch "$logs"
 	"$here/buildstats" &> /dev/null
+	
+	trap "echo 'Cancelled!'; exit" SIGHUP SIGINT SIGTERM
+	
 }
 
 function build_branch() {
@@ -162,6 +181,10 @@ function build_branch() {
 	commit_dst="$logs/commits/$commit"
 	mkdir "$branch_dst" &> /dev/null
 	mkdir "$commit_dst" &> /dev/null
+	branch_bindst="$bin/branches/$branch"
+	commit_bindst="$bin/commits/$commit"
+	mkdir "$branch_bindst" &> /dev/null
+	mkdir "$commit_bindst" &> /dev/null
 	
 	# Build with different configurations.
 	
