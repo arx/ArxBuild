@@ -215,6 +215,10 @@ function build_branch() {
 	build 'clang_analyzer' m64
 	
 	build 'gcc' m64 dbg noeditor
+	build 'gcc' unity m64 opt noeditor
+	
+	# TODO add a gcc LTO build.
+	build 'clang' m64 opt lto
 	
 }
 
