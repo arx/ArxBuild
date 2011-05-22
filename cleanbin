@@ -1,0 +1,53 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+here="$(pwd)"
+
+source "$here/common"
+
+declare -A references
+
+function reference_branch() {
+	
+	local dir="$1"
+	
+	for f in `dir -d $dir/* 2> /dev/null` ; do
+		commit=`readlink -m "$f"`
+		references["$commit"]=1
+	done
+	
+}
+
+function clean_commit() {
+	
+	local dir="$1"
+	
+	for f in `dir -d $dir/* 2> /dev/null` ; do
+		if [ ! "${references["$f"]}" ] ; then
+			rm -r "$f" &> /dev/null
+		fi
+	done
+	
+	local commit="${dir##*/}"
+	
+	# Remove empty directories.
+	if [ ! "$(ls -A "$dir")" ]; then
+		echo "Removing empty commit dir ${esc}[34m$commit${esc}[0m"
+		rmdir "$dir"
+	fi
+	
+}
+
+echo "Cleaning unreferenced binaries..."
+
+# Collect referenced commits.
+for f in `dir -d $bin/branches/* 2> /dev/null` ; do
+	reference_branch "$f"
+done
+
+# Clean unreferenced commits.
+for f in `dir -d $bin/commits/* 2> /dev/null` ; do
+	clean_commit "$f"
+done
+
+echo "Done."
