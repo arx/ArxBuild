@@ -218,9 +218,6 @@ function build_branch() {
 	build 'gcc46' m64 dbg noeditor
 	build 'gcc46' unity m64 opt noeditor
 	
-	# TODO add a gcc LTO build.
-	build 'clang' m64 opt lto
-	
 }
 
 # Build all remote branches.
