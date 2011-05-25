@@ -1,3 +1,5 @@
 #!/bin/sh
 
 clang++ --analyze "$@" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi=
+
+clang++ "$@" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi= &> /dev/null
