@@ -28,11 +28,11 @@ cp "$here/console.css" "$logs/console.css"
 declare -A process
 process[gcc]=''
 process[clang]=''
-process[clang_analyzer]=''
+process[clang-analyzer]=''
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 function process_paths() {
-	replace "$build" "Build" "$repo" "Arx" | replace "$here" "ArxBuild"
+	replace "$build" "Build" "$repo" "Arx" "$toolchains" "Toolchains"
 }
 
 # Remove header and footer created by the script command.
@@ -195,28 +195,28 @@ function build_branch() {
 	build 'mingw32' dbg
 	build 'mingw32' opt
 	
-	build 'gcc46' m32 dbg
+	build 'gcc-4.6' m32 dbg
 	
-	build 'gcc46' m64 dbg
-	build 'gcc46' unity m64 dbg
+	build 'gcc-4.6' m64 dbg
+	build 'gcc-4.6' unity m64 dbg
 	
-	build 'gcc44' m64 dbg
-	build 'gcc45' m64 dbg
+	build 'gcc-4.4' m64 dbg
+	build 'gcc-4.5' m64 dbg
 	
 	build 'clang' m64 opt
 	# build 'clang' unity m64 opt # takes too long
 	
-	build 'gcc46' m32 opt
+	build 'gcc-4.6' m32 opt
 	
-	build 'gcc46' m64 opt
-	build 'gcc46' m64 opt xtra
-	build 'gcc46' unity m64 opt
-	build 'gcc46' unity m64 opt xtra
+	build 'gcc-4.6' m64 opt
+	build 'gcc-4.6' m64 opt xtra
+	build 'gcc-4.6' unity m64 opt
+	build 'gcc-4.6' unity m64 opt xtra
 	
-	build 'clang_analyzer' m64
+	build 'clang-analyzer' m64
 	
-	build 'gcc46' m64 dbg noeditor
-	build 'gcc46' unity m64 opt noeditor
+	build 'gcc-4.6' m64 dbg noeditor
+	build 'gcc-4.6' unity m64 opt noeditor
 	
 }
 

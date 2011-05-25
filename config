@@ -12,6 +12,9 @@ logs="$here/logs"
 # Where to save the resulting binaries.
 bin="$here/bin"
 
+# Where to find additional toolchains.
+toolchains="$here/toolchains"
+
 # Location of temporary log files.
 log_build="$build/buildlog"
 log_config="$build/config.txt"
@@ -21,12 +24,12 @@ path=''
 
 # Declare possible build options (passed to cmake).
 declare -A compiler_options
-compiler_options[gcc44]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.5/'
-compiler_options[gcc45]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.2/'
-compiler_options[gcc46]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.0/'
-compiler_options[clang]="-DARX_USE_CLANG=1 -DCMAKE_CXX_FLAGS=-B$here/fakegcc/clang/"
-compiler_options[clang_analyzer]="-DARX_USE_CLANG=1 -DCMAKE_CXX_FLAGS=-B$here/fakegcc/clang-analyzer/"
-compiler_options[mingw32]="-DCMAKE_TOOLCHAIN_FILE=$here/mingw-toolchain.cmake \"-DCMAKE_CXX_FLAGS=-isystem /usr/include/wine/windows\" -DARX_BUILD_TOOLS=0"
+compiler_options[gcc-4.4]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.5/'
+compiler_options[gcc-4.5]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.2/'
+compiler_options[gcc-4.6]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.0/'
+compiler_options[clang]="-DCMAKE_CXX_FLAGS=-B$toolchains/clang/"
+compiler_options[clang-analyzer]="-DCMAKE_CXX_FLAGS=-B$toolchains/clang-analyzer/"
+compiler_options[mingw32]="-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake \"-DCMAKE_CXX_FLAGS=-isystem /usr/include/wine/windows\" -DARX_BUILD_TOOLS=0"
 compiler_options[m32]='-DARX_FORCE_32BIT=1'
 compiler_options[m64]='-DARX_FORCE_32BIT=0'
 compiler_options[dbg]='-DARX_DEBUG=1'
@@ -34,6 +37,5 @@ compiler_options[opt]='-DARX_DEBUG=0'
 compiler_options[xtra]='-DARX_DEBUG_EXTRA=1'
 compiler_options[unity]='-DARX_USE_UNITYBUILD=1'
 compiler_options[noeditor]='-DARX_BUILD_EDITOR=0'
-compiler_options[lto]='-DARX_USE_LTO=1'
 
-false_positives=( 'clang_analyzer' '_xtra' )
+false_positives=( 'clang-analyzer' '_xtra' )
