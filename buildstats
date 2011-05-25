@@ -17,8 +17,8 @@ function count() {
 	
 	local name="${file##*/}"
 	if [[ $name == *_unity_* ]] # Hack to ignore anyoing warnings in unity builds
-		then grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type\\:" "$file" | grep -v "ub_arx\\.cpp" | grep -v "the anonymous namespace" | wc -l
-		else grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type\\:" "$file" | grep -v "ub_arx\\.cpp" | wc -l
+		then grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | grep -v "the anonymous namespace" | wc -l
+		else grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | wc -l
 	fi
 }
 
@@ -49,8 +49,10 @@ function handle_build() {
 		return
 	fi
 	
-	local warnings=`count "$prefix.txt" 'warning'`
-	local errors=`count "$prefix.txt" 'error'`
+	local warnings=`count "$prefix.txt" 'warning\:'`
+	local errors=`count "$prefix.txt" 'error\:'`
+	local linker_errors=`count "$prefix.txt" 'undefined reference to'`
+	local errors=$(($errors+$linker_errors))
 	
 	local time=`grep user "$prefix-time.txt" 2> /dev/null`
 	local time="${time##* }"
