@@ -1,5 +1,20 @@
 #!/bin/sh
 
-clang++ --analyze "$@" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi=
+# TODO consider using c++-analyzer, but it produces XML output.
 
+# Modify the parameters so clang++ --analyze won't complain.
+args=( )
+compile=0
+for var in "$@" ; do
+	if [ "$var" == "-c" ] ;
+		then compile=1
+		else args[${#args[*]}]="$var"
+	fi
+done
+
+if [ $compile == 1 ] ; then 
+	clang++ --analyze "${args[@]}" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi=
+fi
+
+# Actually compile something so that linking won't fail (especially important for the cmake run)
 clang++ "$@" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi= &> /dev/null

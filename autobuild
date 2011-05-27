@@ -213,7 +213,7 @@ function build_branch() {
 	build 'gcc-4.6' unity m64 opt
 	build 'gcc-4.6' unity m64 opt xtra
 	
-	build 'clang-analyzer' m64
+	build 'clang-analyzer'
 	
 	build 'gcc-4.6' m64 dbg noeditor
 	build 'gcc-4.6' unity m64 opt noeditor
