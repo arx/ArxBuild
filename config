@@ -28,8 +28,8 @@ compiler_options[gcc-4.4]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/
 compiler_options[gcc-4.5]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.2/'
 compiler_options[gcc-4.6]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.0/'
 compiler_options[clang]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang/\""
-compiler_options[clang-analyzer]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang-analyzer/\" \"-DCMAKE_CXX_FLAGS=-ferror-limit=0\""
-compiler_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\" \"-DCMAKE_CXX_FLAGS=-isystem /usr/include/wine/windows\" -DARX_BUILD_TOOLS=0"
+compiler_options[clang-analyzer]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang-analyzer/\""
+compiler_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\" \"-DCMAKE_CXX_FLAGS=-isystem /usr/include/wine/windows\""
 compiler_options[m32]='-DARX_FORCE_32BIT=1'
 compiler_options[m64]='-DARX_FORCE_32BIT=0'
 compiler_options[dbg]='-DARX_DEBUG=1'
@@ -37,5 +37,8 @@ compiler_options[opt]='-DARX_DEBUG=0'
 compiler_options[xtra]='-DARX_DEBUG_EXTRA=1'
 compiler_options[unity]='-DARX_USE_UNITYBUILD=1'
 compiler_options[noeditor]='-DARX_BUILD_EDITOR=0'
+
+# Declare compiler-specific scripts to process build logs.
+declare -A process
 
 false_positives=( 'clang-analyzer' '_xtra' )

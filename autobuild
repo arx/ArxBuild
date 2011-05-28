@@ -25,11 +25,6 @@ mkdir "$bin/branches" &> /dev/null
 mkdir "$bin/commits" &> /dev/null
 cp "$here/console.css" "$logs/console.css"
 
-declare -A process
-process[gcc]=''
-process[clang]=''
-process[clang-analyzer]=''
-
 # Shorten long paths and make them independent of where arxbuild is installed.
 function process_paths() {
 	replace "$build" "Build" "$repo" "Arx" "$toolchains" "Toolchains"
