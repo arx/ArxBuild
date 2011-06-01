@@ -213,6 +213,9 @@ function build_branch() {
 	build 'gcc-4.6' m64 dbg noeditor
 	build 'gcc-4.6' unity m64 opt noeditor
 	
+	build 'gcc-4.6' m64 dbg minimal
+	build 'gcc-4.6' unity m64 opt minimal
+	
 }
 
 # Build all remote branches.

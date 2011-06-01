@@ -13,7 +13,7 @@ function reference_build() {
 	
 	local name="${file%.ref}"
 	local name="${name##*/}"
-	local commit=`cat "$file"`
+	local commit=`cat "$file" 2> /dev/null`
 	
 	references["$commit/$name"]=1
 	
@@ -35,7 +35,7 @@ function clean_build() {
 	
 	local name="${file%.ref}"
 	local name="${name##*/}"
-	local commit=`cat "$file"`
+	local commit=`cat "$file" 2> /dev/null`
 	
 	if [ ! "$commit" ] ; then
 		# Empty commit.

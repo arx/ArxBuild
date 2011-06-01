@@ -37,6 +37,7 @@ compiler_options[opt]='-DARX_DEBUG=0'
 compiler_options[xtra]='-DARX_DEBUG_EXTRA=1'
 compiler_options[unity]='-DARX_USE_UNITYBUILD=1'
 compiler_options[noeditor]='-DARX_BUILD_EDITOR=0'
+compiler_options[minimal]='-DARX_BUILD_EDITOR=0 -DARX_BUILD_EDIT_LOADSAVE=0'
 
 # Declare compiler-specific scripts to process build logs.
 declare -A process
