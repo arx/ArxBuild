@@ -28,6 +28,7 @@ compiler_options[gcc-4.4]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/
 compiler_options[gcc-4.5]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.2/'
 compiler_options[gcc-4.6]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.0/'
 compiler_options[clang]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang/\""
+compiler_options[ekopath]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/ekopath/\""
 compiler_options[clang-analyzer]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang-analyzer/\""
 compiler_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\" \"-DCMAKE_CXX_FLAGS=-isystem /usr/include/wine/windows\""
 compiler_options[m32]='-DARX_FORCE_32BIT=1'
@@ -43,3 +44,4 @@ compiler_options[minimal]='-DARX_BUILD_EDITOR=0 -DARX_BUILD_EDIT_LOADSAVE=0'
 declare -A process
 
 false_positives=( 'clang-analyzer' '_xtra' )
+ignore_anonymous_ns_warnings=( '_unity_' 'ekopath_' )

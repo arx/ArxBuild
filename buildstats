@@ -16,7 +16,13 @@ function count() {
 	local type="$2"
 	
 	local name="${file##*/}"
-	if [[ $name == *_unity_* ]] # Hack to ignore anyoing warnings in unity builds
+	local filter=0
+	for i in "${ignore_anonymous_ns_warnings[@]}" ; do
+		if [[ $name == *$i* ]] ; then
+			local filter=1
+		fi
+	done
+	if [ $filter == 1 ]
 		then grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | grep -v "the anonymous namespace" | wc -l
 		else grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | wc -l
 	fi
