@@ -18,7 +18,7 @@ function count() {
 	local name="${file##*/}"
 	local filter=0
 	for i in "${ignore_anonymous_ns_warnings[@]}" ; do
-		if [[ $name == *$i* ]] ; then
+		if [[ "$name" == $i ]] ; then
 			local filter=1
 		fi
 	done
@@ -39,7 +39,7 @@ function handle_build() {
 	
 	local has_false_positives=0
 	for i in "${false_positives[@]}" ; do
-		if [[ $name == *$i* ]] ; then
+		if [[ "$name" == $i ]] ; then
 			local has_false_positives=1
 		fi
 	done

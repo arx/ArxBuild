@@ -217,9 +217,7 @@ function build_branch() {
 	build 'gcc-4.6' unity m64 opt minimal
 	
 	build 'ekopath' m64 dbg
-	build 'ekopath' m64 opt
 	build 'ekopath' unity m64 opt
-	build 'ekopath' unity m64 opt xtra
 	
 }
 
