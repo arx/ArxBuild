@@ -57,8 +57,10 @@ function handle_build() {
 	
 	local warnings=`count "$prefix.txt" 'warning\:'`
 	local errors=`count "$prefix.txt" 'error\:'`
+	local fatal_errors=`count "$prefix.txt" 'fatal error\:'`
 	local linker_errors=`count "$prefix.txt" 'undefined reference to'`
 	local errors=$(($errors+$linker_errors))
+	local errors=$(($errors+$fatal_errors))
 	
 	local time=`grep user "$prefix-time.txt" 2> /dev/null`
 	local time="${time##* }"
