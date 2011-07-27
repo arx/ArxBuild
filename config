@@ -26,7 +26,7 @@ path=''
 declare -A compiler_options
 compiler_options[gcc-4.4]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.5/'
 compiler_options[gcc-4.5]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.2/'
-compiler_options[gcc-4.6]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.0/'
+compiler_options[gcc-4.6]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.1/'
 compiler_options[clang]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang/\""
 compiler_options[ekopath]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/ekopath/\""
 compiler_options[clang-analyzer]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang-analyzer/\""
@@ -39,6 +39,7 @@ compiler_options[xtra]='-DARX_DEBUG_EXTRA=1'
 compiler_options[unity]='-DARX_USE_UNITYBUILD=1'
 compiler_options[noeditor]='-DARX_BUILD_EDITOR=0'
 compiler_options[minimal]='-DARX_BUILD_EDITOR=0 -DARX_BUILD_EDIT_LOADSAVE=0'
+compiler_options[boost-1.37]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_37/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_37/'
 
 # Declare compiler-specific scripts to process build logs.
 declare -A process

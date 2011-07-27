@@ -8,4 +8,4 @@ for var in "$@" ; do
 	fi
 done
 
-/opt/ekopath-bin-4.0.10_pre20110612/bin/pathCC "${args[@]}" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi=
+/opt/ekopath-bin-4.0.10_pre20110717/bin/pathCC "${args[@]}" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi=

@@ -219,6 +219,8 @@ function build_branch() {
 	build 'ekopath' m64 dbg
 	build 'ekopath' unity m64 opt
 	
+	build 'gcc-4.6' m64 dbg boost-1.37
+	
 }
 
 # Build all remote branches.
