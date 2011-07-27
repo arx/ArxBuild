@@ -23,8 +23,8 @@ function count() {
 		fi
 	done
 	if [ $filter == 1 ]
-		then grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | grep -v "the anonymous namespace" | wc -l
-		else grep -P ".*\\.(cpp|h)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | wc -l
+		then grep -P ".*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | grep -v "the anonymous namespace" | wc -l
+		else grep -P ".*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -v "ub_arx\\.cpp" | wc -l
 	fi
 }
 
