@@ -188,7 +188,7 @@ function build_branch() {
 	build 'clang' m32 dbg
 	
 	build 'mingw32' dbg
-	build 'mingw32' opt
+	build 'mingw32' unity opt
 	
 	build 'gcc-4.6' m32 dbg
 	
