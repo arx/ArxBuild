@@ -23,26 +23,29 @@ log_config="$build/config.txt"
 path=''
 
 # Declare possible build options (passed to cmake).
+declare -A cmake_options
+cmake_options[gcc-4.4]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.4-toolchain.cmake\""
+cmake_options[gcc-4.5]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.5-toolchain.cmake\""
+cmake_options[gcc-4.6]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.6-toolchain.cmake\""
+cmake_options[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/clang-toolchain.cmake\""
+cmake_options[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/ekopath-toolchain.cmake\""
+cmake_options[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
+cmake_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/mingw32-toolchain.cmake\""
+cmake_options[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\""
+cmake_options[dbg]='-DARX_DEBUG=1'
+cmake_options[opt]='-DARX_DEBUG=0'
+cmake_options[xtra]='-DARX_DEBUG_EXTRA=1'
+cmake_options[unity]='-DARX_USE_UNITYBUILD=1'
+cmake_options[minimal]='-DARX_BUILD_EDIT_LOADSAVE=0'
+cmake_options[boost-1.37]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_37/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_37/'
+
 declare -A compiler_options
-compiler_options[gcc-4.4]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.4.5/'
-compiler_options[gcc-4.5]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.5.2/'
-compiler_options[gcc-4.6]='-DCMAKE_CXX_FLAGS=-B/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.1/'
-compiler_options[clang]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang/\""
-compiler_options[ekopath]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/ekopath/\""
-compiler_options[clang-analyzer]="\"-DCMAKE_CXX_FLAGS=-B$toolchains/clang-analyzer/\""
-compiler_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\" \"-DCMAKE_CXX_FLAGS=-isystem /usr/include/wine/windows\""
-compiler_options[m32]='-DARX_FORCE_32BIT=1'
-compiler_options[m64]='-DARX_FORCE_32BIT=0'
-compiler_options[dbg]='-DARX_DEBUG=1'
-compiler_options[opt]='-DARX_DEBUG=0'
-compiler_options[xtra]='-DARX_DEBUG_EXTRA=1'
-compiler_options[unity]='-DARX_USE_UNITYBUILD=1'
-compiler_options[noeditor]='-DARX_BUILD_EDITOR=0'
-compiler_options[minimal]='-DARX_BUILD_EDITOR=0 -DARX_BUILD_EDIT_LOADSAVE=0'
-compiler_options[boost-1.37]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_37/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_37/'
+compiler_options[mingw32]='-isystem /usr/include/wine/windows'
+compiler_options[m32]='-m32'
+compiler_options[m64]='-m64'
 
 # Declare compiler-specific scripts to process build logs.
 declare -A process
 
-false_positives=( 'clang-analyzer' '*_xtra' 'ekopath_*_opt' )
+false_positives=( 'clang-analyzer' '*_xtra' 'ekopath_*' )
 ignore_anonymous_ns_warnings=( '*_unity_*' 'ekopath_*' )

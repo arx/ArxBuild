@@ -53,12 +53,19 @@ function build() {
 	
 	local compiler="$1"
 	buildid="${compiler}"
-	local options="${compiler_options[$compiler]}"
+	
+	local options="${cmake_options[$compiler]}"
+	local flags="${compiler_options[$compiler]}"
 	
 	for arg in "${@:2}" ; do
 		local buildid="${buildid}_$arg"
-		local options="$options ${compiler_options[$arg]}"
+		local options="$options ${cmake_options[$arg]}"
+		local flags="$flags ${compiler_options[$arg]}"
 	done
+	
+	if [ "$flags" != "" ] ; then
+		local options="$options \"-DCMAKE_C_FLAGS=$flags\" \"-DCMAKE_CXX_FLAGS=$flags\""
+	fi
 	
 	local ref_branch="$branch_dst/$buildid.ref"
 	local ref_commit="$commit_dst/$buildid.ref"
@@ -186,38 +193,38 @@ function build_branch() {
 	build 'clang' m64 dbg
 	build 'clang' unity m64 dbg
 	build 'clang' m32 dbg
+	build 'clang' m64 opt
 	
 	build 'mingw32' dbg
 	build 'mingw32' unity opt
 	
-	build 'gcc-4.6' m32 dbg
+	build 'winelib' m64 dbg
+	build 'winelib' unity m64 opt
+	build 'winelib' m32 dbg
 	
-	build 'gcc-4.6' m64 dbg
-	build 'gcc-4.6' unity m64 dbg
+	build 'ekopath' m64 dbg
+	build 'ekopath' unity m64 opt
 	
 	build 'gcc-4.4' m64 dbg
-	build 'gcc-4.5' m64 dbg
+	build 'gcc-4.4' unity m64 opt
 	
-	build 'clang' m64 opt
-	# build 'clang' unity m64 opt # takes too long
+	build 'gcc-4.5' m64 dbg
+	build 'gcc-4.5' unity m64 opt
+	
+	build 'gcc-4.6' m32 dbg
+	build 'gcc-4.6' m64 dbg
+	build 'gcc-4.6' unity m64 dbg
 	
 	build 'gcc-4.6' m32 opt
 	
 	build 'gcc-4.6' m64 opt
-	build 'gcc-4.6' m64 opt xtra
 	build 'gcc-4.6' unity m64 opt
 	build 'gcc-4.6' unity m64 opt xtra
 	
 	build 'clang-analyzer'
 	
-	build 'gcc-4.6' m64 dbg noeditor
-	build 'gcc-4.6' unity m64 opt noeditor
-	
 	build 'gcc-4.6' m64 dbg minimal
 	build 'gcc-4.6' unity m64 opt minimal
-	
-	build 'ekopath' m64 dbg
-	build 'ekopath' unity m64 opt
 	
 	build 'gcc-4.6' m64 dbg boost-1.37
 	

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# TODO consider using c++-analyzer, but it produces XML output.
+# TODO consider using c++-analyzer shipped with cmake, but it produces XML output.
 
 # Modify the parameters so clang++ --analyze won't complain.
 args=( )
@@ -12,7 +12,7 @@ for var in "$@" ; do
 	fi
 done
 
-if [ $compile == 1 ] ; then 
+if [ $compile == 1 ] ; then
 	clang++ --analyze "${args[@]}" -D__builtin_ms_va_list=__builtin_va_list -Dms_abi=
 fi
 
