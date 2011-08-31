@@ -47,5 +47,5 @@ compiler_options[m64]='-m64'
 # Declare compiler-specific scripts to process build logs.
 declare -A process
 
-false_positives=( 'clang-analyzer' '*_xtra' 'ekopath_*' )
+false_positives=( 'clang-analyzer' '*_xtra' 'ekopath_*_opt' )
 ignore_anonymous_ns_warnings=( '*_unity_*' 'ekopath_*' )

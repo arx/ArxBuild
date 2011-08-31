@@ -23,8 +23,8 @@ function count() {
 		fi
 	done
 	if [ $filter == 1 ]
-		then grep -P ".*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -vP 'ub_.*\.cpp\:\d+\:\d+\: warning\: \[' | grep -v "the anonymous namespace" | wc -l
-		else grep -P ".*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: $type" "$file" | grep -vP 'ub_.*\.cpp\:\d+\:\d+\: warning\: \[' | wc -l
+		then grep -P "$type" "$file" | grep -vP 'ub_.*\.cpp\:\d+\:\d+\: warning\: \[' | grep -v "the anonymous namespace" | wc -l
+		else grep -P "$type" "$file" | grep -vP 'ub_.*\.cpp\:\d+\:\d+\: warning\: \[' | wc -l
 	fi
 }
 
@@ -55,11 +55,13 @@ function handle_build() {
 		return
 	fi
 	
-	local warnings=`count "$prefix.txt" 'warning\:'`
-	local errors=`count "$prefix.txt" 'error\:'`
-	local fatal_errors=`count "$prefix.txt" 'fatal error\:'`
-	local linker_errors=`count "$prefix.txt" 'undefined reference to'`
-	local errors=$(($errors+$linker_errors))
+	local warnings=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: warning\:'`
+	local errors=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: error\:'`
+	local fatal_errors=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: fatal error\:'`
+	local undefined_references=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: undefined reference to'`
+	local missing_libraries=`count "$prefix.txt" 'ld\: cannot find'`
+	local errors=$(($errors+$undefined_references))
+	local errors=$(($errors+$missing_libraries))
 	local errors=$(($errors+$fatal_errors))
 	
 	local time=`grep user "$prefix-time.txt" 2> /dev/null`
