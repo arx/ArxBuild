@@ -30,6 +30,7 @@ cmake_options[gcc-4.6]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.6-toolchain.c
 cmake_options[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/clang-toolchain.cmake\""
 cmake_options[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/ekopath-toolchain.cmake\""
 cmake_options[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
+cmake_options[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
 cmake_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/mingw32-toolchain.cmake\""
 cmake_options[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\""
 cmake_options[dbg]='-DARX_DEBUG=1'
@@ -40,12 +41,12 @@ cmake_options[minimal]='-DARX_BUILD_EDIT_LOADSAVE=0'
 cmake_options[boost-1.37]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_37/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_37/'
 
 declare -A compiler_options
-compiler_options[mingw32]='-isystem /usr/include/wine/windows'
+compiler_options[mingw32]='-isystem /usr/include/wine/windows' # TODO remove!
 compiler_options[m32]='-m32'
 compiler_options[m64]='-m64'
 
 # Declare compiler-specific scripts to process build logs.
 declare -A process
 
-false_positives=( 'clang-analyzer' '*_xtra' 'ekopath_*_opt' )
+false_positives=( 'include-what-you-use' 'clang-analyzer' '*_xtra' 'ekopath_*_opt' )
 ignore_anonymous_ns_warnings=( '*_unity_*' 'ekopath_*' )

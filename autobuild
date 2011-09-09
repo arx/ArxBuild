@@ -223,6 +223,8 @@ function build_branch() {
 	
 	build 'clang-analyzer'
 	
+	build 'include-what-you-use'
+	
 	build 'gcc-4.6' m64 dbg minimal
 	build 'gcc-4.6' unity m64 opt minimal
 	
