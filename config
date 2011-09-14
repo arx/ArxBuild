@@ -31,7 +31,7 @@ cmake_options[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/clang-toolchain.cmake
 cmake_options[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/ekopath-toolchain.cmake\""
 cmake_options[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
 cmake_options[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
-cmake_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/mingw32-toolchain.cmake\""
+cmake_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/mingw32-toolchain.cmake\" \"-DDXSDK_DIR=$here/DXSDK/\""
 cmake_options[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\""
 cmake_options[dbg]='-DARX_DEBUG=1'
 cmake_options[opt]='-DARX_DEBUG=0'
