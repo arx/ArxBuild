@@ -11,6 +11,18 @@ function reference_branch() {
 	
 	local dir="$1"
 	
+	# Remove obsolete branches.
+	branch="${f##*/}"
+	obsolete=1
+	for remote in "${branches[@]}"; do
+		[[ "$branch" == "${remote##*/}" ]] && obsolete=0
+	done
+	if [ $obsolete == 1 ] ; then 
+		echo "Removing obsolete branch ${esc}[34m$branch${esc}[0m"
+		rm -r "$dir"
+		return
+	fi
+	
 	for f in `dir -d $dir/* 2> /dev/null` ; do
 		commit=`readlink -m "$f"`
 		references["$commit"]=1
@@ -39,6 +51,8 @@ function clean_commit() {
 }
 
 echo "Cleaning unreferenced binaries..."
+
+branches=(`dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null`)
 
 # Collect referenced commits.
 for f in `dir -d $bin/branches/* 2> /dev/null` ; do
