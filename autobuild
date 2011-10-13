@@ -198,10 +198,6 @@ function build_branch() {
 	build 'mingw32' dbg
 	build 'mingw32' unity opt
 	
-	build 'winelib' m64 dbg
-	build 'winelib' unity m64 opt
-	build 'winelib' m32 dbg
-	
 	build 'ekopath' m64 dbg
 	build 'ekopath' unity m64 opt
 	
