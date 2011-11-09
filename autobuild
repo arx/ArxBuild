@@ -203,7 +203,6 @@ function build_branch() {
 	build 'winelib' m32 dbg
 	
 	build 'ekopath' m64 dbg
-	build 'ekopath' unity m64 opt
 	
 	build 'gcc-4.4' m64 dbg
 	build 'gcc-4.4' unity m64 opt
