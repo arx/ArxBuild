@@ -33,8 +33,8 @@ cmake_options[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyz
 cmake_options[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
 cmake_options[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/mingw32-toolchain.cmake\" \"-DDXSDK_DIR=$here/DXSDK/\" \"-DCMAKE_LIBRARY_PATH=$here/DXSDK/lib/x86/\""
 cmake_options[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\""
-cmake_options[dbg]='-DARX_DEBUG=1'
-cmake_options[opt]='-DARX_DEBUG=0'
+cmake_options[dbg]='-DCMAKE_BUILD_TYPE=Debug'
+cmake_options[opt]='-DCMAKE_BUILD_TYPE=Release'
 cmake_options[xtra]='-DARX_DEBUG_EXTRA=1'
 cmake_options[unity]='-DARX_USE_UNITYBUILD=1'
 cmake_options[minimal]='-DARX_BUILD_EDIT_LOADSAVE=0'
@@ -44,6 +44,7 @@ declare -A compiler_options
 compiler_options[mingw32]='-isystem /usr/include/wine/windows' # TODO remove!
 compiler_options[m32]='-m32'
 compiler_options[m64]='-m64'
+compiler_options[opt]='-O3'
 
 # Declare compiler-specific scripts to process build logs.
 declare -A process
