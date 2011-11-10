@@ -7,6 +7,23 @@ source "$here/common"
 
 declare -A references
 
+function reference_build() {
+	
+	local file="$1"
+	local branch="$2"
+	
+	local name="${file##*/}"
+	local commit=`readlink -m "$file"`
+	
+	if ! in_array "$name" "${build_types[@]}" ; then
+		echo "Removing obsolete build type ${esc}[32m$name${esc}[0m in ${esc}[34m$branch${esc}[0m"
+		rm "$file"
+		return
+	fi
+	
+	references["$commit"]=1
+}
+
 function reference_branch() {
 	
 	local dir="$1"
@@ -24,8 +41,7 @@ function reference_branch() {
 	fi
 	
 	for f in `dir -d $dir/* 2> /dev/null` ; do
-		commit=`readlink -m "$f"`
-		references["$commit"]=1
+		reference_build "$f" "$branch"
 	done
 	
 }

@@ -34,3 +34,17 @@ function parse_build_type() {
 	
 	eval "$2=( ${components[@]} )"
 }
+
+function in_array() {
+	
+	local needle="$1"
+	
+	for entry in "${@:2}" ; do
+		if [ "$entry" == "$needle" ] ; then
+			true
+			return
+		fi
+	done
+	
+	false
+}

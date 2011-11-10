@@ -10,10 +10,17 @@ declare -A references
 function reference_build() {
 	
 	local file="$1"
+	local branch="$2"
 	
 	local name="${file%.ref}"
 	local name="${name##*/}"
 	local commit=`cat "$file" 2> /dev/null`
+	
+	if ! in_array "$name" "${build_types[@]}" ; then
+		echo "Removing obsolete build type ${esc}[32m$name${esc}[0m in ${esc}[34m$branch${esc}[0m"
+		rm "$file"
+		return
+	fi
 	
 	references["$commit/$name"]=1
 	
@@ -36,7 +43,7 @@ function reference_branch() {
 	fi
 	
 	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
-		reference_build "$f"
+		reference_build "$f" "$branch"
 	done
 	
 }
