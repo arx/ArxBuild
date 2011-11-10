@@ -19,7 +19,7 @@ toolchains="$here/toolchains"
 log_build="$build/buildlog"
 log_config="$build/config.txt"
 
-# What part if the checkt out repo to build (location of the CMakeLists.txt)
+# What part if the checked-out repo to build (location of the CMakeLists.txt)
 path=''
 
 # Declare possible build options (passed to cmake).
@@ -60,7 +60,7 @@ declare -A process
 
 declare -A count_warnings
 count_warnings=(
-	[0]='\:\d+(\:\d+)?\: warning\:'
+	[0]='\:\d+\: warning\:'
 	['ekopath_*']='pathCC WARNING\:'
 	['style']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'
@@ -68,9 +68,9 @@ count_warnings=(
 
 declare -A count_errors
 count_errors=(
-	[0]='\:\d+(\:\d+)?\: error\:'
-	[1]='\:\d+(\:\d+)?\: fatal error\:'
-	[2]='\:\d+(\:\d+)?\: undefined reference to'
+	[0]='\:\d+\: error\:'
+	[1]='\:\d+\: fatal error\:'
+	[2]='\:\d+\: undefined reference to'
 	[3]='ld\: cannot find'
 )
 
