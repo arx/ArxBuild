@@ -10,21 +10,53 @@ if [ "$1" == '-f' ] ;
 	else force=''
 fi
 
+function build_query() {
+	
+	local name="$1"
+	local type="$2"
+	
+	local query=''
+	
+	local args
+	eval "args=( \"\${!${type}[@]}\" )"
+	
+	for i in "${args[@]}" ; do
+		if [[ "$i" =~ ^[0-9]+$ ]] || [[ "$name" == $i ]] ; then
+			
+			local value
+			eval "value=\"\${${type}['$i']}\""
+			
+			if [ "$query" == '' ]
+				then query="($value)"
+				else query="$query|($value)"
+			fi
+		fi
+	done
+	
+	echo "$query"
+}
+
 function count() {
 	
 	local file="$1"
-	local type="$2"
+	local name="$2"
+	local type="$3"
 	
-	local name="${file##*/}"
-	local filter=0
-	for i in "${ignore_anonymous_ns_warnings[@]}" ; do
-		if [[ "$name" == $i ]] ; then
-			local filter=1
-		fi
-	done
-	if [ $filter == 1 ]
-		then grep -P "$type" "$file" | grep -vP 'ub_.*\.cpp\:\d+\:(\d+\:)? warning\: (\[|ignoring \#pragma message)' | grep -v "the anonymous namespace" | wc -l
-		else grep -P "$type" "$file" | grep -vP 'ub_.*\.cpp\:\d+\:(\d+\:)? warning\: (\[|ignoring \#pragma message)' | wc -l
+	local query=`build_query "$name" "count_$type"`
+	local ignore=`build_query "$name" "ignore_$type"`
+	
+	if [ "$query" == '' ] ; then
+		echo '0'
+		return
+	fi
+	
+	
+	#echo "'grep -P \"$query\" \"$file\"'" >> /dev/stderr
+	#echo "'$ignore'" >> /dev/stderr
+	
+	if [ "$ignore" == '' ]
+		then grep -P "$query" "$file" |                      wc -l
+		else grep -P "$query" "$file" | grep -vP "$ignore" | wc -l
 	fi
 }
 
@@ -38,11 +70,9 @@ function handle_build() {
 	local commit=`cat "$file"`
 	
 	local has_false_positives=0
-	for i in "${false_positives[@]}" ; do
-		if [[ "$name" == $i ]] ; then
-			local has_false_positives=1
-		fi
-	done
+	if in_wildcard_array "$name" "${false_positives[@]}" ; then
+		local has_false_positives=1
+	fi
 	if [ $has_false_positives != $allow_false_positives ] ; then
 		return
 	fi
@@ -55,14 +85,8 @@ function handle_build() {
 		return
 	fi
 	
-	local warnings=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: warning\:'`
-	local errors=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: error\:'`
-	local fatal_errors=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: fatal error\:'`
-	local undefined_references=`count "$prefix.txt" '.*\\.(cpp|h|hpp)\\:\d+(\\:\d+)?\\: undefined reference to'`
-	local missing_libraries=`count "$prefix.txt" 'ld\: cannot find'`
-	local errors=$(($errors+$undefined_references))
-	local errors=$(($errors+$missing_libraries))
-	local errors=$(($errors+$fatal_errors))
+	local warnings=`count "$prefix.txt" "$name" warnings`
+	local errors=`count "$prefix.txt" "$name" errors`
 	
 	local time=`grep user "$prefix-time.txt" 2> /dev/null`
 	local time="${time##* }"

@@ -62,7 +62,7 @@ function build() {
 		local buildid="${buildid}_$arg"
 		local options="$options ${cmake_options[$arg]}"
 		local flags="$flags ${compiler_options[$arg]}"
-		local flags="$targets ${make_options[$arg]}"
+		local targets="$targets ${make_options[$arg]}"
 	done
 	
 	if [ "$flags" != "" ] ; then

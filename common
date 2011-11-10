@@ -15,7 +15,7 @@ html_header() {
 	local lt='<'
 	
 	echo "${lt}html>${lt}head>${lt}title>$title</title>"
-	echo '<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">'
+	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
 	echo "<link rel=\"stylesheet\" href=\"$toroot/console.css\" type=\"text/css\">"
 	echo '</head><body>'
 	
@@ -41,6 +41,20 @@ function in_array() {
 	
 	for entry in "${@:2}" ; do
 		if [ "$entry" == "$needle" ] ; then
+			true
+			return
+		fi
+	done
+	
+	false
+}
+
+function in_wildcard_array() {
+	
+	local needle="$1"
+	
+	for entry in "${@:2}" ; do
+		if [[ "$needle" == $entry ]] ; then
 			true
 			return
 		fi
