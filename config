@@ -46,10 +46,21 @@ compiler_options[m32]='-m32'
 compiler_options[m64]='-m64'
 compiler_options[opt]='-O3'
 
+declare -A make_options
+make_options[style]='style'
+make_options[strict-style]='strict-style'
+
 # Declare compiler-specific scripts to process build logs.
 declare -A process
 
-false_positives=( 'include-what-you-use' 'clang-analyzer' '*_xtra' 'ekopath_*_opt' )
+false_positives=(
+	'include-what-you-use'
+	'clang-analyzer'
+	'*_xtra'
+	'ekopath_*_opt'
+	'strict-style'
+)
+
 ignore_anonymous_ns_warnings=( 'ekopath_*' )
 
 build_types=(
@@ -92,5 +103,8 @@ build_types=(
 	'gcc-4.6_unity_m64_opt_minimal'
 	
 	'gcc-4.6_m64_dbg_boost-1.37'
+	
+	'style'
+	'strict-style'
 	
 )

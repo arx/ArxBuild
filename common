@@ -14,7 +14,7 @@ html_header() {
 	
 	local lt='<'
 	
-	echo "$lthtml>$lthead>$lttitle>$title</title>"
+	echo "${lt}html>${lt}head>${lt}title>$title</title>"
 	echo '<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">'
 	echo "<link rel=\"stylesheet\" href=\"$toroot/console.css\" type=\"text/css\">"
 	echo '</head><body>'

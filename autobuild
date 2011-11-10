@@ -36,11 +36,11 @@ function descript() {
 }
 
 function make_helper() {
-	script -c 'make -k' "$log_build" &> /dev/null
+	script -c "make -k $1" "$log_build" &> /dev/null
 }
 
 function timed_make() {
-	time make_helper
+	time make_helper "$1"
 }
 
 function build_cancelled() {
@@ -56,11 +56,13 @@ function build() {
 	
 	local options="${cmake_options[$compiler]}"
 	local flags="${compiler_options[$compiler]}"
+	local targets="${make_options[$compiler]}"
 	
 	for arg in "${@:2}" ; do
 		local buildid="${buildid}_$arg"
 		local options="$options ${cmake_options[$arg]}"
 		local flags="$flags ${compiler_options[$arg]}"
+		local flags="$targets ${make_options[$arg]}"
 	done
 	
 	if [ "$flags" != "" ] ; then
@@ -108,7 +110,7 @@ function build() {
 	if cd "$build" && eval "cmake \"$repo/$path\" $options" &> "$log_config" ; then
 		
 		echo 'Building...'
-		timed_make &> "$dst_time"
+		timed_make "$targets" &> "$dst_time"
 		
 		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
 			build_cancelled
