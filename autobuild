@@ -190,7 +190,16 @@ function build_branch() {
 	
 	# Build with different configurations.
 	
-	build_types
+	for build_type in "${build_types[@]}" ; do
+		
+		local args;
+		parse_build_type "$build_type" 'args'
+		
+		build "${args[@]}"
+		
+	done
+	
+	#build_types
 }
 
 # Build all remote branches.

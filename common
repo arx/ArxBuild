@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Code shared between autobuild and buildstats.
 
@@ -12,13 +12,25 @@ html_header() {
 	local title="$1"
 	local toroot="$2"
 	
-	echo "<html><head><title>$title</title>"
-	echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"
+	local lt='<'
+	
+	echo "$lthtml>$lthead>$lttitle>$title</title>"
+	echo '<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">'
 	echo "<link rel=\"stylesheet\" href=\"$toroot/console.css\" type=\"text/css\">"
-	echo "</head><body>"
+	echo '</head><body>'
 	
 }
 
 html_footer() {
-	echo "</body></html>"
+	echo '</body></html>'
+}
+
+function parse_build_type() {
+	
+	local build_type="$1"
+	local out_name="$2"
+	
+	IFS='_' read -ra components <<< "$build_type"
+	
+	eval "$2=( ${components[@]} )"
 }
