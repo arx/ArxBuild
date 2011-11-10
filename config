@@ -51,3 +51,46 @@ declare -A process
 
 false_positives=( 'include-what-you-use' 'clang-analyzer' '*_xtra' 'ekopath_*_opt' )
 ignore_anonymous_ns_warnings=( 'ekopath_*' )
+
+function build_types() {
+	
+	build 'clang' m64 dbg
+	build 'clang' unity m64 dbg
+	build 'clang' m32 dbg
+	build 'clang' m64 opt
+	
+	build 'mingw32' dbg
+	build 'mingw32' unity opt
+	
+	build 'winelib' m64 dbg
+	build 'winelib' unity m64 opt
+	build 'winelib' m32 dbg
+	
+	build 'ekopath' m64 dbg
+	
+	build 'gcc-4.4' m64 dbg
+	build 'gcc-4.4' unity m64 opt
+	
+	build 'gcc-4.5' m64 dbg
+	build 'gcc-4.5' unity m64 opt
+	
+	build 'gcc-4.6' m32 dbg
+	build 'gcc-4.6' m64 dbg
+	build 'gcc-4.6' unity m64 dbg
+	
+	build 'gcc-4.6' m32 opt
+	
+	build 'gcc-4.6' m64 opt
+	build 'gcc-4.6' unity m64 opt
+	build 'gcc-4.6' unity m64 opt xtra
+	
+	build 'clang-analyzer'
+	
+	build 'include-what-you-use'
+	
+	build 'gcc-4.6' m64 dbg minimal
+	build 'gcc-4.6' unity m64 opt minimal
+	
+	build 'gcc-4.6' m64 dbg boost-1.37
+	
+}
