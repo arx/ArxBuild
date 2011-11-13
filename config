@@ -71,7 +71,7 @@ declare -A count_errors
 count_errors=(
 	[0]='\:\d+\: error\:'
 	[1]='\:\d+\: fatal error\:'
-	[2]='\:\d+\: undefined reference to'
+	[2]='\:(\d+|\(.*\))\: undefined reference to '
 	[3]='ld\: cannot find'
 )
 
