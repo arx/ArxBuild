@@ -44,7 +44,8 @@ cmake_options=(
 
 declare -A compiler_options
 compiler_options=(
-	[mingw32]='-isystem /usr/include/wine/windows' # TODO remove!
+	[mingw32]="-isystem /usr/include/wine/windows -isystem $toolchains/wine-dx/" # TODO remove!
+	[winelib]="-isystem $toolchains/wine-dx/" # TODO remove!
 	[m32]='-m32'
 	[m64]='-m64'
 	[opt]='-O3'
