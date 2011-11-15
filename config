@@ -25,7 +25,6 @@ path=''
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
 cmake_options=(
-	[gcc-4.4]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.4-toolchain.cmake\""
 	[gcc-4.5]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.5-toolchain.cmake\""
 	[gcc-4.6]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.6-toolchain.cmake\""
 	[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/clang-toolchain.cmake\""
@@ -103,9 +102,6 @@ build_types=(
 	'winelib_m32_dbg'
 	
 	'ekopath_m64_dbg'
-	
-	'gcc-4.4_m64_dbg'
-	'gcc-4.4_unity_m64_opt'
 	
 	'gcc-4.5_m64_dbg'
 	'gcc-4.5_unity_m64_opt'
