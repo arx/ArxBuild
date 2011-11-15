@@ -85,6 +85,7 @@ false_positives=(
 	'clang-analyzer'
 	'*_xtra'
 	'ekopath_*_opt'
+	'mingw32_*'
 )
 
 build_types=(
