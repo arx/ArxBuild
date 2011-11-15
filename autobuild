@@ -27,7 +27,7 @@ cp "$here/console.css" "$logs/console.css"
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 function process_paths() {
-	replace "$build" "Build" "$repo" "Arx" "$toolchains" "Toolchains"
+	replace "$build" "Build" "$repo" "Arx" "$toolchains" "Toolchains" "$here/" ""
 }
 
 # Remove header and footer created by the script command.
