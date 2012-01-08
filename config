@@ -35,10 +35,11 @@ cmake_options=(
 	[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\""
 	[dbg]='-DCMAKE_BUILD_TYPE=Debug'
 	[opt]='-DCMAKE_BUILD_TYPE=Release'
-	[xtra]='-DARX_DEBUG_EXTRA=1'
-	[unity]='-DARX_USE_UNITYBUILD=1'
-	[minimal]='-DARX_BUILD_EDIT_LOADSAVE=0'
+	[xtra]='-DDEBUG_EXTRA=1'
+	[unity]='-DUNITY_BUILD=1'
+	[minimal]='-DBUILD_EDIT_LOADSAVE=0'
 	[boost-1.37]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_37/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_37/'
+	[boostfs]='-DUSE_NATIVE_FS=0'
 )
 
 declare -A compiler_options
@@ -124,7 +125,8 @@ build_types=(
 	'gcc-4.6_m64_dbg_minimal'
 	'gcc-4.6_unity_m64_opt_minimal'
 	
-	'gcc-4.6_m64_dbg_boost-1.37'
+	'gcc-4.6_m64_dbg_boostfs'
+	'gcc-4.6_m64_dbg_boostfs_boost-1.37'
 	
 	'style'
 	
