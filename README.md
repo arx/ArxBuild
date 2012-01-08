@@ -38,6 +38,8 @@ To do the same for binaries, run:
 
 ## Contact
 
-Chat: \#arxfatalis on irc.freenode.net
+IRC: \#arxfatalis on irc.freenode.net
 
-[Arx Wiki](http://arx.parpg.net/)
+Wiki: [http://arx.parpg.net/](http://arx.parpg.net/)
+
+Reddit: [http://www.reddit.com/r/ArxFatalis/](http://www.reddit.com/r/ArxFatalis/)
