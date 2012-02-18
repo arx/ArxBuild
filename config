@@ -129,7 +129,7 @@ build_types=(
 	
 	'gcc-4.6_m64_dbg_boostfs'
 	'gcc-4.6_m64_dbg_boost-1.37'
-	'gcc-4.6_m64_dbg_boost-1.41_boostfs'
+	'gcc-4.6_m64_dbg_boost-1.41'
 	
 	'style'
 	
