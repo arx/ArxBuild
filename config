@@ -27,14 +27,14 @@ declare -A cmake_options
 cmake_options=(
 	[gcc-4.5]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.5-toolchain.cmake\""
 	[gcc-4.6]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.6-toolchain.cmake\""
+	[gcc-4.7]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.7-toolchain.cmake\""
 	[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/clang-toolchain.cmake\""
 	[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/ekopath-toolchain.cmake\""
 	[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
 	[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
 	[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/mingw32-toolchain.cmake\" \"-DCMAKE_LIBRARY_PATH=$here/DXSDK/lib/x86/\""
 	[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\""
-	[dbg]='-DCMAKE_BUILD_TYPE=Debug'
-	[opt]='-DCMAKE_BUILD_TYPE=Release'
+	[debug]='-DCMAKE_BUILD_TYPE=Debug'
 	[xtra]='-DDEBUG_EXTRA=1'
 	[unity]='-DUNITY_BUILD=1'
 	[minimal]='-DBUILD_EDIT_LOADSAVE=0'
@@ -43,15 +43,15 @@ cmake_options=(
 	[boostfs]='-DUSE_NATIVE_FS=0'
 )
 
+# Declare possible build options (passed to the compiler).
 declare -A compiler_options
 compiler_options=(
 	[mingw32]="-isystem /usr/include/wine/windows -isystem $toolchains/mingw32-dx/" # TODO remove!
 	[winelib]="-isystem $toolchains/wine-dx/" # TODO remove!
 	[m32]='-m32'
-	[m64]='-m64'
-	[opt]='-O3'
 )
 
+# Declare possible build options (passed to make).
 declare -A make_options
 make_options=(
 	[style]='style'
@@ -60,6 +60,11 @@ make_options=(
 # Declare compiler-specific scripts to process build logs.
 declare -A process
 
+# Define how buildstats counts errors and warnings.
+# Numbered entries are used for all builds.
+# For other entries, the key is matched agains the build type.
+
+# Declare patterns that count as a warning.
 declare -A count_warnings
 count_warnings=(
 	[0]='\:\d+\: warning\:'
@@ -68,6 +73,7 @@ count_warnings=(
 	['include-what-you-use']='The full include-list for .*\:'
 )
 
+# Declare patterns that count as an error.
 declare -A count_errors
 count_errors=(
 	[0]='\:\d+\: error\:'
@@ -77,12 +83,14 @@ count_errors=(
 	[3]='could not read symbols\: File in wrong format'
 )
 
+# Declare patterns for warnings that should be ignored.
 declare -A ignore_warnings
 ignore_warnings=(
 	[0]='ub_.*\.cpp\:\d+\:(\d+\:)? warning\: (\[|ignoring \#pragma message)'
 	['ekopath_*']='the anonymous namespace'
 )
 
+# Declare which build types have known false positive warnings/errors.
 false_positives=(
 	'include-what-you-use'
 	'clang-analyzer'
@@ -91,46 +99,51 @@ false_positives=(
 	'mingw32_*'
 )
 
+# Finally, define the used build types.
+# Each build type is an underscore-seperated list of tokens defined in
+# cmake_options, compiler_options and make_options.
 build_types=(
 	
-	'clang_m64_dbg'
-	'clang_unity_m64_dbg'
-	'clang_m32_dbg'
-	'clang_m64_opt'
+	'clang_debug'
+	'clang_unity_debug'
+	'clang_m32_debug'
+	'clang'
 	
-	'mingw32_dbg'
-	'mingw32_unity_opt'
+	'winelib_debug'
+	'winelib_unity'
+	'winelib_m32_debug'
 	
-	'winelib_m64_dbg'
-	'winelib_unity_m64_opt'
-	'winelib_m32_dbg'
+	'ekopath_debug'
 	
-	'ekopath_m64_dbg'
+	'gcc-4.5_debug'
+	'gcc-4.5_unity'
 	
-	'gcc-4.5_m64_dbg'
-	'gcc-4.5_unity_m64_opt'
+	'gcc-4.6'
+	'gcc-4.6_debug'
+	'gcc-4.6_unity'
+	'gcc-4.6_unity_debug'
+	'gcc-4.6_unity_xtra'
 	
-	'gcc-4.6_m32_dbg'
-	'gcc-4.6_m64_dbg'
-	'gcc-4.6_unity_m64_dbg'
-	
-	'gcc-4.6_m32_opt'
-	
-	'gcc-4.6_m64_opt'
-	'gcc-4.6_unity_m64_opt'
-	'gcc-4.6_unity_m64_opt_xtra'
+	'gcc-4.6_m32_debug'
+	'gcc-4.6_m32'
 	
 	'clang-analyzer'
 	
 	'include-what-you-use'
 	
-	'gcc-4.6_m64_dbg_minimal'
-	'gcc-4.6_unity_m64_opt_minimal'
+	'gcc-4.6_debug_minimal'
+	'gcc-4.6_unity_minimal'
 	
-	'gcc-4.6_m64_dbg_boostfs'
-	'gcc-4.6_m64_dbg_boost-1.37'
-	'gcc-4.6_m64_dbg_boost-1.41'
+	'gcc-4.6_debug_boostfs'
+	'gcc-4.6_debug_boost-1.37'
+	'gcc-4.6_debug_boost-1.41'
+	
+	'gcc-4.7_debug'
+	'gcc-4.7_unity'
 	
 	'style'
+	
+	'mingw32_debug'
+	'mingw32_unity'
 	
 )
