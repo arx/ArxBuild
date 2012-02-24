@@ -44,8 +44,10 @@ function timed_make() {
 }
 
 function build_cancelled() {
-	rm $commit_dst/$buildid* &> /dev/null
-	rm $branch_dst/$buildid* &> /dev/null
+	rm $commit_dst/$buildid.* &> /dev/null
+	rm $commit_dst/$buildid-* &> /dev/null
+	rm $branch_dst/$buildid.* &> /dev/null
+	rm $branch_dst/$buildid-* &> /dev/null
 	echo 'Build cancelled!'; exit
 }
 
@@ -171,7 +173,7 @@ function build() {
 	echo "</pre>" >> "$dst_html"
 	html_footer >> "$dst_html"
 	
-	# Procude a plain text log without shell color codes.
+	# Produce a plain text log without shell color codes.
 	sed -r "s/${esc}\\[[0-9]*(\\;[0-9]*)*m//g" "$dst_raw" > "$dst_plain"
 	
 	# Update statistics and indices.
