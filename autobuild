@@ -59,10 +59,30 @@ function build() {
 	local targets="${make_options[$compiler]}"
 	
 	for arg in "${@:2}" ; do
+		
 		local buildid="${buildid}_$arg"
-		local options="$options ${cmake_options[$arg]}"
-		local flags="$flags ${compiler_options[$arg]}"
-		local targets="$targets ${make_options[$arg]}"
+		
+		if [ "${cmake_options[$arg]}" != "" ] ; then
+			if [ "$options" != "" ] ; then
+				local options="$options "
+			fi
+			local options="$options${cmake_options[$arg]}"
+		fi
+		
+		if [ "${compiler_options[$arg]}" != "" ] ; then
+			if [ "$flags" != "" ] ; then
+				local flags="$flags "
+			fi
+			local flags="$flags${compiler_options[$arg]}"
+		fi
+		
+		if [ "${make_options[$arg]}" != "" ] ; then
+			if [ "$targets" != "" ] ; then
+				local targets="$targets "
+			fi
+			local targets="$targets${make_options[$arg]}"
+		fi
+		
 	done
 	
 	if [ "$flags" != "" ] ; then
