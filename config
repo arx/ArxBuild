@@ -147,3 +147,11 @@ build_types=(
 	'mingw32_unity'
 	
 )
+
+# Which binaries to save before nuking the build directory.
+binaries=(
+	'arx'
+	'arxunpak'
+	'arxsavetool'
+	'arxcrashreporter'
+)

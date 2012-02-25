@@ -139,13 +139,15 @@ function build() {
 		fi
 		
 		# Save the resulting binaries.
-		if [ -e "$repo/bin" ] ; then
-			rm -r "$repo/bin/tools" &> /dev/null
-			rm -r "$commit_bindst/$buildid" &> /dev/null
-			mv "$repo/bin" "$commit_bindst/$buildid"
-			rm "$branch_bindst/$buildid" &> /dev/null
-			ln -s "$commit_bindst/$buildid" "$branch_bindst/$buildid"
-		fi
+		rm -rf "$commit_bindst/$buildid" &> /dev/null
+		mkdir "$commit_bindst/$buildid" &> /dev/null
+		
+		for binary in "${binaries[@]}" ; do
+			mv "$build/$binary" "$commit_bindst/$buildid/" &> /dev/null
+		done
+		
+		rm "$branch_bindst/$buildid" &> /dev/null
+		ln -s "$commit_bindst/$buildid" "$branch_bindst/$buildid"
 		
 	else
 		
