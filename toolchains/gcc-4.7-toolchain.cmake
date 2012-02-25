@@ -1,6 +1,7 @@
 
 find_program(GCC_47 NAMES
 	gcc-4.7
+	gcc47
 	gcc-4.7.9
 	gcc-4.7.8
 	gcc-4.7.7
@@ -16,6 +17,7 @@ find_program(GCC_47 NAMES
 mark_as_advanced(GCC_47)
 find_program(GXX_47 NAMES
 	g++-4.7
+	g++47
 	g++-4.7.9
 	g++-4.7.8
 	g++-4.7.7

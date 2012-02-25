@@ -1,6 +1,7 @@
 
 find_program(GCC_45 NAMES
 	gcc-4.5
+	gcc45
 	gcc-4.5.9
 	gcc-4.5.8
 	gcc-4.5.7
@@ -15,6 +16,7 @@ find_program(GCC_45 NAMES
 mark_as_advanced(GCC_45)
 find_program(GXX_45 NAMES
 	g++-4.5
+	g++45
 	g++-4.5.9
 	g++-4.5.8
 	g++-4.5.7
