@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# What is the project called
+project_name="Arx"
+
 # Where the local git repository is located there mus be no changes to the working tree.
 repo="$here/repo"
 
@@ -33,13 +36,19 @@ cmake_options=(
 	[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
 	[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
 	[mingw32]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/mingw32-toolchain.cmake\" \"-DCMAKE_LIBRARY_PATH=$here/DXSDK/lib/x86/\""
-	[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\""
+	[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$repo/cmake/wine-toolchain.cmake\" -DBUILD_CRASHREPORTER=0"
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
 	[xtra]='-DDEBUG_EXTRA=1'
 	[unity]='-DUNITY_BUILD=1'
 	[minimal]='-DBUILD_EDIT_LOADSAVE=0'
 	[boost-1.37]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_37/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_37/'
+	[boost-1.39]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_39/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_39/'
 	[boost-1.41]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_41/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_41/'
+	[boost-1.42]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_42/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_42/'
+	[boost-1.45]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_45/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_45/'
+	[boost-1.46]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_46/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_46/'
+	[boost-1.47]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_47/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_47/'
+	[boost-1.48]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_48/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_48/'
 	[boostfs]='-DUSE_NATIVE_FS=0'
 )
 
@@ -134,9 +143,14 @@ build_types=(
 	'gcc-4.6_debug_minimal'
 	'gcc-4.6_unity_minimal'
 	
-	'gcc-4.6_debug_boostfs'
 	'gcc-4.6_debug_boost-1.37'
+	'gcc-4.6_debug_boost-1.39'
 	'gcc-4.6_debug_boost-1.41'
+	'gcc-4.6_debug_boost-1.42'
+	'gcc-4.6_debug_boost-1.45_boostfs'
+	'gcc-4.6_debug_boost-1.46_boostfs'
+	'gcc-4.6_debug_boost-1.47_boostfs'
+	'gcc-4.6_debug_boost-1.48_boostfs'
 	
 	'gcc-4.7_debug'
 	'gcc-4.7_unity'
