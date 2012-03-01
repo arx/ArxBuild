@@ -45,7 +45,6 @@ build_types=(
 	'gcc-4.6_debug_minimal'
 	'gcc-4.6_unity_minimal'
 	
-	'gcc-4.6_debug_boost-1.37'
 	'gcc-4.6_debug_boost-1.39'
 	'gcc-4.6_debug_boost-1.41'
 	'gcc-4.6_debug_boost-1.42'
