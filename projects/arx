@@ -26,6 +26,12 @@ build_types=(
 	
 	'ekopath_debug'
 	
+	'gcc-4.3_debug'
+	'gcc-4.3_unity'
+	
+	'gcc-4.4_debug'
+	'gcc-4.4_unity'
+	
 	'gcc-4.5_debug'
 	'gcc-4.5_unity'
 	
