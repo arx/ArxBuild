@@ -6,6 +6,7 @@ project_name="InnoExtract"
 # Some additional arx-specific build options
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[nolzma]='-DUSE_LZMA=0'
+cmake_options[style]="${cmake_options[debug]}"
 
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
