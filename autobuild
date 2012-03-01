@@ -3,6 +3,8 @@
 cd "$(dirname "$0")"
 here="$(pwd)"
 
+project=$1
+
 source "$here/common"
 
 # Build the tools if needed.
@@ -102,7 +104,7 @@ function build() {
 			# Record this in the branch anyway.
 			echo "$commit" > "$ref_branch"
 			touch "$branch_dst"
-			"$here/buildstats" &> /dev/null
+			"$here/buildstats" "$project" &> /dev/null
 		fi
 		if [ "$branch_bindst" ] && [ -e "$commit_bindst/$buildid" ] ; then
 			rm "$branch_bindst/$buildid" &> /dev/null
@@ -181,7 +183,7 @@ function build() {
 	# Update statistics and indices.
 	touch "$commit_dst"
 	touch "$branch_dst"
-	"$here/buildstats" &> /dev/null
+	"$here/buildstats" "$project" &> /dev/null
 	
 	trap "echo 'Cancelled!'; exit" SIGHUP SIGINT SIGTERM
 	

@@ -3,6 +3,7 @@
 # Code shared between autobuild and buildstats.
 
 source "$here/config"
+source "$here/projects/$project"
 
 # Color code escape character.
 esc=`echo -e '\033'`

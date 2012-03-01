@@ -3,12 +3,12 @@
 cd "$(dirname "$0")"
 here="$(pwd)"
 
-source "$here/common"
-
 if [ "$1" == '-f' ] ;
-	then force='1'
-	else force=''
+	then force='1' ; project=$2
+	else force=''  ; project=$1
 fi
+
+source "$here/common"
 
 function build_query() {
 	

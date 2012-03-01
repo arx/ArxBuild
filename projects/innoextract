@@ -1,0 +1,59 @@
+#!/bin/sh
+
+# What is the project called
+project_name="InnoExtract"
+
+# Some additional arx-specific build options
+cmake_options[xtra]='-DDEBUG_EXTRA=1'
+cmake_options[nolzma]='-DUSE_LZMA=0'
+
+# Finally, define the used build types.
+# Each build type is an underscore-seperated list of tokens defined in
+# cmake_options, compiler_options and make_options.
+build_types=(
+	
+	'clang_debug'
+	'clang'
+	
+	'clang_m32_debug'
+	
+	'ekopath_debug'
+	'ekopath'
+	
+	'gcc-4.5_debug'
+	'gcc-4.5'
+	
+	'gcc-4.6_debug'
+	'gcc-4.6'
+	
+	'gcc-4.7_debug'
+	'gcc-4.7'
+	
+	'gcc-4.6_m32_debug'
+	'gcc-4.6_m32'
+	
+	'gcc-4.6_debug_nolzma'
+	
+	'gcc-4.6_debug_boost-1.37'
+	'gcc-4.6_debug_boost-1.39'
+	'gcc-4.6_debug_boost-1.41'
+	'gcc-4.6_debug_boost-1.42'
+	'gcc-4.6_debug_boost-1.45'
+	'gcc-4.6_debug_boost-1.46'
+	'gcc-4.6_debug_boost-1.47'
+	'gcc-4.6_debug_boost-1.48'
+	
+	'gcc-4.6_xtra'
+	
+	'clang-analyzer'
+	
+	'include-what-you-use'
+	
+	'style'
+	
+)
+
+# Which binaries to save before nuking the build directory.
+binaries=(
+	'innoextract'
+)

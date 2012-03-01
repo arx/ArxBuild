@@ -3,6 +3,8 @@
 cd "$(dirname "$0")"
 here="$(pwd)"
 
+project=$1
+
 source "$here/common"
 
 declare -A references
