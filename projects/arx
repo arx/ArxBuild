@@ -46,7 +46,7 @@ build_types=(
 	
 	'clang-analyzer'
 	
-	'include-what-you-use'
+	# TODO 'include-what-you-use'
 	
 	'gcc-4.6_debug_minimal'
 	'gcc-4.6_unity_minimal'
