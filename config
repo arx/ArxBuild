@@ -34,6 +34,7 @@ cmake_options=(
 	[gcc-4.5]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.5-toolchain.cmake\""
 	[gcc-4.6]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.6-toolchain.cmake\""
 	[gcc-4.7]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.7-toolchain.cmake\""
+	[gcc-4.8]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.8-toolchain.cmake\""
 	[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-toolchain.cmake\""
 	[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/ekopath-toolchain.cmake\""
 	[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""

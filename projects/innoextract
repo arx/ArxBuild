@@ -36,6 +36,9 @@ build_types=(
 	'gcc-4.7_debug'
 	'gcc-4.7'
 	
+	'gcc-4.8_debug'
+	'gcc-4.8'
+	
 	'gcc-4.6_m32_debug'
 	'gcc-4.6_m32'
 	
