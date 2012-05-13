@@ -1,23 +1,13 @@
 
-.c32 {
-	color: #18b218;
-}
-
-.c1 {
-	font-weight: bold;
-}
-
-.c35 {
-	color: #ff54ff;
-}
-
-.c30 {
-	color: #686868;
-}
-
-.c31 {
-	color: #ff5454;
-}
+.c1  { font-weight: bold; } /* bold */
+.c30 { color: #686868; } /* black */
+.c31 { color: #ff5454; } /* red */
+.c32 { color: #18b218; } /* green */
+.c33 { color: #ffff54; } /* yellow */
+.c34 { color: #5454ff; } /* blue */
+.c35 { color: #ff54ff; } /* purple */
+.c36 { color: #54ffff; } /* cyan */
+.c37 { color: #eeeeee; } /* white */
 
 .w {
 	background-color: #fbe;
