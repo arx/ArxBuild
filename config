@@ -50,6 +50,7 @@ cmake_options=(
 	[boost-1.46]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_46/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_46/'
 	[boost-1.47]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_47/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_47/'
 	[boost-1.48]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_48/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_48/'
+	[boost-1.48]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_49/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_49/'
 )
 
 # Declare possible build options (passed to the compiler).

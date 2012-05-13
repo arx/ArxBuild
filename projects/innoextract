@@ -52,6 +52,7 @@ build_types=(
 	'gcc-4.6_debug_boost-1.46'
 	'gcc-4.6_debug_boost-1.47'
 	'gcc-4.6_debug_boost-1.48'
+	'gcc-4.6_debug_boost-1.49'
 	
 	'gcc-4.6_xtra'
 	

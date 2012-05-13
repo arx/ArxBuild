@@ -4,7 +4,7 @@
 project_name="Arx"
 
 # Some additional arx-specific build options
-cmake_options['winelib']="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/wine-toolchain.cmake\" -DBUILD_CRASHREPORTER=0"
+cmake_options[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/wine-toolchain.cmake\" -DBUILD_CRASHREPORTER=0"
 cmake_options[minimal]='-DBUILD_EDIT_LOADSAVE=0'
 cmake_options[unity]='-DUNITY_BUILD=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
@@ -58,6 +58,7 @@ build_types=(
 	'gcc-4.6_debug_boost-1.46_boostfs'
 	'gcc-4.6_debug_boost-1.47_boostfs'
 	'gcc-4.6_debug_boost-1.48_boostfs'
+	'gcc-4.6_debug_boost-1.49_boostfs'
 	
 	'gcc-4.7_debug'
 	'gcc-4.7_unity'
