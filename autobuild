@@ -197,7 +197,7 @@ function build_branch() {
 	if [ ! "$branch" ] ; then return ; fi
 	
 	cd "$repo"
-	git checkout "origin/$branch" &> /dev/null || ( echo "error checking out branch $branch" ; return )
+	git checkout "origin/$branch" &> /dev/null || ( echo "error checking out branch $branch" ; exit 1 )
 	
 	commit=`cat "$repo/.git/HEAD"`
 	
@@ -233,7 +233,7 @@ function build_branch() {
 # Build all remote branches.
 for f in `dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null` ; do
 	branch="${f##*/}"
-	build_branch "$branch"
+	build_branch "$branch" || exit 1
 done
 
 echo "Done, logs saved to $logs"
