@@ -9,7 +9,7 @@ cmake_options[minimal]='-DBUILD_EDIT_LOADSAVE=0'
 cmake_options[unity]='-DUNITY_BUILD=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
-cmake_options[mingw]='-DBUILD_CRASHREPORTER=0'
+cmake_options[mingw]="${cmake_options[mingw]} -DBUILD_CRASHREPORTER=0"
 
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
