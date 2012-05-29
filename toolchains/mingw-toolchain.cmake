@@ -2,11 +2,11 @@
 # the name of the target operating system
 set(CMAKE_SYSTEM_NAME Windows)
 
-# Look for mingw32 compilers
-if(DEFINED MINGW32_ROOT)
-	set(MinGW32_ROOT "${MINGW32_ROOT}" CACHE INTERNAL)
+# Look for MinGW compilers
+if(DEFINED MINGW_ROOT)
+	set(MinGW_ROOT "${MINGW_ROOT}" CACHE INTERNAL)
 else()
-	find_path(MinGW32_ROOT mingw
+	find_path(MinGW_ROOT mingw i686-w64-mingw32
 		PATH_SUFFIXES
 		i686-pc-mingw32
 		i586-pc-mingw32
@@ -17,14 +17,18 @@ else()
 		i486-mingw32
 		i386-mingw32
 		mingw32
+		i686-w64-mingw32
+		i586-w64-mingw32
+		i486-w64-mingw32
+		i386-w64-mingw32
 		PATHS
 		/usr
 		/usr/local
 	)
 endif()
-mark_as_advanced(MinGW32_ROOT)
+mark_as_advanced(MinGW_ROOT)
 
-find_program(MinGW32_GCC NAMES
+find_program(MinGW_GCC NAMES
 	i686-pc-mingw32-gcc
 	i586-pc-mingw32-gcc
 	i486-pc-mingw32-gcc
@@ -33,9 +37,13 @@ find_program(MinGW32_GCC NAMES
 	i586-mingw32-gcc
 	i486-mingw32-gcc
 	i386-mingw32-gcc
+	i686-w64-mingw32-gcc
+	i586-w64-mingw32-gcc
+	i486-w64-mingw32-gcc
+	i386-w64-mingw32-gcc
 )
-mark_as_advanced(MinGW32_GCC)
-find_program(MinGW32_GXX NAMES
+mark_as_advanced(MinGW_GCC)
+find_program(MinGW_GXX NAMES
 	i686-pc-mingw32-g++
 	i586-pc-mingw32-g++
 	i486-pc-mingw32-g++
@@ -44,9 +52,13 @@ find_program(MinGW32_GXX NAMES
 	i586-mingw32-g++
 	i486-mingw32-g++
 	i386-mingw32-g++
+	i686-w64-mingw32-g++
+	i586-w64-mingw32-g++
+	i486-w64-mingw32-g++
+	i386-w64-mingw32-g++
 )
-mark_as_advanced(MinGW32_GXX)
-find_program(MinGW32_RC NAMES
+mark_as_advanced(MinGW_GXX)
+find_program(MinGW_RC NAMES
 	i686-pc-mingw32-windres
 	i586-pc-mingw32-windres
 	i486-pc-mingw32-windres
@@ -55,20 +67,24 @@ find_program(MinGW32_RC NAMES
 	i586-mingw32-windres
 	i486-mingw32-windres
 	i386-mingw32-windres
+	i686-w64-mingw32-windres
+	i586-w64-mingw32-windres
+	i486-w64-mingw32-windres
+	i386-w64-mingw32-windres
 )
-mark_as_advanced(MinGW32_RC)
+mark_as_advanced(MinGW_RC)
 
-if((NOT MinGW32_GCC) OR (NOT MinGW32_GXX) OR (NOT MinGW32_RC) OR (NOT MinGW32_ROOT))
-	message(FATAL_ERROR "mingw32 not found (found gcc=\"${MinGW32_GCC}\", g++=\"${MinGW32_GXX}\" rc=\"${MinGW32_RC}\" root=\"${MinGW32_ROOT}\")")
+if((NOT MinGW_GCC) OR (NOT MinGW_GXX) OR (NOT MinGW_RC) OR (NOT MinGW_ROOT))
+	message(FATAL_ERROR "MinGW not found (found gcc=\"${MinGW_GCC}\", g++=\"${MinGW_GXX}\" rc=\"${MinGW_RC}\" root=\"${MinGW_ROOT}\")")
 endif()
 
 # which compilers to use for C and C++
-set(CMAKE_C_COMPILER "${MinGW32_GCC}")
-set(CMAKE_CXX_COMPILER "${MinGW32_GXX}")
-set(CMAKE_RC_COMPILER "${MinGW32_RC}")
+set(CMAKE_C_COMPILER "${MinGW_GCC}")
+set(CMAKE_CXX_COMPILER "${MinGW_GXX}")
+set(CMAKE_RC_COMPILER "${MinGW_RC}")
 
 # here is the target environment located
-set(CMAKE_FIND_ROOT_PATH "${MinGW32_ROOT}")
+set(CMAKE_FIND_ROOT_PATH "${MinGW_ROOT}")
 
 # adjust the default behaviour of the find_xxx() commands:
 # search headers and libraries in the target environment, search 
