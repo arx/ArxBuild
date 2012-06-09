@@ -21,10 +21,6 @@ build_types=(
 	'clang_m32_debug'
 	'clang'
 	
-	'winelib_debug'
-	'winelib_unity'
-	'winelib_m32_debug'
-	
 	'ekopath_debug'
 	
 	'gcc-4.3_debug'
