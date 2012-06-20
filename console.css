@@ -9,22 +9,13 @@
 .c36 { color: #54ffff; } /* cyan */
 .c37 { color: #eeeeee; } /* white */
 
-.w {
-	background-color: #fbe;
-}
+.w  { background-color: #fbe; }
+.w5 { background-color: #fcd; }
+.w4 { background-color: #fdc; }
+.w3 { background-color: #feb; }
+.w2 { background-color: #ffa; }
+.w1 { background-color: #efa; }
+.w0 { background-color: #afa; }
 
-.w0 {
-	background-color: #afa;
-}
-
-.w1, .w2, .w3, .w4, .w5 {
-	background-color: #ffa;
-}
-
-.e {
-	background-color: #faa;
-}
-
-.e0 {
-	background-color: #afa;
-}
+.e  { background-color: #faa; }
+.e0 { background-color: #afa; }
