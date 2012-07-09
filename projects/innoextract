@@ -39,28 +39,29 @@ build_types=(
 	'gcc-4.8_debug'
 	'gcc-4.8'
 	
-	'gcc-4.6_m32_debug'
-	'gcc-4.6_m32'
+	'gcc-4.7_m32_debug'
+	'gcc-4.7_m32'
 	
-	'gcc-4.6_debug_nolzma'
+	'gcc-4.7_debug_nolzma'
 	
-	'gcc-4.6_debug_boost-1.37'
-	'gcc-4.6_debug_boost-1.39'
-	'gcc-4.6_debug_boost-1.41'
-	'gcc-4.6_debug_boost-1.42'
-	'gcc-4.6_debug_boost-1.45'
-	'gcc-4.6_debug_boost-1.46'
-	'gcc-4.6_debug_boost-1.47'
-	'gcc-4.6_debug_boost-1.48'
-	'gcc-4.6_debug_boost-1.49'
+	'gcc-4.7_debug_boost-1.37'
+	'gcc-4.7_debug_boost-1.39'
+	'gcc-4.7_debug_boost-1.41'
+	'gcc-4.7_debug_boost-1.42'
+	'gcc-4.7_debug_boost-1.45'
+	'gcc-4.7_debug_boost-1.46'
+	'gcc-4.7_debug_boost-1.47'
+	'gcc-4.7_debug_boost-1.48'
+	'gcc-4.7_debug_boost-1.49'
 	
-	'gcc-4.6_xtra'
+	'gcc-4.7_xtra'
 	
 	'clang-analyzer'
 	
 	# TODO 'include-what-you-use'
 	
 	'style'
+	'doxygen'
 	
 )
 

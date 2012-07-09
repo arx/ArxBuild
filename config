@@ -65,6 +65,7 @@ compiler_options=(
 declare -A make_options
 make_options=(
 	[style]='style'
+	[doxygen]='doc'
 )
 
 # Declare compiler-specific scripts to process build logs.
