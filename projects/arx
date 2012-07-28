@@ -55,6 +55,7 @@ build_types=(
 	'gcc-4.6_debug_boost-1.47_boostfs'
 	'gcc-4.6_debug_boost-1.48_boostfs'
 	'gcc-4.6_debug_boost-1.49_boostfs'
+	'gcc-4.6_debug_boost-1.50_boostfs'
 	
 	'gcc-4.7_debug'
 	'gcc-4.7_unity'

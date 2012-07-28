@@ -53,6 +53,7 @@ build_types=(
 	'gcc-4.7_debug_boost-1.47'
 	'gcc-4.7_debug_boost-1.48'
 	'gcc-4.7_debug_boost-1.49'
+	'gcc-4.7_debug_boost-1.50'
 	
 	'gcc-4.7_xtra'
 	
