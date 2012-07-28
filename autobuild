@@ -14,9 +14,9 @@ if [ -e "$here/console2html.cpp" ] && ( [ ! -e "$here/console2html" ] || [ "$her
 fi
 
 echo 'Updating repo...'
-cd "$repo" || exit
-git fetch || exit
-git remote prune origin &> /dev/null || exit
+cd "$repo" || die "unable to cd to repository at $repo"
+git fetch || die "git fetch failed"
+git remote prune origin &> /dev/null || die "failed to prune repository"
 
 # Initialize the output directory.
 mkdir "$logs" &> /dev/null
@@ -50,7 +50,7 @@ function build_cancelled() {
 	rm $commit_dst/$buildid-* &> /dev/null
 	rm $branch_dst/$buildid.* &> /dev/null
 	rm $branch_dst/$buildid-* &> /dev/null
-	echo 'Build cancelled!'; exit
+	die 'Build cancelled!'
 }
 
 function build() {
@@ -185,7 +185,7 @@ function build() {
 	touch "$branch_dst"
 	"$here/buildstats" "$project" &> /dev/null
 	
-	trap "echo 'Cancelled!'; exit" SIGHUP SIGINT SIGTERM
+	trap "die 'Cancelled!'" SIGHUP SIGINT SIGTERM
 	
 }
 
@@ -197,7 +197,7 @@ function build_branch() {
 	if [ ! "$branch" ] ; then return ; fi
 	
 	cd "$repo"
-	git checkout "origin/$branch" &> /dev/null || ( echo "error checking out branch $branch" ; exit 1 )
+	git checkout "origin/$branch" &> /dev/null || die "error checking out branch $branch"
 	
 	commit=`cat "$repo/.git/HEAD"`
 	
@@ -233,7 +233,7 @@ function build_branch() {
 # Build all remote branches.
 for f in `dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null` ; do
 	branch="${f##*/}"
-	build_branch "$branch" || exit 1
+	build_branch "$branch"
 done
 
 echo "Done, logs saved to $logs"

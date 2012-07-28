@@ -8,6 +8,11 @@ source "$here/projects/$project"
 # Color code escape character.
 esc=`echo -e '\033'`
 
+die() {
+	echo "$1"
+	exit 1
+}
+
 html_header() {
 	
 	local title="$1"
