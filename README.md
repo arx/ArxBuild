@@ -40,6 +40,8 @@ To do the same for binaries, run:
 
 IRC: \#arxfatalis on irc.freenode.net
 
-Wiki: [http://arx.parpg.net/](http://arx.parpg.net/)
+Website: [http://arx-libertatis.org/](http://arx-libertatis.org/)
+
+Wiki: [http://wiki.arx-libertatis.org/](http://wiki.arx-libertatis.org/)
 
 Reddit: [http://www.reddit.com/r/ArxFatalis/](http://www.reddit.com/r/ArxFatalis/)
