@@ -197,6 +197,7 @@ function build_branch() {
 	if [ ! "$branch" ] ; then return ; fi
 	
 	cd "$repo"
+	git reset --hard &> /dev/null
 	git checkout "origin/$branch" &> /dev/null || die "error checking out branch $branch"
 	
 	commit=`cat "$repo/.git/HEAD"`
