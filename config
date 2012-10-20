@@ -57,8 +57,8 @@ cmake_options=(
 # Declare possible build options (passed to the compiler).
 declare -A compiler_options
 compiler_options=(
-	[mingw]="-isystem $toolchains/dxerr/"
-	[winelib]="-isystem $toolchains/dxerr/"
+	[mingw]="-isystem \"$toolchains/dxerr/\" -static-libgcc -static-libstdc++"
+	[winelib]="-isystem \"$toolchains/dxerr/\""
 	[m32]='-m32'
 )
 

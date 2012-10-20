@@ -76,4 +76,8 @@ binaries=(
 	'arxunpak'
 	'arxsavetool'
 	'arxcrashreporter'
+	'arx.exe'
+	'arxunpak.exe'
+	'arxsavetool.exe'
+	'arxcrashreporter.exe'
 )
