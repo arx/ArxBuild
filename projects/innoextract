@@ -18,8 +18,15 @@ build_types=(
 	
 	'clang_m32_debug'
 	
-	'ekopath_debug'
-	'ekopath'
+	'clang_libcxx_debug'
+	'clang_libcxx'
+	
+	# <= 4.0.12.1_pre20120530 is broken with glibc 2.16
+	#'ekopath_debug'
+	#'ekopath'
+	
+	'icc_debug'
+	'icc'
 	
 	'gcc-4.3_debug'
 	'gcc-4.3'
@@ -54,6 +61,7 @@ build_types=(
 	'gcc-4.7_debug_boost-1.48'
 	'gcc-4.7_debug_boost-1.49'
 	'gcc-4.7_debug_boost-1.50'
+	'gcc-4.7_debug_boost-1.51'
 	
 	'gcc-4.7_xtra'
 	

@@ -10,17 +10,29 @@ cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
 cmake_options[mingw]="${cmake_options[mingw]} -DBUILD_CRASHREPORTER=0"
 
+# As of version 1.51, parts of Boost don't work with icc in C++11 mode
+# TODO see https://svn.boost.org/trac/boost/ticket/7470
+cmake_options[icc]="${cmake_options[icc]} -DUSE_CXX11=0"
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.
 build_types=(
 	
 	'clang_debug'
-	'clang_unity_debug'
-	'clang_m32_debug'
-	'clang'
+	'clang_unity'
 	
-	'ekopath_debug'
+	'clang_m32_debug'
+	
+	'clang_libcxx_debug'
+	'clang_libcxx_unity'
+	
+	# <= 4.0.12.1_pre20120530 is broken with glibc 2.16
+	#'ekopath_debug'
+	#'ekopath_unity'
+	
+	'icc_debug'
+	'icc_unity'
 	
 	'gcc-4.3_debug'
 	'gcc-4.3_unity'
@@ -56,6 +68,7 @@ build_types=(
 	'gcc-4.6_debug_boost-1.48_boostfs'
 	'gcc-4.6_debug_boost-1.49_boostfs'
 	'gcc-4.6_debug_boost-1.50_boostfs'
+	'gcc-4.6_debug_boost-1.51_boostfs'
 	
 	'gcc-4.7_debug'
 	'gcc-4.7_unity'

@@ -23,8 +23,12 @@ toolchains="$here/toolchains"
 log_build="$build/buildlog"
 log_config="$build/config.txt"
 
+deps="$here/deps"
+
 # What part of the checked-out repo to build (location of the CMakeLists.txt)
 path=''
+
+boost_no_autodetect='-DBoost_NO_SYSTEM_PATHS=1 -DBoost_NO_BOOST_CMAKE=1'
 
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
@@ -37,21 +41,24 @@ cmake_options=(
 	[gcc-4.8]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.8-toolchain.cmake\""
 	[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-toolchain.cmake\""
 	[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/ekopath-toolchain.cmake\""
+	[icc]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/icc-toolchain.cmake\""
 	[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
 	[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
 	[mingw]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\""
 	[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
-	[boost-1.37]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_37/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_37/'
-	[boost-1.39]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_39/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_39/'
-	[boost-1.41]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_41/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_41/'
-	[boost-1.42]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_42/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_42/'
-	[boost-1.45]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_45/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_45/'
-	[boost-1.46]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_46/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_46/'
-	[boost-1.47]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_47/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_47/'
-	[boost-1.48]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_48/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_48/'
-	[boost-1.49]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_49/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_49/'
-	[boost-1.50]='-DBOOST_INCLUDEDIR=/usr/include/boost-1_50/ -DBOOST_LIBRARYDIR=/usr/lib64/boost-1_50/'
+	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_37/\""
+	[boost-1.39]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_39/\""
+	[boost-1.41]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_41/\""
+	[boost-1.42]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_42/\""
+	[boost-1.45]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_45/\""
+	[boost-1.46]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_46/\""
+	[boost-1.47]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_47/\""
+	[boost-1.48]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_48/\""
+	[boost-1.49]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_49/\""
+	[boost-1.50]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_50/\""
+	[boost-1.51]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_51/\""
+	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_51-libcxx/\""
 )
 
 # Declare possible build options (passed to the compiler).
@@ -60,6 +67,13 @@ compiler_options=(
 	[mingw]="-isystem \"$toolchains/dxerr/\" -static-libgcc -static-libstdc++"
 	[winelib]="-isystem \"$toolchains/dxerr/\""
 	[m32]='-m32'
+	[libcxx]='-stdlib=libc++'
+)
+
+# Declare possible build options (passed to the linker).
+declare -A linker_options
+linker_options=(
+	[m32]='-Wl,--no-warn-search-mismatch'
 )
 
 # Declare possible build options (passed to make).
@@ -80,7 +94,8 @@ declare -A process
 declare -A count_warnings
 count_warnings=(
 	[0]='\:\d+\: warning\:'
-	['ekopath_*']='pathCC WARNING\:'
+	['ekopath*']='pathCC WARNING\:'
+	['icc*']='warning \#\d+\:'
 	['style']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'
 )
@@ -93,13 +108,14 @@ count_errors=(
 	[2]='\:(\d+|\(.*\))\: undefined reference to '
 	[3]='ld\: cannot find'
 	[3]='could not read symbols\: File in wrong format'
+	['icc*']='\: error\:'
 )
 
 # Declare patterns for warnings that should be ignored.
 declare -A ignore_warnings
 ignore_warnings=(
 	[0]='ub_.*\.cpp\:\d+\:(\d+\:)? warning\: (\[|ignoring \#pragma message)'
-	['ekopath_*']='the anonymous namespace'
+	['ekopath*']='the anonymous namespace'
 )
 
 # Declare which build types have known false positive warnings/errors.

@@ -29,7 +29,11 @@ cp "$here/console.css" "$logs/console.css"
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 function process_paths() {
-	replace "$build" "Build" "$repo" "$project_name" "$toolchains" "Toolchains" "$here/" ""
+	replace "$build" "Build" \
+	        "$repo" "$project_name" \
+	        "$toolchains" "Toolchains" \
+	        "$deps" "Deps" \
+	        "$here/" ""
 }
 
 # Remove header and footer created by the script command.
@@ -60,6 +64,7 @@ function build() {
 	
 	local options="${cmake_options[$compiler]}"
 	local flags="${compiler_options[$compiler]}"
+	local ldflags="${linker_options[$compiler]}"
 	local targets="${make_options[$compiler]}"
 	
 	for arg in "${@:2}" ; do
@@ -80,6 +85,13 @@ function build() {
 			local flags="$flags${compiler_options[$arg]}"
 		fi
 		
+		if [ "${linker_options[$arg]}" != "" ] ; then
+			if [ "$ldflags" != "" ] ; then
+				local ldflags="$ldflags "
+			fi
+			local ldflags="$ldflags${linker_options[$arg]}"
+		fi
+		
 		if [ "${make_options[$arg]}" != "" ] ; then
 			if [ "$targets" != "" ] ; then
 				local targets="$targets "
@@ -91,6 +103,10 @@ function build() {
 	
 	if [ "$flags" != "" ] ; then
 		local options="$options \"-DCMAKE_C_FLAGS=$flags\" \"-DCMAKE_CXX_FLAGS=$flags\""
+	fi
+	
+	if [ "$ldflags" != "" ] ; then
+		local options="$options \"-DCMAKE_EXE_LINKER_FLAGS=$ldflags\" \"-DCMAKE_SHARED_LINKER_FLAGS=$ldflags\" \"-DCMAKE_MODULE_LINKER_FLAGS=$ldflags\""
 	fi
 	
 	local ref_branch="$branch_dst/$buildid.ref"
