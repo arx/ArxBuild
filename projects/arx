@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # What is the project called
-project_name="Arx"
+project_name='Arx'
 
 # Some additional arx-specific build options
 cmake_options[minimal]='-DBUILD_EDIT_LOADSAVE=0'
@@ -69,6 +69,7 @@ build_types=(
 	'gcc-4.6_debug_boost-1.49_boostfs'
 	'gcc-4.6_debug_boost-1.50_boostfs'
 	'gcc-4.6_debug_boost-1.51_boostfs'
+	'gcc-4.6_debug_boost-1.52_boostfs'
 	
 	'gcc-4.7_debug'
 	'gcc-4.7_unity'
