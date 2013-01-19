@@ -64,6 +64,12 @@ build_types=(
 	'gcc-4.7_debug_boost-1.51'
 	'gcc-4.7_debug_boost-1.52'
 	
+	'gcc-4.7_libiconv'
+	
+	'gcc-4.7_olddeps'
+	
+	'gcc-4.7_static'
+	
 	'gcc-4.7_xtra'
 	
 	'clang-analyzer'
