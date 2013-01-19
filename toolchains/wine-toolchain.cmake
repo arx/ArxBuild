@@ -19,3 +19,5 @@ set(CMAKE_C_COMPILER "${Wine_GCC}")
 set(CMAKE_CXX_COMPILER "${Wine_GXX}")
 
 set(CMAKE_EXECUTABLE_SUFFIX ".exe")
+
+include_directories(SYSTEM "${CMAKE_CURRENT_LIST_DIR}/dxerr/")
