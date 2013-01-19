@@ -43,18 +43,21 @@ build_types=(
 	'gcc-4.5_debug'
 	'gcc-4.5_unity'
 	
-	'gcc-4.6'
 	'gcc-4.6_debug'
 	'gcc-4.6_unity'
+	
+	'gcc-4.7_debug'
+	'gcc-4.7_unity'
+	
+	'gcc-4.8_debug'
+	'gcc-4.8_unity'
+	
+	'gcc-4.6'
 	'gcc-4.6_unity_debug'
 	'gcc-4.6_unity_xtra'
 	
 	'gcc-4.6_m32_debug'
 	'gcc-4.6_m32'
-	
-	'clang-analyzer'
-	
-	# TODO 'include-what-you-use'
 	
 	'gcc-4.6_debug_minimal'
 	'gcc-4.6_unity_minimal'
@@ -71,16 +74,16 @@ build_types=(
 	'gcc-4.6_debug_boost-1.51_boostfs'
 	'gcc-4.6_debug_boost-1.52_boostfs'
 	
-	'gcc-4.7_debug'
-	'gcc-4.7_unity'
+	'gcc-4.6_olddeps'
 	
-	'gcc-4.8_debug'
-	'gcc-4.8_unity'
-	
-	'style'
+	'clang-analyzer'
 	
 	'mingw_debug'
 	'mingw_unity'
+	
+	# TODO 'include-what-you-use'
+	
+	'style'
 	
 )
 
