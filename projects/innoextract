@@ -74,6 +74,9 @@ build_types=(
 	
 	'clang-analyzer'
 	
+	'mingw_static_debug'
+	'mingw_static'
+	
 	# TODO 'include-what-you-use'
 	
 	'style'
