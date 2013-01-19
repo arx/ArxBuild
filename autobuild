@@ -66,37 +66,35 @@ function build() {
 	local flags="${compiler_options[$compiler]}"
 	local ldflags="${linker_options[$compiler]}"
 	local targets="${make_options[$compiler]}"
+	local prefixes="${prefix_paths[$compiler]}"
 	
 	for arg in "${@:2}" ; do
 		
 		local buildid="${buildid}_$arg"
 		
 		if [ "${cmake_options[$arg]}" != "" ] ; then
-			if [ "$options" != "" ] ; then
-				local options="$options "
-			fi
+			[ "$options" != "" ] && local options="$options "
 			local options="$options${cmake_options[$arg]}"
 		fi
 		
 		if [ "${compiler_options[$arg]}" != "" ] ; then
-			if [ "$flags" != "" ] ; then
-				local flags="$flags "
-			fi
+			[ "$flags" != "" ] && local flags="$flags "
 			local flags="$flags${compiler_options[$arg]}"
 		fi
 		
 		if [ "${linker_options[$arg]}" != "" ] ; then
-			if [ "$ldflags" != "" ] ; then
-				local ldflags="$ldflags "
-			fi
+			[ "$ldflags" != "" ] && local ldflags="$ldflags "
 			local ldflags="$ldflags${linker_options[$arg]}"
 		fi
 		
 		if [ "${make_options[$arg]}" != "" ] ; then
-			if [ "$targets" != "" ] ; then
-				local targets="$targets "
-			fi
+			[ "$targets" != "" ] && local targets="$targets "
 			local targets="$targets${make_options[$arg]}"
+		fi
+		
+		if [ "${prefix_paths[$arg]}" != "" ] ; then
+			[ "$prefixes" != "" ] && local prefixes="$prefixes;"
+			local prefixes="$prefixes${prefix_paths[$arg]}"
 		fi
 		
 	done
@@ -107,6 +105,10 @@ function build() {
 	
 	if [ "$ldflags" != "" ] ; then
 		local options="$options \"-DCMAKE_EXE_LINKER_FLAGS=$ldflags\" \"-DCMAKE_SHARED_LINKER_FLAGS=$ldflags\" \"-DCMAKE_MODULE_LINKER_FLAGS=$ldflags\""
+	fi
+	
+	if [ "$prefixes" != "" ] ; then
+		local options="$options \"-DCMAKE_PREFIX_PATH=$prefixes\""
 	fi
 	
 	local ref_branch="$branch_dst/$buildid.ref"

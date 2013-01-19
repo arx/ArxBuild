@@ -48,6 +48,7 @@ cmake_options=(
 	[mingw]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\""
 	[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
+	[olddeps]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_39/\""
 	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_37/\""
 	[boost-1.39]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_39/\""
 	[boost-1.41]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_41/\""
@@ -61,6 +62,7 @@ cmake_options=(
 	[boost-1.51]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_51/\""
 	[boost-1.52]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52/\""
 	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_51-libcxx/\""
+	[static]="-DUSE_STATIC_LIBS=1"
 )
 
 # Declare possible build options (passed to the compiler).
@@ -83,6 +85,19 @@ declare -A make_options
 make_options=(
 	[style]='style'
 	[doxygen]='doc'
+)
+
+declare -A prefix_paths
+prefix_paths=(
+	[libiconv]="$deps/libiconv-1.14"
+	[olddeps]="${prefix_paths[olddeps]}\
+;$deps/libiconv-1.7\
+;$deps/liblzma-5.0.0\
+;$deps/SDL-1.2.10\
+;$deps/openal-soft-1.0.38\
+;$deps/glew-1.5.2\
+;$deps/freetype-2.3.0\
+"
 )
 
 # Declare compiler-specific scripts to process build logs.
