@@ -164,6 +164,7 @@ function build() {
 		
 		for binary in "${binaries[@]}" ; do
 			mv "$build/$binary" "$commit_bindst/$buildid/" &> /dev/null
+			mv "$build/$binary.exe" "$commit_bindst/$buildid/" &> /dev/null
 		done
 		
 		rm "$branch_bindst/$buildid" &> /dev/null
