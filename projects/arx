@@ -100,6 +100,6 @@ binaries=(
 
 ignored_branches=(
 	'gamma'
-	'render_stack'
+	'renderer_stack'
 	'player_cleanup'
 )
