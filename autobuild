@@ -29,11 +29,21 @@ cp "$here/console.css" "$logs/console.css"
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 function process_paths() {
-	replace "$build" "Build" \
-	        "$repo" "$project_name" \
+	replace "$build"      "Build" \
+	        "$repo"       "$project_name" \
 	        "$toolchains" "Toolchains" \
-	        "$deps" "Deps" \
-	        "$here/" ""
+	        "$deps"       "Deps" \
+	        "$here/"      "" \
+	        "Z:$(echo "$build"      | tr '/' '\\')"  "Build" \
+	        "Z:$(echo "$repo"       | tr '/' '\\')"  "$project_name" \
+	        "Z:$(echo "$toolchains" | tr '/' '\\')"  "Toolchains" \
+	        "Z:$(echo "$deps"       | tr '/' '\\')"  "Deps" \
+	        "Z:$(echo "$here"       | tr '/' '\\')/" "" \
+	        "z:$(echo "$build"      | tr '/' '\\')"  "Build" \
+	        "z:$(echo "$repo"       | tr '/' '\\')"  "$project_name" \
+	        "z:$(echo "$toolchains" | tr '/' '\\')"  "Toolchains" \
+	        "z:$(echo "$deps"       | tr '/' '\\')"  "Deps" \
+	        "z:$(echo "$here"       | tr '/' '\\')/" ""
 }
 
 # Remove header and footer created by the script command.
@@ -253,6 +263,12 @@ function build_branch() {
 # Build all remote branches.
 for f in `dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null` ; do
 	branch="${f##*/}"
+	
+	if in_array "$branch" "${ignored_branches[@]}" ; then
+		# Ignore this branch
+		continue
+	fi
+	
 	build_branch "$branch"
 done
 

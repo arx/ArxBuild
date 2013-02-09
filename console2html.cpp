@@ -2,6 +2,9 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <iomanip>
+
+#include <boost/algorithm/string/predicate.hpp>
 
 using std::cin;
 using std::cout;
@@ -39,9 +42,42 @@ void close_tags(size_t & open) {
 	open = 0;
 }
 
+static bool is_end_char(char c) {
+	return (c >= 64 && c < 127);
+}
+
+static void print_escaped_char(char cc) {
+	unsigned char c = cc;
+	if(c == '\\') {
+		std::cerr << "\\\\";
+	} else if(c == '\e') {
+		std::cerr << "\\e";
+	} else if(c == '\n') {
+		std::cerr << "\\n";
+	} else if(c == '\r') {
+		std::cerr << "\\r";
+	} else if(c == '\b') {
+		std::cerr << "\\b";
+	} else if(c == '\a') {
+		std::cerr << "\\a";
+	} else if(c == '\0') {
+		std::cerr << "\\0";
+	} else if(c == '\t') {
+		std::cerr << "\\t";
+	} else if(c == '"') {
+		std::cerr << "\\\"";
+	} else if(c <= 32) {
+		std::cerr << "\\x" << std::setfill('0') << std::setw(2) << int(c);
+	} else {
+		std::cerr << (char)c;
+	}
+}
+
 int main() {
 	
 	size_t open = 0;
+	
+	size_t line = 0;
 	
 	while(!cin.eof()) {
 		
@@ -55,41 +91,84 @@ int main() {
 			cout << escape(buf.substr(p, i - p));
 			
 			p = i + 1;
-			if(p >= buf.length() || buf[p] != '[') {
-				cerr << "invalid escape code start " << buf << endl;
-				return 1;
+			if(p >= buf.length()) {
+				std::cerr << line << ':' << i << ": line terminated after escape code";
+				break;
+			}
+			
+			if(buf[p] == '=') {
+				// msvc/wine generates this
+				p++;
+				continue;
+			} else if(buf[p] != '[') {
+				std::cerr << line << ':' << i << ": invalid escape code start: \"\\e";
+				if(p < buf.length()) {
+					print_escaped_char(buf[p]);
+				}
+				std::cerr << "\"" << endl;
+				continue;
 			}
 			p++;
 			
-			vector<string> cmds;
-			bool close = false;
-			
-			while(1) {
-				
-				i = buf.find_first_not_of("0123456789", p);
-				if(i == string::npos || i == p) {
-					cerr << "invalid escape code " << buf << endl;
-					return 1;
-				}
-				
-				string cmd = buf.substr(p, i - p);
-				if(cmd == "0") {
-					close = true;
-				} else {
-					cmds.push_back(cmd);
-				}
-				
-				p = i + 1;
-				
-				if(buf[i] == 'm') {
+			size_t e = p;
+			while(e < buf.length()) {
+				char c = buf[e];
+				e++;
+				if(is_end_char(c)) {
 					break;
 				}
-				
-				if(buf[i] != ';') {
-					cerr << "invalid escape code end " << buf[p] << " " << buf << endl;
-					return 1;
-				}
 			}
+			
+			std::vector<std::string> cmds;
+			bool close = false;
+			
+			if(p < e && buf[e - 1] == 'm') {
+				
+				// Color command
+				
+				while(p < e) {
+					
+					i = buf.find_first_not_of("0123456789", p);
+					if(i == string::npos || i == p) {
+						break;
+					}
+					
+					string cmd = buf.substr(p, i - p);
+					if(cmd == "0") {
+						close = true;
+					} else {
+						cmds.push_back(cmd);
+					}
+					
+					p = i + 1;
+					
+					if(buf[i] != 'm' && buf[i] != ';') {
+						std::cerr << line << ':' << i << ": invalid escape code " << buf[p]
+						          << " " << buf << endl;
+					}
+				}
+				
+			} else {
+				
+				std::string command = buf.substr(p, e - p);
+				
+				if(command == "?1h") {
+					// msvc/wine generates this
+				} else {
+					
+					// Other command
+					
+					std::cerr << line << ':' << i << ": ignoring unknown escape code: \"\\e[";
+					for(; p < e; p++) {
+						print_escaped_char(buf[p]);
+					}
+					std::cerr << "\"" << std::endl;
+					
+				}
+				
+			}
+			
+			p = e;
 			
 			if(close) {
 				close_tags(open);
@@ -110,6 +189,7 @@ int main() {
 		}
 		
 		cout << escape(buf.substr(p)) << endl;
+		line++;
 	}
 	
 	close_tags(open);

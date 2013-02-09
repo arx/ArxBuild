@@ -43,6 +43,9 @@ cmake_options=(
 	[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-toolchain.cmake\""
 	[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/ekopath-toolchain.cmake\""
 	[icc]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/icc-toolchain.cmake\""
+	[msvc-9.0-32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/msvc-9.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
+	[msvc-9.0-64]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/msvc-9.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
+	[msvc-10.0-32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/msvc-10.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
 	[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
 	[mingw]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\""
@@ -115,6 +118,7 @@ count_warnings=(
 	['icc*']='warning \#\d+\:'
 	['style']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'
+	['msvc-*']='warning [A-Z]+\d+ *\:'
 )
 
 # Declare patterns that count as an error.
@@ -126,6 +130,7 @@ count_errors=(
 	[3]='ld\: cannot find'
 	[3]='could not read symbols\: File in wrong format'
 	['icc*']='\: error\:'
+	['msvc-*']='error [A-Z]+\d+ *\:'
 )
 
 # Declare patterns for warnings that should be ignored.
@@ -144,3 +149,5 @@ false_positives=(
 	'gcc-4.3*'
 	'gcc-4.4*'
 )
+
+ignored_branched=()

@@ -81,6 +81,9 @@ build_types=(
 	'mingw_debug'
 	'mingw_unity'
 	
+	'msvc-9.0-32_debug'
+	'msvc-10.0-32_debug'
+	
 	# TODO 'include-what-you-use'
 	
 	'style'
@@ -93,8 +96,10 @@ binaries=(
 	'arxunpak'
 	'arxsavetool'
 	'arxcrashreporter'
-	'arx.exe'
-	'arxunpak.exe'
-	'arxsavetool.exe'
-	'arxcrashreporter.exe'
+)
+
+ignored_branches=(
+	'gamma'
+	'render_stack'
+	'player_cleanup'
 )

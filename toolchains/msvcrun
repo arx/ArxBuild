@@ -1,0 +1,69 @@
+#!/bin/bash
+
+self="$(which "$0")"
+here="$(readlink -f "$self")"
+here="${here%/*}"
+
+exe="${self##*/}"
+
+dir="${self%/*}"
+dir="${dir##*/msvc-}"
+
+msvcver="${dir%%-*}"
+msvcarch="${dir#*-}"
+
+export WINEPREFIX="$(readlink -f "$here/../deps/msvc/")"
+export WINEDEBUG='-all'
+
+if [ ! -e "$WINEPREFIX" ] ; then
+	echo "Please install MSVC into a WINEPREFIX at $WINEPREFIX"
+	exit 1
+fi
+
+# TODO should be case-insensitive and / can be swapped with -
+prefixes=(
+	'/I'
+	'/Fo'
+	'/fo'
+	'/Fd'
+	'-I'
+	'@'
+)
+
+bad_rc_options=(
+	/GR-
+	/MP
+)
+
+args=()
+
+for arg in "$@" ;  do
+	
+	for prefix in "${prefixes[@]}" '' ; do
+		if [[ "$arg" == "$prefix"* ]] ; then
+			path="${arg#$prefix}"
+			if [ "$prefix" != '' ] || ( [ -e "$path" ] && [ "$path" != "/lib" ] ) ; then
+				case $path in
+					/*)  path="$(winepath -w "$path")" ;;
+					*/*) path="$(echo "$path" | sed 's/\//\\/')" ;;
+				esac
+			fi
+			arg="$prefix$path"
+			break
+		fi
+	done
+	
+	if [ "$exe" = rc ] && ( [[ "$arg" == /GR* ]] || [[ "$arg" == /MP* ]] ) ; then
+		# bad rc options
+		continue
+	fi
+	
+	args+=( "$arg" )
+	
+done
+
+[ $msvcarch = '64' ] && msvcarch='x86_amd64'
+
+envfile="C:\Program Files\Microsoft Visual Studio $msvcver\VC\bin\vcvars$msvcarch.bat"
+
+exec wine cmd /C call "$envfile" \> nul \& $exe "${args[@]}"
