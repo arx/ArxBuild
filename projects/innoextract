@@ -16,10 +16,9 @@ build_types=(
 	'clang_debug'
 	'clang'
 	
-	'clang_m32_debug'
-	
 	'clang_libcxx_debug'
 	'clang_libcxx'
+	'clang_libcxx_m32_debug'
 	
 	# <= 4.0.12.1_pre20120530 is broken with glibc 2.16
 	#'ekopath_debug'
@@ -78,6 +77,8 @@ build_types=(
 	
 	'msvc-9.0-32_static'
 	'msvc-10.0-32_static'
+	
+	'gcc-armv6j-hf_static'
 	
 	# TODO 'include-what-you-use'
 	

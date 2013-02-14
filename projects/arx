@@ -22,10 +22,9 @@ build_types=(
 	'clang_debug'
 	'clang_unity'
 	
-	'clang_m32_debug'
-	
 	'clang_libcxx_debug'
 	'clang_libcxx_unity'
+	'clang_libcxx_m32_debug'
 	
 	# <= 4.0.12.1_pre20120530 is broken with glibc 2.16
 	#'ekopath_debug'

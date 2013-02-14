@@ -1,0 +1,7 @@
+#!/bin/sh
+
+build="$1"
+
+[ -z "$build" ] && exit 1
+
+sh -c "rm -rv logs/*/*/*/$build[-.]* bin/*/*/*/$build"
