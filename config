@@ -31,26 +31,31 @@ path=''
 boost_no_autodetect='-DBoost_NO_SYSTEM_PATHS=1 -DBoost_NO_BOOST_CMAKE=1'
 boost_gcc43="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52-gcc43/\""
 
+set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
+
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
 cmake_options=(
-	[gcc-4.3]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.3-toolchain.cmake\" $boost_gcc43"
-	[gcc-4.4]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.4-toolchain.cmake\" $boost_gcc43"
-	[gcc-4.5]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.5-toolchain.cmake\" $boost_gcc43"
-	[gcc-4.6]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.6-toolchain.cmake\""
-	[gcc-4.7]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.7-toolchain.cmake\""
-	[gcc-4.8]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-4.8-toolchain.cmake\""
-	[gcc-armv6j-hf]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/gcc-armv6j-hf-toolchain.cmake\""
-	[clang]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-toolchain.cmake\""
-	[ekopath]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/ekopath-toolchain.cmake\""
-	[icc]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/icc-toolchain.cmake\""
-	[msvc-9.0-32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/msvc-9.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
-	[msvc-9.0-64]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/msvc-9.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
-	[msvc-10.0-32]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/msvc-10.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
-	[clang-analyzer]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/clang-analyzer-toolchain.cmake\""
-	[include-what-you-use]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/include-what-you-use-toolchain.cmake\""
-	[mingw]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/mingw-toolchain.cmake\""
-	[winelib]="\"-DCMAKE_TOOLCHAIN_FILE=$toolchains/wine-toolchain.cmake\""
+	[gcc-4.3]="\"$set_cmake_toolchain/gcc-4.3-toolchain.cmake\" $boost_gcc43"
+	[gcc-4.4]="\"$set_cmake_toolchain/gcc-4.4-toolchain.cmake\" $boost_gcc43"
+	[gcc-4.5]="\"$set_cmake_toolchain/gcc-4.5-toolchain.cmake\" $boost_gcc43"
+	[gcc-4.6]="\"$set_cmake_toolchain/gcc-4.6-toolchain.cmake\""
+	[gcc-4.7]="\"$set_cmake_toolchain/gcc-4.7-toolchain.cmake\""
+	[gcc-4.8]="\"$set_cmake_toolchain/gcc-4.8-toolchain.cmake\""
+	[gcc-4.9]="\"$set_cmake_toolchain/gcc-4.9-toolchain.cmake\""
+	[gcc-armv6j-hf]="\"$set_cmake_toolchain/gcc-armv6j-hf-toolchain.cmake\""
+	[gcc-freebsd-9.1-i686]="\"$set_cmake_toolchain/freebsd-9.1-i686-toolchain.cmake\""
+	[gcc-freebsd-9.1-x86_64]="\"$set_cmake_toolchain/freebsd-9.1-x86_64-toolchain.cmake\""
+	[clang]="\"$set_cmake_toolchain/clang-toolchain.cmake\""
+	[ekopath]="\"$set_cmake_toolchain/ekopath-toolchain.cmake\""
+	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
+	[msvc-9.0-32]="\"$set_cmake_toolchain/msvc-9.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
+	[msvc-9.0-64]="\"$set_cmake_toolchain/msvc-9.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
+	[msvc-10.0-32]="\"$set_cmake_toolchain/msvc-10.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
+	[clang-analyzer]="\"$set_cmake_toolchain/clang-analyzer-toolchain.cmake\""
+	[include-what-you-use]="\"$set_cmake_toolchain/include-what-you-use-toolchain.cmake\""
+	[mingw]="\"$set_cmake_toolchain/mingw-toolchain.cmake\""
+	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
 	[olddeps]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_39/\""
 	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_37/\""
@@ -69,11 +74,15 @@ cmake_options=(
 	[static]="-DUSE_STATIC_LIBS=1"
 )
 
+# Temp: FreeBSD headers assume any C++11 support is equal to current clang C++11 support
+# this is fine for thme, but gentoo crossdev only has gcc, so this will cause failures
+# retry with gcc 4.8, meybe it implements the required features
+cmake_options[gcc-freebsd-9.1-i686]+=" -DUSE_CXX11=0"
+cmake_options[gcc-freebsd-9.1-x86_64]+=" -DUSE_CXX11=0"
+
 # Declare possible build options (passed to the compiler).
 declare -A compiler_options
 compiler_options=(
-	[mingw]="-isystem \"$toolchains/dxerr/\" -static-libgcc -static-libstdc++"
-	[winelib]="-isystem \"$toolchains/dxerr/\""
 	[m32]='-m32'
 	[libcxx]='-stdlib=libc++'
 )
@@ -148,7 +157,6 @@ false_positives=(
 	'include-what-you-use'
 	'clang-analyzer'
 	'*_xtra'
-	'ekopath_*_opt'
 	'gcc-4.3*'
 	'gcc-4.4*'
 )
