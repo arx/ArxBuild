@@ -10,6 +10,8 @@ fi
 
 source "$here/common"
 
+[ "$here/console.css" -nt "$logs/console.css" ] && cp "$here/console.css" "$logs/console.css"
+
 function build_query() {
 	
 	local name="$1"
@@ -98,11 +100,16 @@ function handle_build() {
 	
 	local wprefix="$toroot/$loc"
 	
+	local warnings_l='warnings'
+	[ "$warnings" = 1 ] && warnings_l='warning&nbsp;'
+	local errors_l='errors'
+	[ "$errors" = 1 ] && errors_l='error&nbsp;'
+	
 	echo "<tr>" >> "$index"
-	echo "	<td><a href=\"$wprefix.htm\">$name</td>" >> "$index"
-	echo "	<td align=right class='w w$warnings'><b>$warnings</b> warnings</td>" >> "$index"
-	echo "	<td align=right class='e e$errors'><b>$errors</b> errors</td>" >> "$index"
-	echo "	<td align=right>$minutes min</td><td align=right>$seconds s</td>" >> "$index"
+	echo "	<td class='n'><a href=\"$wprefix.htm\">$name</td>" >> "$index"
+	echo "	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>" >> "$index"
+	echo "	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>" >> "$index"
+	echo "	<td align=right class='tm'>$minutes min</td><td align=right class='ts'>$seconds s</td>" >> "$index"
 	echo "	<td><a href=\"$wprefix.txt\">[txt]</a></td>" >> "$index"
 	echo "	<td><a href=\"$wprefix-raw.txt\">[raw]</a></td>" >> "$index"
 	echo "	<td><a href=\"$wprefix-options.txt\">[opt]</a></td>" >> "$index"
@@ -133,14 +140,14 @@ function handle_context() {
 	echo "<h1>Build logs for $type $context</h1>" >> "$index"
 	echo "<a href=\"../\">Other Logs</a><br><br>" >> "$index"
 	
-	echo "<table cellspacing=1 cellpadding=2>" >> "$index"
+	echo "<table cellspacing=1 cellpadding=2 class='legit stats'>" >> "$index"
 	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
 		handle_build "$f" 0
 	done
 	echo "</table>" >> "$index"
 	
 	echo "<h2>Build logs that may contain false positives:</h2>" >> "$index"
-	echo "<table cellspacing=1 cellpadding=2>" >> "$index"
+	echo "<table cellspacing=1 cellpadding=2 class='bogus stats'>" >> "$index"
 	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
 		handle_build "$f" 1
 	done
