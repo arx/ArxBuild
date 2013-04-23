@@ -25,7 +25,7 @@ mkdir "$logs/branches" &> /dev/null
 mkdir "$logs/commits" &> /dev/null
 mkdir "$bin/branches" &> /dev/null
 mkdir "$bin/commits" &> /dev/null
-cp "$here/console.css" "$logs/console.css"
+[ "$here/console.css" -nt "$logs/console.css" ] && cp "$here/console.css" "$logs/console.css"
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 function process_paths() {
