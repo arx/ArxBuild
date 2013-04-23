@@ -20,9 +20,8 @@ build_types=(
 	'clang_libcxx'
 	'clang_libcxx_m32_debug'
 	
-	# <= 4.0.12.1_pre20120530 is broken with glibc 2.16
-	#'ekopath_debug'
-	#'ekopath'
+	'ekopath_debug'
+	'ekopath'
 	
 	'icc_debug'
 	'icc'
@@ -44,6 +43,9 @@ build_types=(
 	
 	'gcc-4.8_debug'
 	'gcc-4.8'
+	
+	'gcc-4.9_debug'
+	'gcc-4.9'
 	
 	'gcc-4.7_m32_debug'
 	'gcc-4.7_m32'
@@ -72,15 +74,18 @@ build_types=(
 	
 	'clang-analyzer'
 	
-	'mingw_static_debug'
-	'mingw_static'
+	'mingw_debug'
+	'mingw'
 	
-	'msvc-9.0-32_static'
-	'msvc-10.0-32_static'
+	'msvc-9.0-32'
+	'msvc-10.0-32'
+	
+	'gcc-freebsd-9.1-i686_static'
 	
 	'gcc-armv6j-hf_static'
 	
 	# TODO 'include-what-you-use'
+	# TODO 'cppcheck'
 	
 	'style'
 	'doxygen'

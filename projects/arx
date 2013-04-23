@@ -8,11 +8,10 @@ cmake_options[minimal]='-DBUILD_EDIT_LOADSAVE=0'
 cmake_options[unity]='-DUNITY_BUILD=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
-cmake_options[mingw]="${cmake_options[mingw]} -DBUILD_CRASHREPORTER=0"
 
 # As of version 1.51, parts of Boost don't work with icc in C++11 mode
 # TODO see https://svn.boost.org/trac/boost/ticket/7470
-cmake_options[icc]="${cmake_options[icc]} -DUSE_CXX11=0"
+cmake_options[icc]+=" -DUSE_CXX11=0"
 
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
@@ -26,9 +25,8 @@ build_types=(
 	'clang_libcxx_unity'
 	'clang_libcxx_m32_debug'
 	
-	# <= 4.0.12.1_pre20120530 is broken with glibc 2.16
-	#'ekopath_debug'
-	#'ekopath_unity'
+	'ekopath_debug'
+	'ekopath_unity'
 	
 	'icc_debug'
 	'icc_unity'
@@ -50,6 +48,9 @@ build_types=(
 	
 	'gcc-4.8_debug'
 	'gcc-4.8_unity'
+	
+	'gcc-4.9_debug'
+	'gcc-4.9_unity'
 	
 	'gcc-4.6'
 	'gcc-4.6_unity_debug'
@@ -83,7 +84,14 @@ build_types=(
 	'msvc-9.0-32_debug'
 	'msvc-10.0-32_debug'
 	
+	# TODO build environment missing libs
+	# 'gcc-freebsd-9.1-i686_static_debug'
+	
+	# TODO build environment missing libs
+	# 'gcc-armv6j-hf_static'
+	
 	# TODO 'include-what-you-use'
+	# TODO 'cppcheck'
 	
 	'style'
 	
@@ -101,4 +109,9 @@ ignored_branches=(
 	'gamma'
 	'renderer_stack'
 	'player_cleanup'
+)
+
+false_positives+=(
+	'gcc-4.8_unity*'
+	'gcc-4.9_unity*'
 )
