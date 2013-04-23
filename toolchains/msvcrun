@@ -66,4 +66,4 @@ done
 
 envfile="C:\Program Files\Microsoft Visual Studio $msvcver\VC\bin\vcvars$msvcarch.bat"
 
-exec wine cmd /C call "$envfile" \> nul \& $exe "${args[@]}"
+wine cmd /C call "$envfile" \> nul \& $exe "${args[@]}"
