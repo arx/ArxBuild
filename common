@@ -31,7 +31,7 @@ html_footer() {
 	echo '</body></html>'
 }
 
-function parse_build_type() {
+parse_build_type() {
 	
 	local build_type="$1"
 	local out_name="$2"
@@ -41,7 +41,7 @@ function parse_build_type() {
 	eval "$2=( ${components[@]} )"
 }
 
-function in_array() {
+in_array() {
 	
 	local needle="$1"
 	
@@ -55,7 +55,7 @@ function in_array() {
 	false
 }
 
-function in_wildcard_array() {
+in_wildcard_array() {
 	
 	local needle="$1"
 	

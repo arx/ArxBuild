@@ -28,7 +28,7 @@ mkdir "$bin/commits" &> /dev/null
 [ "$here/console.css" -nt "$logs/console.css" ] && cp "$here/console.css" "$logs/console.css"
 
 # Shorten long paths and make them independent of where arxbuild is installed.
-function process_paths() {
+process_paths() {
 	replace "$build"      "Build" \
 	        "$repo"       "$project_name" \
 	        "$toolchains" "Toolchains" \
@@ -47,19 +47,19 @@ function process_paths() {
 }
 
 # Remove header and footer created by the script command.
-function descript() {
+descript() {
 	sed -e '$d;1d' | sed -e '$d'
 }
 
-function make_helper() {
+make_helper() {
 	script -c "make -k $1" "$log_build" &> /dev/null
 }
 
-function timed_make() {
+timed_make() {
 	time make_helper "$1"
 }
 
-function build_cancelled() {
+build_cancelled() {
 	rm $commit_dst/$buildid.* &> /dev/null
 	rm $commit_dst/$buildid-* &> /dev/null
 	rm $branch_dst/$buildid.* &> /dev/null
@@ -67,7 +67,7 @@ function build_cancelled() {
 	die 'Build cancelled!'
 }
 
-function build() {
+build() {
 	
 	local compiler="$1"
 	buildid="${compiler}"
@@ -218,7 +218,7 @@ function build() {
 	
 }
 
-function build_branch() {
+build_branch() {
 	
 	branch="$1"
 	

@@ -9,7 +9,7 @@ source "$here/common"
 
 declare -A references
 
-function reference_build() {
+reference_build() {
 	
 	local file="$1"
 	local branch="$2"
@@ -28,7 +28,7 @@ function reference_build() {
 	
 }
 
-function reference_branch() {
+reference_branch() {
 	
 	local dir="$1"
 	
@@ -50,7 +50,7 @@ function reference_branch() {
 	
 }
 
-function clean_build() {
+clean_build() {
 	
 	local file="$1"
 	
@@ -72,7 +72,7 @@ function clean_build() {
 	
 }
 
-function clean_commit() {
+clean_commit() {
 	
 	local dir="$1"
 	
