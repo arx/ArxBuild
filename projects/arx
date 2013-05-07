@@ -52,29 +52,29 @@ build_types=(
 	'gcc-4.9_debug'
 	'gcc-4.9_unity'
 	
-	'gcc-4.6'
-	'gcc-4.6_unity_debug'
-	'gcc-4.6_unity_xtra'
+	'gcc-4.7'
+	'gcc-4.7_unity_debug'
+	'gcc-4.7_unity_xtra'
 	
-	'gcc-4.6_m32_debug'
-	'gcc-4.6_m32'
+	'gcc-4.7_m32_debug'
+	'gcc-4.7_m32'
 	
-	'gcc-4.6_debug_minimal'
-	'gcc-4.6_unity_minimal'
+	'gcc-4.7_debug_minimal'
+	'gcc-4.7_unity_minimal'
 	
-	'gcc-4.6_debug_boost-1.39'
-	'gcc-4.6_debug_boost-1.41'
-	'gcc-4.6_debug_boost-1.42'
-	'gcc-4.6_debug_boost-1.45_boostfs'
-	'gcc-4.6_debug_boost-1.46_boostfs'
-	'gcc-4.6_debug_boost-1.47_boostfs'
-	'gcc-4.6_debug_boost-1.48_boostfs'
-	'gcc-4.6_debug_boost-1.49_boostfs'
-	'gcc-4.6_debug_boost-1.50_boostfs'
-	'gcc-4.6_debug_boost-1.51_boostfs'
-	'gcc-4.6_debug_boost-1.52_boostfs'
+	'gcc-4.7_debug_boost-1.39'
+	'gcc-4.7_debug_boost-1.41'
+	'gcc-4.7_debug_boost-1.42'
+	'gcc-4.7_debug_boost-1.45_boostfs'
+	'gcc-4.7_debug_boost-1.46_boostfs'
+	'gcc-4.7_debug_boost-1.47_boostfs'
+	'gcc-4.7_debug_boost-1.48_boostfs'
+	'gcc-4.7_debug_boost-1.49_boostfs'
+	'gcc-4.7_debug_boost-1.50_boostfs'
+	'gcc-4.7_debug_boost-1.51_boostfs'
+	'gcc-4.7_debug_boost-1.52_boostfs'
 	
-	'gcc-4.6_olddeps'
+	'gcc-4.7_olddeps'
 	
 	'clang-analyzer'
 	
@@ -114,4 +114,5 @@ ignored_branches=(
 false_positives+=(
 	'gcc-4.8_unity*'
 	'gcc-4.9_unity*'
+	'ekopath_*' # compiler crashes
 )
