@@ -13,10 +13,15 @@ cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
 # TODO see https://svn.boost.org/trac/boost/ticket/7470
 cmake_options[icc]+=" -DUSE_CXX11=0"
 
+# Compiler for builds that test library/config compatability
+default_compiler='gcc-4.7'
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.
 build_types=(
+	
+	# Test different compilers/stdlibs and versions
 	
 	'clang_debug'
 	'clang_unity'
@@ -52,43 +57,51 @@ build_types=(
 	'gcc-4.9_debug'
 	'gcc-4.9_unity'
 	
-	'gcc-4.7'
-	'gcc-4.7_unity_debug'
-	'gcc-4.7_unity_xtra'
-	
-	'gcc-4.7_m32_debug'
-	'gcc-4.7_m32'
-	
-	'gcc-4.7_debug_minimal'
-	'gcc-4.7_unity_minimal'
-	
-	'gcc-4.7_debug_boost-1.39'
-	'gcc-4.7_debug_boost-1.41'
-	'gcc-4.7_debug_boost-1.42'
-	'gcc-4.7_debug_boost-1.45_boostfs'
-	'gcc-4.7_debug_boost-1.46_boostfs'
-	'gcc-4.7_debug_boost-1.47_boostfs'
-	'gcc-4.7_debug_boost-1.48_boostfs'
-	'gcc-4.7_debug_boost-1.49_boostfs'
-	'gcc-4.7_debug_boost-1.50_boostfs'
-	'gcc-4.7_debug_boost-1.51_boostfs'
-	'gcc-4.7_debug_boost-1.52_boostfs'
-	
-	'gcc-4.7_olddeps'
-	
-	'clang-analyzer'
-	
 	'mingw_debug'
 	'mingw_unity'
 	
 	'msvc-9.0-32_debug'
 	'msvc-10.0-32_debug'
 	
+	# Test different build types
+	
+	$default_compiler''
+	$default_compiler'_unity_debug'
+	$default_compiler'_unity_xtra'
+	
+	# Test different architectures
+	
+	$default_compiler'_m32_debug'
+	$default_compiler'_m32'
+	
+	$default_compiler'_debug_minimal'
+	$default_compiler'_unity_minimal'
+	
 	# TODO build environment missing libs
 	# 'gcc-freebsd-9.1-i686_static_debug'
 	
 	# TODO build environment missing libs
 	# 'gcc-armv6j-hf_static'
+	
+	# Test different library versions
+	
+	$default_compiler'_debug_boost-1.39'
+	$default_compiler'_debug_boost-1.41'
+	$default_compiler'_debug_boost-1.42'
+	$default_compiler'_debug_boost-1.45_boostfs'
+	$default_compiler'_debug_boost-1.46_boostfs'
+	$default_compiler'_debug_boost-1.47_boostfs'
+	$default_compiler'_debug_boost-1.48_boostfs'
+	$default_compiler'_debug_boost-1.49_boostfs'
+	$default_compiler'_debug_boost-1.50_boostfs'
+	$default_compiler'_debug_boost-1.51_boostfs'
+	$default_compiler'_debug_boost-1.52_boostfs'
+	
+	$default_compiler'_olddeps'
+	
+	# Static analyzers and style checks
+	
+	'clang-analyzer'
 	
 	# TODO 'include-what-you-use'
 	# TODO 'cppcheck'

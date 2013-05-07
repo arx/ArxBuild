@@ -8,10 +8,15 @@ cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[nolzma]='-DUSE_LZMA=0'
 cmake_options[style]="${cmake_options[debug]}"
 
+# Compiler for builds that test library/config compatability
+default_compiler='gcc-4.7'
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.
 build_types=(
+	
+	# Test different compilers/stdlibs and versions
 	
 	'clang_debug'
 	'clang'
@@ -47,42 +52,50 @@ build_types=(
 	'gcc-4.9_debug'
 	'gcc-4.9'
 	
-	'gcc-4.7_m32_debug'
-	'gcc-4.7_m32'
-	
-	'gcc-4.7_debug_nolzma'
-	
-	'gcc-4.7_debug_boost-1.37'
-	'gcc-4.7_debug_boost-1.39'
-	'gcc-4.7_debug_boost-1.41'
-	'gcc-4.7_debug_boost-1.42'
-	'gcc-4.7_debug_boost-1.45'
-	'gcc-4.7_debug_boost-1.46'
-	'gcc-4.7_debug_boost-1.47'
-	'gcc-4.7_debug_boost-1.48'
-	'gcc-4.7_debug_boost-1.49'
-	'gcc-4.7_debug_boost-1.50'
-	'gcc-4.7_debug_boost-1.51'
-	'gcc-4.7_debug_boost-1.52'
-	
-	'gcc-4.7_libiconv'
-	'gcc-4.7_olddeps'
-	
-	'gcc-4.7_xtra'
-	
-	'gcc-4.6_static'
-	
-	'clang-analyzer'
-	
 	'mingw_debug'
 	'mingw'
 	
 	'msvc-9.0-32'
 	'msvc-10.0-32'
 	
+	# Test different build types
+	
+	$default_compiler'_xtra'
+	
+	$default_compiler'_static'
+	
+	$default_compiler'_debug_nolzma'
+	
+	# Test different architectures
+	
+	$default_compiler'_m32_debug'
+	$default_compiler'_m32'
+	
 	'gcc-freebsd-9.1-i686_static'
 	
 	'gcc-armv6j-hf_static'
+	
+	# Test different library versions
+	
+	$default_compiler'_debug_boost-1.37'
+	$default_compiler'_debug_boost-1.39'
+	$default_compiler'_debug_boost-1.41'
+	$default_compiler'_debug_boost-1.42'
+	$default_compiler'_debug_boost-1.45'
+	$default_compiler'_debug_boost-1.46'
+	$default_compiler'_debug_boost-1.47'
+	$default_compiler'_debug_boost-1.48'
+	$default_compiler'_debug_boost-1.49'
+	$default_compiler'_debug_boost-1.50'
+	$default_compiler'_debug_boost-1.51'
+	$default_compiler'_debug_boost-1.52'
+	
+	$default_compiler'_libiconv'
+	$default_compiler'_olddeps'
+	
+	# Static analyzers and style checks
+	
+	'clang-analyzer'
 	
 	# TODO 'include-what-you-use'
 	# TODO 'cppcheck'
