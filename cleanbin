@@ -53,7 +53,7 @@ function clean_commit() {
 	local dir="$1"
 	
 	for f in `dir -d $dir/* 2> /dev/null` ; do
-		if [ ! "${references["$f"]}" ] ; then
+		if [ -z "${references["$(readlink -m "$f")"]}" ] ; then
 			rm -r "$f" &> /dev/null
 		fi
 	done
