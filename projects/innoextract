@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # What is the project called
 project_name='innoextract'
