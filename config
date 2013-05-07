@@ -143,6 +143,7 @@ count_errors=(
 	[5]='error\: ld returned 1 exit status'
 	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
+	['ekopath*']='psclang\: error\:'
 )
 
 # Declare patterns for warnings that should be ignored.
