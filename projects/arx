@@ -107,6 +107,7 @@ build_types=(
 	# TODO 'cppcheck'
 	
 	'style'
+	'winstyle'
 	
 )
 
