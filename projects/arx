@@ -123,6 +123,7 @@ ignored_branches=(
 	'gamma'
 	'renderer_stack'
 	'player_cleanup'
+	'arx_edit'
 )
 
 false_positives+=(
