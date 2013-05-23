@@ -75,11 +75,9 @@ cmake_options=(
 	[static]="-DUSE_STATIC_LIBS=1"
 )
 
-# Temp: FreeBSD headers assume any C++11 support is equal to current clang C++11 support
-# this is fine for thme, but gentoo crossdev only has gcc, so this will cause failures
-# retry with gcc 4.8, meybe it implements the required features
-cmake_options[gcc-freebsd-9.1-i686]+=" -DUSE_CXX11=0"
-cmake_options[gcc-freebsd-9.1-x86_64]+=" -DUSE_CXX11=0"
+# Temp: As of version 1.51, parts of Boost don't work with icc in C++11 mode
+# TODO see https://svn.boost.org/trac/boost/ticket/7470
+cmake_options[icc]+=" -DUSE_CXX11=0"
 
 # Declare possible build options (passed to the compiler).
 declare -A compiler_options

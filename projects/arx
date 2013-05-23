@@ -9,10 +9,6 @@ cmake_options[unity]='-DUNITY_BUILD=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
 
-# As of version 1.51, parts of Boost don't work with icc in C++11 mode
-# TODO see https://svn.boost.org/trac/boost/ticket/7470
-cmake_options[icc]+=" -DUSE_CXX11=0"
-
 # The environments for these don't have Qt installed - disable the crash reporter
 cmake_options[gcc-freebsd-9.1-i686]+=" -DBUILD_CRASHREPORTER=0"
 cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0"
