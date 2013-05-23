@@ -32,6 +32,9 @@ build_types=(
 	'icc_debug'
 	'icc'
 	
+	'gcc-4.1_debug'
+	'gcc-4.1'
+	
 	'gcc-4.3_debug'
 	'gcc-4.3'
 	
