@@ -79,7 +79,7 @@ build_types=(
 	
 	'gcc-freebsd-9.1-i686_debug'
 	
-	'gcc-armv6j-hf_static'
+	'gcc-armv6j-hf_unity_static'
 	
 	# Test different library versions
 	
