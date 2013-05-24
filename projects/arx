@@ -122,6 +122,7 @@ ignored_branches=(
 	'renderer_stack'
 	'player_cleanup'
 	'arx_edit'
+	'rtt-experiment'
 )
 
 false_positives+=(
