@@ -23,8 +23,20 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	'clang_debug'
-	'clang_unity'
+	'clang-2.9_debug'
+	'clang-2.9_unity'
+	
+	'clang-3.0_debug'
+	'clang-3.0_unity'
+	
+	'clang-3.1_debug'
+	'clang-3.1_unity'
+	
+	'clang-3.2_debug'
+	'clang-3.2_unity'
+	
+	'clang-dev_debug'
+	'clang-dev_unity'
 	
 	'clang_libcxx_debug'
 	'clang_libcxx_unity'
@@ -100,6 +112,7 @@ build_types=(
 	# Static analyzers and style checks
 	
 	'clang-analyzer'
+	'clang-analyzer_unity'
 	
 	# TODO 'include-what-you-use'
 	# TODO 'cppcheck'
