@@ -23,27 +23,22 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	'clang-2.8_debug'
-	'clang-2.8_unity'
+	'clang-3.0_libcxx_debug'
+	'clang-3.0_libcxx_unity'
 	
-	'clang-2.9_debug'
-	'clang-2.9_unity'
+	'clang-3.1_libcxx_debug'
+	'clang-3.1_libcxx_unity'
 	
-	'clang-3.0_debug'
-	'clang-3.0_unity'
+	'clang-3.2_libcxx_debug'
+	'clang-3.2_libcxx_unity'
 	
-	'clang-3.1_debug'
-	'clang-3.1_unity'
+	'clang-dev_libcxx_debug'
+	'clang-dev_libcxx_unity'
 	
-	'clang-3.2_debug'
-	'clang-3.2_unity'
+	'clang-dev_libcxx_m32_debug'
 	
-	'clang-dev_debug'
-	'clang-dev_unity'
-	
-	'clang_libcxx_debug'
-	'clang_libcxx_unity'
-	'clang_libcxx_m32_debug'
+	'clang_libstdcxx_debug'
+	'clang_libstdcxx_unity'
 	
 	'ekopath_debug'
 	'ekopath_unity'
