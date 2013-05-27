@@ -75,20 +75,21 @@ find_program(MinGW_RC NAMES
 mark_as_advanced(MinGW_RC)
 
 if((NOT MinGW_GCC) OR (NOT MinGW_GXX) OR (NOT MinGW_RC) OR (NOT MinGW_ROOT))
-	message(FATAL_ERROR "MinGW not found (found gcc=\"${MinGW_GCC}\", g++=\"${MinGW_GXX}\" rc=\"${MinGW_RC}\" root=\"${MinGW_ROOT}\")")
+	message(FATAL_ERROR "MinGW not found (found gcc=\"${MinGW_GCC}\","
+	                    " g++=\"${MinGW_GXX}\" rc=\"${MinGW_RC}\" root=\"${MinGW_ROOT}\")")
 endif()
 
-# which compilers to use for C and C++
+# Which compilers to use for C and C++
 set(CMAKE_C_COMPILER "${MinGW_GCC}")
 set(CMAKE_CXX_COMPILER "${MinGW_GXX}")
 set(CMAKE_RC_COMPILER "${MinGW_RC}")
 
-# here is the target environment located
+# Where the target environment is located
 set(CMAKE_FIND_ROOT_PATH "${MinGW_ROOT}")
 
-# adjust the default behaviour of the find_xxx() commands:
-# search headers and libraries in the target environment, search 
-# programs in the host environment
+# Adjust the default behaviour of the find_xxx() commands:
+# Search headers and libraries in the target environment,
+# search programs in the host environment.
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)

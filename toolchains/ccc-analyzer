@@ -17,4 +17,4 @@ if [ $compile == 1 ] ; then
 fi
 
 # Actually compile something so that linking won't fail (especially important for the cmake run)
-clang "$@" &> /dev/null
+clang "$@" -O0 &> /dev/null

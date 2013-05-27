@@ -45,10 +45,15 @@ cmake_options=(
 	[gcc-4.7]="\"$set_cmake_toolchain/gcc-4.7-toolchain.cmake\""
 	[gcc-4.8]="\"$set_cmake_toolchain/gcc-4.8-toolchain.cmake\""
 	[gcc-4.9]="\"$set_cmake_toolchain/gcc-4.9-toolchain.cmake\""
-	[gcc-armv6j-hf]="\"$set_cmake_toolchain/gcc-armv6j-hf-toolchain.cmake\""
-	[gcc-freebsd-9.1-i686]="\"$set_cmake_toolchain/freebsd-9.1-i686-toolchain.cmake\""
-	[gcc-freebsd-9.1-x86_64]="\"$set_cmake_toolchain/freebsd-9.1-x86_64-toolchain.cmake\""
+	[gcc-armv6j-hf]="\"$set_cmake_toolchain/armv6j-hardfloat-linux-gnueabi-toolchain.cmake\""
+	[gcc-freebsd-9.1-i686]="\"$set_cmake_toolchain/i686-gentoo-freebsd9.1-toolchain.cmake\""
+	[gcc-freebsd-9.1-x86_64]="\"$set_cmake_toolchain/x86_64-gentoo-freebsd9.1-toolchain.cmake\""
 	[clang]="\"$set_cmake_toolchain/clang-toolchain.cmake\""
+	[clang-2.9]="\"$set_cmake_toolchain/clang-2.9-toolchain.cmake\""
+	[clang-3.0]="\"$set_cmake_toolchain/clang-3.0-toolchain.cmake\""
+	[clang-3.1]="\"$set_cmake_toolchain/clang-3.1-toolchain.cmake\""
+	[clang-3.2]="\"$set_cmake_toolchain/clang-3.2-toolchain.cmake\""
+	[clang-dev]="\"$set_cmake_toolchain/clang-9999-toolchain.cmake\""
 	[ekopath]="\"$set_cmake_toolchain/ekopath-toolchain.cmake\""
 	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
 	[msvc-9.0-32]="\"$set_cmake_toolchain/msvc-9.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
@@ -159,8 +164,9 @@ ignore_warnings=(
 # Declare which build types have known false positive warnings/errors.
 false_positives=(
 	'include-what-you-use'
-	'clang-analyzer'
+	'clang-analyzer*'
 	'*_xtra'
+	'gcc-4.1*'
 	'gcc-4.3*'
 	'gcc-4.4*'
 )
