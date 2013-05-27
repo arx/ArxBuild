@@ -19,8 +19,20 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	'clang_debug'
-	'clang'
+	'clang-2.9_debug'
+	'clang-2.9'
+	
+	'clang-3.0_debug'
+	'clang-3.0'
+	
+	'clang-3.1_debug'
+	'clang-3.1'
+	
+	'clang-3.2_debug'
+	'clang-3.2'
+	
+	'clang-dev_debug'
+	'clang-dev'
 	
 	'clang_libcxx_debug'
 	'clang_libcxx'
