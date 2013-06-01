@@ -40,8 +40,9 @@ build_types=(
 	'clang_libstdcxx_debug'
 	'clang_libstdcxx_unity'
 	
-	'ekopath_debug'
-	'ekopath_unity'
+	# Broken for arx as of 5.0.0_pre20130113
+	#'ekopath_debug'
+	#'ekopath_unity'
 	
 	'icc_debug'
 	'icc_unity'
