@@ -107,6 +107,7 @@ build_types=(
 	$default_compiler'_debug_boost-1.50_boostfs'
 	$default_compiler'_debug_boost-1.51_boostfs'
 	$default_compiler'_debug_boost-1.52_boostfs'
+	$default_compiler'_debug_boost-1.53_boostfs'
 	
 	$default_compiler'_olddeps'
 	

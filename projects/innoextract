@@ -19,8 +19,9 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	'clang-3.0_libcxx_debug'
-	'clang-3.0_libcxx'
+	# compiler crashes
+	#'clang-3.0_libcxx_debug'
+	#'clang-3.0_libcxx'
 	
 	'clang-3.1_libcxx_debug'
 	'clang-3.1_libcxx'
@@ -103,6 +104,7 @@ build_types=(
 	$default_compiler'_debug_boost-1.50'
 	$default_compiler'_debug_boost-1.51'
 	$default_compiler'_debug_boost-1.52'
+	$default_compiler'_debug_boost-1.53'
 	
 	$default_compiler'_libiconv'
 	$default_compiler'_olddeps'
