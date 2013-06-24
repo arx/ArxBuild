@@ -29,6 +29,9 @@ build_types=(
 	'clang-3.2_libcxx_debug'
 	'clang-3.2_libcxx'
 	
+	'clang-3.3_libcxx_debug'
+	'clang-3.3_libcxx'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx'
 	
