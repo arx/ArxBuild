@@ -85,9 +85,11 @@ cmake_options=(
 	[static]="-DUSE_STATIC_LIBS=1"
 )
 
-# Temp: As of version 1.51, parts of Boost don't work with icc in C++11 mode
+# Temp: As of version 1.52, parts of Boost don't work with icc in C++11 mode
 # TODO see https://svn.boost.org/trac/boost/ticket/7470
 cmake_options[icc]+=" -DUSE_CXX11=0"
+
+cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
 
 # Declare possible build options (passed to the compiler).
 declare -A compiler_options
@@ -96,6 +98,8 @@ compiler_options=(
 	[libcxx]='-stdlib=libc++'
 	[libstdcxx]='' # use default
 )
+
+compiler_options[clang-analyzer]+=" ${compiler_options[libcxx]}"
 
 # Declare possible build options (passed to the linker).
 declare -A linker_options
