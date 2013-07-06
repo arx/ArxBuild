@@ -52,7 +52,7 @@ descript() {
 }
 
 make_helper() {
-	script -c "make -k $1" "$log_build" &> /dev/null
+	script -c "$1" "$log_build" &> /dev/null
 }
 
 timed_make() {
@@ -67,6 +67,19 @@ build_cancelled() {
 	die 'Build cancelled!'
 }
 
+escape() {
+	printf '%s' "$1" | sed "s:[^a-zA-Z0-9/_.=-]:\\\\&:g"
+}
+
+escape_args() {
+	local prefix=''
+	for arg in "$@" ; do
+		printf "$prefix"
+		escape "$arg"
+		prefix=' '
+	done
+}
+
 build() {
 	
 	local compiler="$1"
@@ -75,7 +88,6 @@ build() {
 	local options="${cmake_options[$compiler]}"
 	local flags="${compiler_options[$compiler]}"
 	local ldflags="${linker_options[$compiler]}"
-	local targets="${make_options[$compiler]}"
 	local prefixes="${prefix_paths[$compiler]}"
 	
 	for arg in "${@:2}" ; do
@@ -95,11 +107,6 @@ build() {
 		if [ "${linker_options[$arg]}" != "" ] ; then
 			[ "$ldflags" != "" ] && local ldflags="$ldflags "
 			local ldflags="$ldflags${linker_options[$arg]}"
-		fi
-		
-		if [ "${make_options[$arg]}" != "" ] ; then
-			[ "$targets" != "" ] && local targets="$targets "
-			local targets="$targets${make_options[$arg]}"
 		fi
 		
 		if [ "${prefix_paths[$arg]}" != "" ] ; then
@@ -136,7 +143,7 @@ build() {
 		fi
 		if [ "$branch_bindst" ] && [ -e "$commit_bindst/$buildid" ] ; then
 			rm "$branch_bindst/$buildid" &> /dev/null
-			ln -s "$commit_bindst/$buildid" "$branch_bindst/$buildid"
+			ln -s --relative "$commit_bindst/$buildid" "$branch_bindst/$buildid"
 		fi
 		return
 		else echo "$commit" > "$ref_commit"
@@ -158,11 +165,27 @@ build() {
 	find "$build" -mindepth 1 -delete
 	rm -r "$repo/bin" &> /dev/null
 	
-	echo 'Configuring...'
-	if cd "$build" && eval "cmake \"$repo/$path\" $options" &> "$log_config" ; then
+	cd "$build"
+	
+	local do_build=1
+	
+	local _config_required="${config_required[$compiler]:-1}"
+	
+	if [ ! "$_config_required" = 0 ] ; then
+		echo 'Configuring...'
+		local cmake_args="$(escape "$repo/$path") -DCMAKE_INSTALL_PREFIX=/ $options"
+		if ! eval "cmake $cmake_args" &> "$log_config" ; then
+			echo "${esc}[31mConfigure failed!${esc}[0m"
+			echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$log_build"
+			do_build=0
+		fi
+	fi
+	
+	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
+	if [ $do_build = 1 ] ; then
 		
 		echo 'Building...'
-		timed_make "$targets" &> "$dst_time"
+		timed_make "$_make_command" &> "$dst_time"
 		
 		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
 			build_cancelled
@@ -172,26 +195,25 @@ build() {
 		rm -rf "$commit_bindst/$buildid" &> /dev/null
 		mkdir "$commit_bindst/$buildid" &> /dev/null
 		
-		for binary in "${binaries[@]}" ; do
-			mv "$build/$binary" "$commit_bindst/$buildid/" &> /dev/null
-			mv "$build/$binary.exe" "$commit_bindst/$buildid/" &> /dev/null
-		done
+		if [ "$_make_command" = 'make' ] || [ "$_make_command" = 'make -k' ] ; then
+			DESTDIR="$commit_bindst/$buildid/" make -k install &> /dev/null
+		fi
 		
 		rm "$branch_bindst/$buildid" &> /dev/null
-		ln -s "$commit_bindst/$buildid" "$branch_bindst/$buildid"
-		
-	else
-		
-		echo "${esc}[31mConfigure failed!${esc}[0m"
-		echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$log_build"
+		ln -s --relative "$commit_bindst/$buildid" "$branch_bindst/$buildid"
 		
 	fi
 	
 	echo 'Processing...'
 	
 	# Save the cmake output and used options.
-	process_paths < "$log_config" > "$dst_config"
-	echo "$options" | process_paths > "$dst_options"
+	if [ ! "$_config_required" = 0 ] ; then
+		process_paths < "$log_config" > "$dst_config"
+		echo "$options" | process_paths > "$dst_options"
+	else
+		echo "no config step" > "$dst_config"
+		echo "$_make_command" | process_paths > "$dst_options"
+	fi
 	
 	# Process the raw shell-colored log.
 	if [ "${process[$compiler]}" ]

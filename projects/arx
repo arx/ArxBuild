@@ -21,6 +21,14 @@ cmake_options[msvc-10.0-32]+=" -DUSE_QT5=0"
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-4.7'
 
+# Declare directories containing source code (for cppcheck and flawfinder)
+source_directories+=(
+	"$repo/tools"
+)
+include_directories+=(
+	-I "$repo/tools"
+)
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.
@@ -123,20 +131,15 @@ build_types=(
 	'clang-analyzer'
 	'clang-analyzer_unity'
 	
+	'cppcheck'
+	
+	'flawfinder'
+	
 	# TODO 'include-what-you-use'
-	# TODO 'cppcheck'
 	
 	'style'
 	'winstyle'
 	
-)
-
-# Which binaries to save before nuking the build directory.
-binaries=(
-	'arx'
-	'arxunpak'
-	'arxsavetool'
-	'arxcrashreporter'
 )
 
 ignored_branches=(

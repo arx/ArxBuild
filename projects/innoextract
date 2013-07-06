@@ -117,17 +117,15 @@ build_types=(
 	
 	'clang-analyzer'
 	
+	'cppcheck'
+	
+	'flawfinder'
+	
 	# TODO 'include-what-you-use'
-	# TODO 'cppcheck'
 	
 	'style'
 	'winstyle'
 	
 	'doxygen'
 	
-)
-
-# Which binaries to save before nuking the build directory.
-binaries=(
-	'innoextract'
 )

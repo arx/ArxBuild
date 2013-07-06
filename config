@@ -108,12 +108,32 @@ linker_options=(
 	[m32]='-Wl,--no-warn-search-mismatch'
 )
 
-# Declare possible build options (passed to make).
-declare -A make_options
-make_options=(
-	[style]='style'
-	[winstyle]='style'
-	[doxygen]='doc'
+# Declare if a CMake step is required (default is `1`)
+declare -A config_required
+config_required=(
+	[cppcheck]=0
+	[flawfinder]=0
+)
+
+# Declare directories containing source code (for cppcheck and flawfinder)
+source_directories=(
+	"$repo/src"
+)
+
+# Declare directories containing include files (for cppcheck)
+include_directories=(
+	-I "$repo/src"
+)
+
+# Declare how to build the projects (default is `make -k`).
+declare -A make_command
+make_command=(
+	[style]='make -k style'
+	[winstyle]='make -k style'
+	[doxygen]='make -k doc'
+	# TODO include  "${include_directories[@]}" for better coverage, bit it's slooooooow
+	[cppcheck]='cppcheck --quiet --force --enable=style,unusedFunction "${source_directories[@]}"'
+	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
 )
 
 declare -A prefix_paths
@@ -146,6 +166,8 @@ count_warnings=(
 	['winstyle']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'
 	['msvc-*']='warning [A-Z]+\d+ *\:'
+	['cppcheck*']='\:\d+]\: \([a-z]'
+	['flawfinder*']='\:\d+\: +\[\d+\] \([a-z]'
 )
 
 # Declare patterns that count as an error.
@@ -174,6 +196,8 @@ ignore_warnings=(
 false_positives=(
 	'include-what-you-use'
 	'clang-analyzer*'
+	'cppcheck*'
+	'flawfinder*'
 	'*_xtra'
 	'gcc-4.1*'
 	'gcc-4.3*'
