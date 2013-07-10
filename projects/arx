@@ -148,7 +148,6 @@ ignored_branches=(
 	'player_cleanup'
 	'arx_edit'
 	'rtt-experiment'
-	'player_movement'
 )
 
 false_positives+=(
