@@ -149,9 +149,3 @@ ignored_branches=(
 	'arx_edit'
 	'rtt-experiment'
 )
-
-false_positives+=(
-	'gcc-4.8_unity*'
-	'gcc-4.9_unity*'
-	'ekopath_*' # compiler crashes
-)
