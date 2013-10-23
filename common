@@ -2,8 +2,9 @@
 
 # Code shared between autobuild and buildstats.
 
-source "$here/config"
-source "$here/projects/$project"
+. "$here/config"
+. "$here/projects/$project"
+[ -f "$here/projects/$project.local" ] && . "$here/projects/$project.local"
 
 # Color code escape character.
 esc=`echo -e '\033'`
