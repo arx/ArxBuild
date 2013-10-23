@@ -168,6 +168,7 @@ count_warnings=(
 	['msvc-*']='warning [A-Z]+\d+ *\:'
 	['cppcheck*']='\:\d+]\: \([a-z]'
 	['flawfinder*']='\:\d+\: +\[\d+\] \([a-z]'
+	['doxygen*']='Warning\:'
 )
 
 # Declare patterns that count as an error.
@@ -175,7 +176,7 @@ declare -A count_errors
 count_errors=(
 	[0]='\:\d+\: error\:'
 	[1]='\:\d+\: fatal error\:'
-	[2]='\:(\d+|\(.*\))\: undefined reference to '
+	[2]='\: undefined reference to '
 	[3]='ld\: cannot find'
 	[3]='could not read symbols\: File in wrong format'
 	[4]='\: defined in discarded section '
