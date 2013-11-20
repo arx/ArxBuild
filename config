@@ -67,7 +67,7 @@ cmake_options=(
 	[winstyle]="\"$set_cmake_toolchain/mingw-toolchain.cmake\""
 	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
-	[olddeps]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_39/\""
+	[olddeps]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_48/\""
 	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_37/\""
 	[boost-1.39]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_39/\""
 	[boost-1.41]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_41/\""
