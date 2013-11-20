@@ -14,7 +14,7 @@ cmake_options[gcc-freebsd-9.1-i686]+=" -DBUILD_CRASHREPORTER=0"
 cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0"
 
 arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
-cmake_options[olddeps]+=" $arx_use_qt4"
+cmake_options[olddeps]+=" $arx_use_qt4 -DWITH_SDL=1"
 cmake_options[m32]+=" $arx_use_qt4"
 cmake_options[msvc-9.0-32]+=" $arx_use_qt4"
 cmake_options[msvc-10.0-32]+=" $arx_use_qt4"
