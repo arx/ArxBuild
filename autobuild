@@ -174,7 +174,7 @@ build() {
 	if [ ! "$_config_required" = 0 ] ; then
 		echo 'Configuring...'
 		local cmake_args="$(escape "$repo/$path") -DCMAKE_INSTALL_PREFIX=/ $options"
-		if ! eval "cmake $cmake_args" &> "$log_config" ; then
+		if ! eval "cmake --no-warn-unused-cli $cmake_args" &> "$log_config" ; then
 			echo "${esc}[31mConfigure failed!${esc}[0m"
 			echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$log_build"
 			do_build=0
