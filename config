@@ -82,6 +82,7 @@ cmake_options=(
 	[boost-1.52]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52/\""
 	[boost-1.53]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_53/\""
 	[boost-1.54]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_54/\""
+	[boost-1.55]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_55/\""
 	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52-libcxx/\""
 	[static]="-DUSE_STATIC_LIBS=1"
 )
