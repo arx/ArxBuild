@@ -19,10 +19,6 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	# compiler crashes
-	#'clang-3.0_libcxx_debug'
-	#'clang-3.0_libcxx'
-	
 	'clang-3.1_libcxx_debug'
 	'clang-3.1_libcxx'
 	
