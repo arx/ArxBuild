@@ -13,10 +13,11 @@ cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
 cmake_options[gcc-freebsd-9.1-i686]+=" -DBUILD_CRASHREPORTER=0"
 cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0"
 
-cmake_options[olddeps]+=" -DUSE_QT5=0"
-cmake_options[m32]+=" -DUSE_QT5=0"
-cmake_options[msvc-9.0-32]+=" -DUSE_QT5=0"
-cmake_options[msvc-10.0-32]+=" -DUSE_QT5=0"
+arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
+cmake_options[olddeps]+=" $arx_use_qt4"
+cmake_options[m32]+=" $arx_use_qt4"
+cmake_options[msvc-9.0-32]+=" $arx_use_qt4"
+cmake_options[msvc-10.0-32]+=" $arx_use_qt4"
 
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-4.7'
