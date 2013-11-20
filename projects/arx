@@ -111,12 +111,6 @@ build_types=(
 	
 	# Test different library versions
 	
-	$default_compiler'_debug_boost-1.39'
-	$default_compiler'_debug_boost-1.41'
-	$default_compiler'_debug_boost-1.42'
-	$default_compiler'_debug_boost-1.45_boostfs'
-	$default_compiler'_debug_boost-1.46_boostfs'
-	$default_compiler'_debug_boost-1.47_boostfs'
 	$default_compiler'_debug_boost-1.48_boostfs'
 	$default_compiler'_debug_boost-1.49_boostfs'
 	$default_compiler'_debug_boost-1.50_boostfs'
