@@ -2,10 +2,6 @@
 
 # Code shared between autobuild and buildstats.
 
-. "$here/config"
-. "$here/projects/$project"
-[ -f "$here/projects/$project.local" ] && . "$here/projects/$project.local"
-
 # Color code escape character.
 esc=`echo -e '\033'`
 
@@ -13,6 +9,22 @@ die() {
 	echo "$1"
 	exit 1
 }
+
+force=0
+fetch=1
+project=''
+for arg in "$@" ; do
+	case "$arg" in
+		-f|--force)   force=1 ;;
+		-n|--nofetch) fetch=0 ;;
+		*) [ -z "$project" ] || die "Unexpected arg: '$arg'"
+		   project="$arg"
+	esac
+done
+
+. "$here/config"
+. "$here/projects/$project"
+[ -f "$here/projects/$project.local" ] && . "$here/projects/$project.local"
 
 html_header() {
 	

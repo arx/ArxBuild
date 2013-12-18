@@ -1,13 +1,6 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"
-here="$(pwd)"
-
-if [ "$1" == '-f' ] ;
-	then force='1' ; project=$2
-	else force=''  ; project=$1
-fi
-
+cd "$(dirname "$0")" ; here="$(pwd)"
 source "$here/common"
 
 [ "$here/console.css" -nt "$logs/console.css" ] && cp "$here/console.css" "$logs/console.css"

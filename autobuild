@@ -1,10 +1,6 @@
 #!/bin/bash
 
-cd "$(dirname "$0")"
-here="$(pwd)"
-
-project=$1
-
+cd "$(dirname "$0")" ; here="$(pwd)"
 source "$here/common"
 
 # Build the tools if needed.
@@ -15,7 +11,7 @@ fi
 
 echo 'Updating repo...'
 cd "$repo" || die "unable to cd to repository at $repo"
-git fetch || die "git fetch failed"
+if [ $fetch = 1 ] ; then git fetch || die "git fetch failed" ; fi
 git remote prune origin &> /dev/null || die "failed to prune repository"
 
 # Initialize the output directory.
