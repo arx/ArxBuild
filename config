@@ -88,6 +88,7 @@ cmake_options=(
 
 # Temp: As of version 1.52, parts of Boost don't work with icc in C++11 mode
 # TODO see https://svn.boost.org/trac/boost/ticket/7470
+# It also causes weird compile errors and warnings :(
 cmake_options[icc]+=" -DUSE_CXX11=0"
 
 cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
