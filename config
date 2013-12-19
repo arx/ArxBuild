@@ -1,8 +1,6 @@
 #!/bin/bash
 
-if [ "$project" == "" ] ; then
-	project='arx'
-fi
+[ -z "$project" ] && project='arx'
 
 # Where the local git repository is located there mus be no changes to the working tree.
 repo="$here/repo/$project"

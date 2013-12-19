@@ -1,0 +1,38 @@
+#!/bin/bash
+
+cd "$(dirname "$0")" ; here="$(pwd)"
+source "$here/common"
+
+[ ! $# = 2 ] && die "Usage: rebuild <project> <branch-widlcard> <build-wildcard>"
+branches_pattern="$1"
+builds_pattern="$2"
+
+toclean=( )
+
+pushd "$logs/branches" > /dev/null
+	eval "branches=( $branches_pattern )"
+	[ ${#branches[@]} = 0 ] && die "No matching branches for $barnches_pattern!"
+	for branch in "${branches[@]}" ; do
+		pushd "$branch" > /dev/null
+			eval "builds=( $builds_pattern.ref )"
+			for build in "${builds[@]}" ; do
+				[ -f "$build" ] || continue
+				commit="$(cat "$build")"
+				build="${build%.ref}"
+				echo "Removing ${dim_cyan}$branch${reset}/${dim_green}$build${reset}"
+				toclean+=( "$commit/$build" )
+				rmbuild "$build"
+			done
+		popd > /dev/null
+	done
+	[ ${#toclean[@]} = 0 ] && die "No matching builds for $builds_pattern in $branches_pattern!"
+popd > /dev/null
+
+pushd "$logs/commits" > /dev/null
+	for commitbuild in "${toclean[@]}" ; do
+		commit="${commitbuild%%/*}"
+		build="${commitbuild#*/}"
+		echo "Removing ${dim_blue}$commit${reset}/${dim_green}$build${reset}"
+		rmbuild "$commitbuild"
+	done
+popd > /dev/null

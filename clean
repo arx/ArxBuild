@@ -16,7 +16,7 @@ reference_build() {
 	
 	if ! in_array "$name" "${build_types[@]}" ; then
 		echo "Removing obsolete build type ${esc}[32m$name${esc}[0m in ${esc}[34m$branch${esc}[0m"
-		rm "$file"
+		rmbuild "$name"
 		return
 	fi
 	
@@ -64,7 +64,7 @@ clean_build() {
 		return
 	fi
 	
-	rm $logs/commits/$commit/$name*
+	rmbuild "$logs/commits/$commit/$name"
 	
 }
 
