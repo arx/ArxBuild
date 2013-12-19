@@ -139,7 +139,7 @@ handle_context() {
 	done
 	echo "</table>" >> "$index"
 	
-	echo "<h2>Build logs that may contain false positives:</h2>" >> "$index"
+	echo "<h2 id=\"analyzers\">Static analyzers and other build logs that are likely to contain false positives:</h2>" >> "$index"
 	echo "<table cellspacing=1 cellpadding=2 class='bogus stats'>" >> "$index"
 	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
 		handle_build "$f" 1
