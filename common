@@ -36,6 +36,9 @@ die() {
 	exit 1
 }
 
+true=0
+false=1
+
 force=0
 fetch=1
 project=''
@@ -130,3 +133,13 @@ rmbuild() {
 	done
 }
 
+is_valid_branch() {
+	
+	in_array "$branch" "${ignored_branches[@]}" && return $false
+	
+	for remote in "${branches[@]}"; do
+		[[ "$branch" == "${remote##*/}" ]] && return $true
+	done
+	
+	return $false
+}

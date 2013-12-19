@@ -29,10 +29,7 @@ reference_branch() {
 	# Remove obsolete branches.
 	branch="${f##*/}"
 	obsolete=1
-	for remote in "${branches[@]}"; do
-		[[ "$branch" == "${remote##*/}" ]] && obsolete=0
-	done
-	if [ $obsolete == 1 ] ; then 
+	if ! is_valid_branch "$branch" ; then 
 		echo "Removing obsolete branch ${esc}[34m$branch${esc}[0m"
 		rm -r "$dir"
 		return
