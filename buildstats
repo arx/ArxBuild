@@ -134,14 +134,14 @@ handle_context() {
 	echo "<a href=\"../\">Other Logs</a><br><br>" >> "$index"
 	
 	echo "<table cellspacing=1 cellpadding=2 class='legit stats'>" >> "$index"
-	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
+	for f in `dir -d $dir/*.ref 2> /dev/null | sort -V` ; do
 		handle_build "$f" 0
 	done
 	echo "</table>" >> "$index"
 	
 	echo "<h2 id=\"analyzers\">Static analyzers and other build logs that are likely to contain false positives:</h2>" >> "$index"
 	echo "<table cellspacing=1 cellpadding=2 class='bogus stats'>" >> "$index"
-	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
+	for f in `dir -d $dir/*.ref 2> /dev/null | sort -V` ; do
 		handle_build "$f" 1
 	done
 	echo "</table>" >> "$index"
