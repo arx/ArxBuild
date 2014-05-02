@@ -1,0 +1,22 @@
+#!/bin/bash
+
+self="$(which "$0")"
+here="$(readlink -f "$self")"
+here="${here%/*}"
+
+exe="${self##*/}"
+
+dir="${self%/*}"
+ver="${dir##*/clang-}"
+
+basedir="$(readlink -f "$here/../deps/clang-$ver/")"
+
+if [ ! -d "$basedir" ] ; then
+	echo "Missing Clang $ver binaries" >&2
+	exit 1
+fi
+
+export LD_LIBRARY_PATH="$basedir/lib:$basedir/lib64:$basedir/lib32:$LD_LIBRARY_PATH"
+export PATH="$basedir/bin:$PATH"
+
+exec "$exe" "$@"
