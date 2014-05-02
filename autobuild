@@ -25,20 +25,24 @@ mkdir "$bin/commits" &> /dev/null
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 process_paths() {
+	local wdeps="$(readlink -f "$deps/windows")"
 	replace "$build"      "Build" \
 	        "$repo"       "$project_name" \
 	        "$toolchains" "Toolchains" \
 	        "$deps"       "Deps" \
+	        "$wdeps"      "Deps/windows" \
 	        "$here/"      "" \
 	        "Z:$(echo "$build"      | tr '/' '\\')"  "Build" \
 	        "Z:$(echo "$repo"       | tr '/' '\\')"  "$project_name" \
 	        "Z:$(echo "$toolchains" | tr '/' '\\')"  "Toolchains" \
 	        "Z:$(echo "$deps"       | tr '/' '\\')"  "Deps" \
+	        "Z:$(echo "$wdeps"      | tr '/' '\\')"  "Deps/windows" \
 	        "Z:$(echo "$here"       | tr '/' '\\')/" "" \
 	        "z:$(echo "$build"      | tr '/' '\\')"  "Build" \
 	        "z:$(echo "$repo"       | tr '/' '\\')"  "$project_name" \
 	        "z:$(echo "$toolchains" | tr '/' '\\')"  "Toolchains" \
 	        "z:$(echo "$deps"       | tr '/' '\\')"  "Deps" \
+	        "z:$(echo "$wdeps"      | tr '/' '\\')"  "Deps/windows" \
 	        "z:$(echo "$here"       | tr '/' '\\')/" ""
 }
 
