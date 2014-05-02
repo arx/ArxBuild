@@ -128,3 +128,7 @@ build_types=(
 	'doxygen'
 	
 )
+
+favicons['images/favicon.ico']=''
+favicons['images/logo.png']='128x128'
+favicons['images/favicon.png']='16x16'

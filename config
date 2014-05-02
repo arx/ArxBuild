@@ -206,5 +206,8 @@ false_positives=(
 
 ignored_branches=()
 
+declare -A favicons
+favicons=()
+
 # Enable color output on newer GCC versions (4.9+)
 export GCC_COLORS=1

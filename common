@@ -66,6 +66,16 @@ html_header() {
 	
 	printf '<!DOCTYPE html>\n'
 	printf '<html><head><meta charset="utf-8"><title>%s</title>' "$title"
+	for favicon in "${!favicons[@]}" ; do
+		case "$favicon" in /*) ;; *) favicon="$toroot/$favicon" ;; esac
+		case "$favicon" in
+			*.ico)
+				printf '<link rel="shortcut icon" href="%s">' "$favicon" ;;
+			*)
+				sizes="${favicons[$favicon]}"
+				printf '<link rel="icon" href="%s" sizes="%s">' "$favicon" "$sizes" ;;
+		esac
+	done
 	printf '<link rel="stylesheet" href="%s/console.css" type="text/css">' "$toroot"
 	printf '</head><body>\n'
 	
