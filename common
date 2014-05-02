@@ -64,17 +64,15 @@ html_header() {
 	local title="$1"
 	local toroot="$2"
 	
-	local lt='<'
-	
-	echo "${lt}html>${lt}head>${lt}title>$title</title>"
-	echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
-	echo "<link rel=\"stylesheet\" href=\"$toroot/console.css\" type=\"text/css\">"
-	echo '</head><body>'
+	printf '<!DOCTYPE html>\n'
+	printf '<html><head><meta charset="utf-8"><title>%s</title>' "$title"
+	printf '<link rel="stylesheet" href="%s/console.css" type="text/css">' "$toroot"
+	printf '</head><body>\n'
 	
 }
 
 html_footer() {
-	echo '</body></html>'
+	printf '</body></html>\n'
 }
 
 parse_build_type() {
