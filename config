@@ -204,7 +204,7 @@ false_positives=(
 	'gcc-4.4*'
 )
 
-ignored_branched=()
+ignored_branches=()
 
 # Enable color output on newer GCC versions (4.9+)
 export GCC_COLORS=1
