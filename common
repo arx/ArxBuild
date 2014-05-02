@@ -117,7 +117,7 @@ in_wildcard_array() {
 
 build_suffixes=(
 	'.ref'
-	'.htm'
+	'.html'
 	'.txt'
 	'-config.txt'
 	'-options.txt'

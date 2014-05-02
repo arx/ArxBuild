@@ -151,7 +151,7 @@ build() {
 	
 	# Final log file locations.
 	local dst_raw="$commit_dst/$buildid-raw.txt"
-	local dst_html="$commit_dst/$buildid.htm"
+	local dst_html="$commit_dst/$buildid.html"
 	local dst_plain="$commit_dst/$buildid.txt"
 	local dst_config="$commit_dst/$buildid-config.txt"
 	local dst_options="$commit_dst/$buildid-options.txt"

@@ -75,8 +75,8 @@ clean_commit() {
 	local commit="${dir##*/}"
 	
 	# Remove empty directories.
-	if [ "$(ls -A "$dir")" == "index.htm" ]; then
-		rm "$dir/index.htm"
+	if [ "$(ls -A "$dir")" == "index.html" ]; then
+		rm "$dir/index.html"
 	fi
 	if [ ! "$(ls -A "$dir")" ]; then
 		echo "Removing empty commit dir ${esc}[34m$commit${esc}[0m"
