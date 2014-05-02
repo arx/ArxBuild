@@ -10,7 +10,7 @@ for var in "$@" ; do
 	fi
 done
 
-[ $compile == 1 ]&& clang++-9999 --analyze "${args[@]}"
+[ $compile == 1 ]&& clang++ --analyze "${args[@]}"
 
 # Actually compile something so that linking won't fail (especially important for the cmake run)
-clang++-9999 "$@" -O0 &> /dev/null
+clang++ "$@" -O0 &> /dev/null
