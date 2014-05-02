@@ -99,7 +99,7 @@ handle_build() {
 	[ "$errors" = 1 ] && errors_l='error&nbsp;'
 	
 	echo "<tr>" >> "$index"
-	echo "	<td class='n'><a href=\"$wprefix.html\">$name</td>" >> "$index"
+	echo "	<td class='n'><a href=\"$wprefix.html\">$name</a></td>" >> "$index"
 	echo "	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>" >> "$index"
 	echo "	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>" >> "$index"
 	echo "	<td align=right class='tm'>$minutes min</td><td align=right class='ts'>$seconds s</td>" >> "$index"
