@@ -62,8 +62,13 @@ for arg in "$@" ;  do
 	
 done
 
-[ $msvcarch = '64' ] && msvcarch='x86_amd64'
+[ "$msvcarch" = '64' ] && msvcarch='x86_amd64'
 
-envfile="C:\Program Files\Microsoft Visual Studio $msvcver\VC\bin\vcvars$msvcarch.bat"
+msvcarchdir="$msvcarch\\"
+[ "$msvcarch" = '32' ] && msvcarchdir=''
 
-wine cmd /C call "$envfile" \> nul \& $exe "${args[@]}"
+msvcinstalldir="C:\\Program Files\\Microsoft Visual Studio ${msvcver}"
+
+envfile="${msvcinstalldir}\\VC\\bin\\${msvcarchdir}vcvars${msvcarch}.bat"
+
+wine cmd /C call "$envfile" \> nul \& "$exe" "${args[@]}"
