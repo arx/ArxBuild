@@ -23,27 +23,20 @@ mkdir "$bin/branches" &> /dev/null
 mkdir "$bin/commits" &> /dev/null
 [ "$here/console.css" -nt "$logs/console.css" ] && cp "$here/console.css" "$logs/console.css"
 
+my_replace() {
+	replace "/mnt/overflow$1" "$2" \
+	         "Z:$(echo "$1" | tr '/' '\\')" "$2" \
+	         "z:$(echo "$1" | tr '/' '\\')" "$2" \
+	         "$1" "$2"
+}
+
 # Shorten long paths and make them independent of where arxbuild is installed.
 process_paths() {
-	local wdeps="$(readlink -f "$deps/windows")"
-	replace "$build"      "Build" \
-	        "$repo"       "$project_name" \
-	        "$toolchains" "Toolchains" \
-	        "$deps"       "Deps" \
-	        "$wdeps"      "Deps/windows" \
-	        "$here/"      "" \
-	        "Z:$(echo "$build"      | tr '/' '\\')"  "Build" \
-	        "Z:$(echo "$repo"       | tr '/' '\\')"  "$project_name" \
-	        "Z:$(echo "$toolchains" | tr '/' '\\')"  "Toolchains" \
-	        "Z:$(echo "$deps"       | tr '/' '\\')"  "Deps" \
-	        "Z:$(echo "$wdeps"      | tr '/' '\\')"  "Deps/windows" \
-	        "Z:$(echo "$here"       | tr '/' '\\')/" "" \
-	        "z:$(echo "$build"      | tr '/' '\\')"  "Build" \
-	        "z:$(echo "$repo"       | tr '/' '\\')"  "$project_name" \
-	        "z:$(echo "$toolchains" | tr '/' '\\')"  "Toolchains" \
-	        "z:$(echo "$deps"       | tr '/' '\\')"  "Deps" \
-	        "z:$(echo "$wdeps"      | tr '/' '\\')"  "Deps/windows" \
-	        "z:$(echo "$here"       | tr '/' '\\')/" ""
+	my_replace "$build"      "Build" | \
+	my_replace "$repo"       "$project_name"  | \
+	my_replace "$toolchains" "Toolchains" | \
+	my_replace "$deps"       "Deps" | \
+	my_replace "$here/"      ""
 }
 
 # Remove header and footer created by the script command.
