@@ -29,18 +29,21 @@ mkdir "$bin/commits" &> /dev/null
 
 my_replace() {
 	replace "/mnt/overflow$1" "$2" \
-	         "Z:$(echo "$1" | tr '/' '\\')" "$2" \
-	         "z:$(echo "$1" | tr '/' '\\')" "$2" \
+	         "Z:$(printf '%s' "$1" | tr '/' '\\')" "$2" \
+	         "z:$(printf '%s' "$1" | tr '/' '\\')" "$2" \
+	         "Z:$(printf '%s' "$1" | sed 's:/:\\\\:g')" "$2" \
+	         "z:$(printf '%s' "$1" | sed 's:/:\\\\:g')" "$2" \
 	         "$1" "$2"
 }
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 process_paths() {
-	my_replace "$build"      "Build" | \
-	my_replace "$repo"       "$project_name"  | \
-	my_replace "$toolchains" "Toolchains" | \
-	my_replace "$deps"       "Deps" | \
-	my_replace "$here/"      ""
+	my_replace "$build"             "Build" | \
+	my_replace "$repo"              "$project_name"  | \
+	my_replace "$toolchains"        "Toolchains" | \
+	my_replace "$deps/msvc/drive_c" "C:" | \
+	my_replace "$deps"              "Deps" | \
+	my_replace "$here/"             ""
 }
 
 # Remove header and footer created by the script command.
