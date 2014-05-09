@@ -24,6 +24,7 @@ cmake_options[msvc-11.0-32]+=" $arx_use_qt5"
 cmake_options[msvc-11.0-64]+=" $arx_use_qt5"
 cmake_options[msvc-12.0-32]+=" $arx_use_qt5"
 cmake_options[msvc-12.0-64]+=" $arx_use_qt5"
+cmake_options[gcc-armv6j-hf]+=" -DWITH_SDL=1"
 
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-4.7'
