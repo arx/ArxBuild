@@ -14,13 +14,23 @@ Initialize the git repository containing the project to be tested (location can 
 
 `$ git clone git://github.com/lubosz/ArxFatalis.git repo`
 
-`$ ./autobuild`
+`$ ./autobuild [options] [project]`
+
+Available options:
+
+Available options:
+
+* `--nofetch` (`-n`): Don't update the GIT repository before building
 
 console2html.cpp will be compiled automatically.
 
 ## Generate statistics and index pages
 
-`$ ./buildstats [-f]`
+`$ ./buildstats [options]`
+
+Available options:
+
+* `--force` (`-f`): Regenerate all index pages even if we think nothing changed
 
 Unless the optional parameter `-f` is given, only pages with changed build logs are generated.
 
