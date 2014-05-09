@@ -61,7 +61,7 @@ for arg in "$@" ;  do
 			if [ "$prefix" != '' ] || ( [ -e "$path" ] && [ "$path" != "/lib" ] ) ; then
 				case $path in
 					/*)  path="$(winepath -w "$path")" ;;
-					*/*) path="$(echo "$path" | sed 's/\//\\/')" ;;
+					*/*) path="$(printf '%s' "$path" | sed 's:/:\\:g')" ;;
 				esac
 			fi
 			arg="$prefix$path"
