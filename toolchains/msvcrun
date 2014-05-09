@@ -87,4 +87,4 @@ msvcinstalldir="C:\\Program Files\\Microsoft Visual Studio ${msvcver}"
 
 envfile="${msvcinstalldir}\\VC\\bin\\${msvcarchdir}vcvars${msvcarch}.bat"
 
-wine cmd /C call "$envfile" \> nul \& "$exe" "${args[@]}"
+exec "$here/runwine" wine cmd /C call "$envfile" \> nul \& "$exe" "${args[@]}"

@@ -4,10 +4,14 @@ cd "$(dirname "$0")" ; here="$(pwd)"
 source "$here/common"
 
 # Build the tools if needed.
-if [ -e "$here/console2html.cpp" ] && ( [ ! -e "$here/console2html" ] || [ "$here/console2html.cpp" -nt "$here/console2html" ] ) ; then
-	echo 'Building tools..'
-	g++ "$here/console2html.cpp" -o "$here/console2html"
-fi
+compile_tool() {
+	[ -e "$1" ] || return
+	[ -e "$2" ] && [ "$2" -nt "$1" ] && return
+	printf 'Building %s…\n' "${2##*/}"
+	g++ -std=c++11 -Wall -Wextra "$1" -o "$2"
+}
+compile_tool "$here/console2html.cpp" "$here/console2html"
+compile_tool "$toolchains/runwine.cpp" "$toolchains/runwine"
 
 echo 'Updating repo...'
 cd "$repo" || die "unable to cd to repository at $repo"
