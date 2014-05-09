@@ -73,6 +73,8 @@ escape_args() {
 	done
 }
 
+msvc_started=0
+
 build() {
 	
 	local compiler="$1"
@@ -145,6 +147,12 @@ build() {
 	[ ! "$branch_dst" ] || echo "$commit" > "$ref_branch"
 	
 	echo "${esc}[32m[$buildid]${esc}[0m"
+	
+	case "$compiler" in msvc-*) if [ $msvc_started = 0 ] ; then
+		echo "${esc}[36mStarting MSVC environment${esc}[0m"
+		"$toolchains/msvcrun" --start
+		msvc_started=1
+	fi ; esac
 	
 	# Final log file locations.
 	local dst_raw="$commit_dst/$buildid-raw.txt"
@@ -286,5 +294,11 @@ for f in `dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null` ; do
 	
 	build_branch "$branch"
 done
+
+if [ $msvc_started = 1 ] ; then
+	echo "${esc}[36mStopping MSVC environment${esc}[0m"
+	"$toolchains/msvcrun" --stop
+	msvc_started=0
+fi
 
 echo "Done, logs saved to $logs"

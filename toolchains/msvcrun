@@ -6,14 +6,30 @@ here="${here%/*}"
 
 exe="${self##*/}"
 
+export WINEPREFIX="$(readlink -f "$here/../deps/msvc/")"
+export WINEDEBUG='-all'
+
+if [ "$exe" = 'msvcrun' ] ; then
+	case "$1" in
+		--start)
+			wineserver --persistent
+			nohup wine cmd.exe < /dev/null &>/dev/null
+		;;
+		--stop)
+			wineserver --kill
+		;;
+		*)
+			echo "Please use symlink for the tool to invoke"
+			exit 1
+	esac
+	exit 0
+fi
+
 dir="${self%/*}"
 dir="${dir##*/msvc-}"
 
 msvcver="${dir%%-*}"
 msvcarch="${dir#*-}"
-
-export WINEPREFIX="$(readlink -f "$here/../deps/msvc/")"
-export WINEDEBUG='-all'
 
 if [ ! -e "$WINEPREFIX" ] ; then
 	echo "Please install MSVC into a WINEPREFIX at $WINEPREFIX"
