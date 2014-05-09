@@ -20,6 +20,10 @@ cmake_options[m32]+=" $arx_use_qt4"
 cmake_options[msvc-9.0-32]+=" $arx_use_qt4"
 cmake_options[msvc-9.0-64]+=" $arx_use_qt4"
 cmake_options[msvc-10.0-32]+=" $arx_use_qt5"
+cmake_options[msvc-11.0-32]+=" $arx_use_qt5"
+cmake_options[msvc-11.0-64]+=" $arx_use_qt5"
+cmake_options[msvc-12.0-32]+=" $arx_use_qt5"
+cmake_options[msvc-12.0-64]+=" $arx_use_qt5"
 
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-4.7'
@@ -92,6 +96,10 @@ build_types=(
 	
 	'msvc-9.0-32_debug'
 	'msvc-10.0-32_debug'
+	'msvc-11.0-32_debug'
+	# TODO fix this
+	#'msvc-12.0-32_debug'
+	#'msvc-12.0-64_unity'
 	
 	# Test different build types
 	
