@@ -25,6 +25,8 @@ if("${_msvc_dir}" MATCHES "-64$")
 else()
 	set(CMAKE_LIBRARY_ARCHITECTURE x86)
 endif()
+set(CMAKE_C_LIBRARY_ARCHTECTURE ${CMAKE_LIBRARY_ARCHITECTURE})
+set(CMAKE_CXX_LIBRARY_ARCHTECTURE ${CMAKE_LIBRARY_ARCHITECTURE})
 
 if(NOT _msvc_included)
 set(_msvc_included 1)
