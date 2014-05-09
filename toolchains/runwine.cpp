@@ -177,7 +177,7 @@ int main(int argc, char ** argv) {
 			
 			if(exited || FD_ISSET(pipes[i][0], &readfds)) {
 				
-				while(true) {
+				do {
 					
 					// Read as much as we can from the pipe
 					char buffer[4096];
@@ -188,6 +188,7 @@ int main(int argc, char ** argv) {
 							if(errno != EBADF) {
 								error("Read error on pipe %d (%d): %d", i, pipes[i][0], errno);
 							}
+							FD_CLR(pipes[i][0], &readfds);
 							close(fds[i]);
 							pipes[i][0] = -1;
 						}
@@ -201,7 +202,7 @@ int main(int argc, char ** argv) {
 					const char * p = buffer;
 					while(nread > 0) {
 						ssize_t nwritten = write(fds[i], p, nread);
-						if(nwritten < 0 && errno == EBADF) {
+						if(nwritten <= 0 && errno != EINTR) {
 							if(errno == EAGAIN) {
 								fcntl(fds[i], F_SETFL, fcntl(fds[i], F_GETFL, 0) & ~O_NONBLOCK);
 							} else {
@@ -221,11 +222,7 @@ int main(int argc, char ** argv) {
 						}
 					}
 					
-					if(pipes[i][0] < 0) {
-						break;
-					}
-					
-				}
+				} while(pipes[i][0] >= 0);
 				
 			} else {
 				FD_SET(pipes[i][0], &readfds);
