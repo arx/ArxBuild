@@ -52,4 +52,8 @@ foreach(_msvc_dir IN LISTS _msvc_dirs)
 	endif()
 endforeach()
 
+set(_msvc_paths "${CMAKE_CURRENT_LIST_DIR}/../deps/msvc/${_msvc_ver}-paths.cmake")
+get_filename_component(_msvc_paths ${_msvc_paths} REALPATH)
+include(${_msvc_paths})
+
 endif(NOT _msvc_included)
