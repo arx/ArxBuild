@@ -197,6 +197,22 @@ ignore_warnings=(
 	['ekopath*']='the anonymous namespace'
 )
 
+declare -A count_config_warnings
+count_config_warnings=(
+	[0]='CMake Warning'
+	[1]='Could NOT find'
+)
+
+declare -A ignore_config_warnings
+ignore_warnings=(
+)
+
+declare -A count_config_errors
+count_config_errors=(
+	[0]='Configuring incomplete, errors occurred!'
+	[1]='CMake Error'
+)
+
 # Declare which build types have known false positive warnings/errors.
 false_positives=(
 	'include-what-you-use'
