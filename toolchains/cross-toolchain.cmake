@@ -44,7 +44,13 @@ foreach(lang IN ITEMS C CXX)
 endforeach()
 
 # Set where the target environment is located
-set(CMAKE_FIND_ROOT_PATH "/usr/${_cross_target}")
+set(_cross_root "/usr/${_cross_target}")
+set(CMAKE_FIND_ROOT_PATH "${_cross_root}")
+# Also tell pkg-config because CMake doesn't
+set(_cross_pkgconfig "${_cross_root}/usr/lib/pkgconfig")
+set(_cross_pkgconfig "${_cross_root}/usr/share/pkgconfig:${_cross_pkgconfig}")
+set(ENV{PKG_CONFIG_LIBDIR} "${_cross_pkgconfig}")
+set(ENV{PKG_CONFIG_SYSROOT_DIR} "${_cross_root}")
 
 # Adjust the default behaviour of the find_xxx() commands:
 # Search headers and libraries in the target environment,

@@ -35,6 +35,9 @@ set(_msvc_wineroot "${CMAKE_CURRENT_LIST_DIR}/../deps/msvc/drive_c")
 get_filename_component(_msvc_wineroot ${_msvc_wineroot} REALPATH)
 set(CMAKE_FIND_ROOT_PATH "${_msvc_wineroot}")
 
+# Prevent pkg-config from finding stuff it shouldn't
+set(ENV{PKG_CONFIG_LIBDIR} "/dev/null")
+
 # Adjust the default behaviour of the find_xxx() commands:
 # Search headers and libraries in the target environment,
 # search programs in the host environment.

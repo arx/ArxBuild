@@ -84,8 +84,13 @@ set(CMAKE_C_COMPILER "${MinGW_GCC}")
 set(CMAKE_CXX_COMPILER "${MinGW_GXX}")
 set(CMAKE_RC_COMPILER "${MinGW_RC}")
 
-# Where the target environment is located
+# Set where the target environment is located
 set(CMAKE_FIND_ROOT_PATH "${MinGW_ROOT}")
+# Also tell pkg-config because CMake doesn't
+set(_MinGW_pkgconfig "${MinGW_ROOT}/usr/lib/pkgconfig")
+set(_MinGW_pkgconfig "${MinGW_ROOT}/usr/share/pkgconfig:${_MinGW_pkgconfig}")
+set(ENV{PKG_CONFIG_LIBDIR} "${_MinGW_pkgconfig}")
+set(ENV{PKG_CONFIG_SYSROOT_DIR} "${MinGW_ROOT}")
 
 # Adjust the default behaviour of the find_xxx() commands:
 # Search headers and libraries in the target environment,
