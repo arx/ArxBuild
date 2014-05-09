@@ -45,6 +45,7 @@ extern char ** environ;
  * Even starting a persistent wineserver beforehand does not solve this!
  * This utility will put a pipe between Wine and CMake and immediately closes the original
  * stdout and stderr file descriptors once the child hast exited.
+ * It also removes all carriage return bytes form stdout and stderr.
  */
 
 int main(int argc, char ** argv) {
@@ -169,15 +170,21 @@ int main(int argc, char ** argv) {
 		}
 		
 		for(int i = 0; i < npipes; i++) {
+			
 			if(pipes[i][0] < 0) {
 				continue;
 			}
+			
 			if(exited || FD_ISSET(pipes[i][0], &readfds)) {
+				
 				while(true) {
+					
+					// Read as much as we can from the pipe
 					char buffer[4096];
 					ssize_t nread = read(pipes[i][0], buffer, sizeof(buffer));
 					if(nread <= 0) {
 						if(nread == -1 && errno != EAGAIN && errno != EINTR) {
+							// Input is broken, close output
 							if(errno != EBADF) {
 								error("Read error on pipe %d (%d): %d", i, pipes[i][0], errno);
 							}
@@ -186,7 +193,11 @@ int main(int argc, char ** argv) {
 						}
 						break;
 					}
+					
+					// Remove pesky bytes
 					nread = std::remove(buffer, buffer + nread, '\r') - buffer;
+					
+					// Write the whole buffer to stdout / stderr
 					const char * p = buffer;
 					while(nread > 0) {
 						ssize_t nwritten = write(fds[i], p, nread);
@@ -194,6 +205,7 @@ int main(int argc, char ** argv) {
 							if(errno == EAGAIN) {
 								fcntl(fds[i], F_SETFL, fcntl(fds[i], F_GETFL, 0) & ~O_NONBLOCK);
 							} else {
+								// Output is broken, close input
 								if(errno != EBADF && errno != EPIPE) {
 									error("Write error on pipe %d (%d): %d", i, fds[i], errno);
 								}
@@ -208,13 +220,17 @@ int main(int argc, char ** argv) {
 							p += nwritten;
 						}
 					}
+					
 					if(pipes[i][0] < 0) {
 						break;
 					}
+					
 				}
+				
 			} else {
 				FD_SET(pipes[i][0], &readfds);
 			}
+			
 		}
 		
 		if(exited) {
