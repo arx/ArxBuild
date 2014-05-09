@@ -7,6 +7,7 @@
 set(CMAKE_SYSTEM_NAME Windows)
 
 string(REGEX REPLACE "-toolchain.cmake$" "" _msvc_dir "${CMAKE_CURRENT_LIST_FILE}")
+string(REGEX REPLACE "^.*/" "" _msvc_ver "${_msvc_dir}")
 
 # Which compilers to use for C and C++
 set(CMAKE_C_COMPILER "${_msvc_dir}/cl")
@@ -25,9 +26,12 @@ else()
 	set(CMAKE_LIBRARY_ARCHITECTURE x86)
 endif()
 
-# Where the target environment is located
-set(CMAKE_FIND_ROOT_PATH "${CMAKE_CURRENT_LIST_DIR}/../deps/windows/")
-get_filename_component(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} REALPATH)
+if(NOT _msvc_included)
+set(_msvc_included 1)
+
+set(_msvc_wineroot "${CMAKE_CURRENT_LIST_DIR}/../deps/msvc/drive_c")
+get_filename_component(_msvc_wineroot ${_msvc_wineroot} REALPATH)
+set(CMAKE_FIND_ROOT_PATH "${_msvc_wineroot}")
 
 # Adjust the default behaviour of the find_xxx() commands:
 # Search headers and libraries in the target environment,
@@ -35,3 +39,17 @@ get_filename_component(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH} REALPATH)
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+file(GLOB _msvc_dirs RELATIVE ${_msvc_wineroot} ${_msvc_wineroot}/Code/*)
+foreach(_msvc_dir IN LISTS _msvc_dirs)
+	if(EXISTS ${_msvc_wineroot}/${_msvc_dir}/lib OR
+	   EXISTS ${_msvc_wineroot}/${_msvc_dir}/bin OR
+	   EXISTS ${_msvc_wineroot}/${_msvc_dir}/include)
+		list(APPEND CMAKE_SYSTEM_PREFIX_PATH /${_msvc_dir})
+	endif()
+	if(EXISTS ${_msvc_wineroot}/${_msvc_dir}/${_msvc_ver})
+		list(APPEND CMAKE_SYSTEM_PREFIX_PATH /${_msvc_dir}/${_msvc_ver})
+	endif()
+endforeach()
+
+endif(NOT _msvc_included)
