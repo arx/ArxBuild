@@ -8,6 +8,7 @@ exe="${self##*/}"
 
 export WINEPREFIX="$(readlink -f "$here/../deps/msvc/")"
 export WINEDEBUG='-all'
+unset DISPLAY # run in headless mode to prevent dialog on wine updates
 
 if [ "$exe" = 'msvcrun' ] ; then
 	case "$1" in
