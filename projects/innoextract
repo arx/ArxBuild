@@ -133,6 +133,8 @@ build_types=(
 	
 )
 
+ignore_config_warnings['*nolzma*']='CMake Warning' # A warning is expeded here
+
 favicons['../images/favicon.ico']=''
 favicons['../images/logo.png']='128x128'
 favicons['../images/favicon.png']='16x16'
