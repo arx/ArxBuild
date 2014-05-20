@@ -98,9 +98,8 @@ build_types=(
 	'msvc-9.0-32_debug'
 	'msvc-10.0-32_debug'
 	'msvc-11.0-32_debug'
-	# TODO fix this
-	#'msvc-12.0-32_debug'
-	#'msvc-12.0-64_unity'
+	'msvc-12.0-32_debug'
+	'msvc-12.0-64_unity'
 	
 	# Test different build types
 	
