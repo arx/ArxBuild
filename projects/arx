@@ -64,9 +64,8 @@ build_types=(
 	'clang_libstdcxx_debug'
 	'clang_libstdcxx_unity'
 	
-	# TODO Broken for arx as of 5.0.0_pre20130113
-	#'ekopath_debug'
-	#'ekopath_unity'
+	'ekopath_debug'
+	'ekopath_unity'
 	
 	'icc_debug'
 	'icc_unity'
@@ -116,7 +115,7 @@ build_types=(
 	$default_compiler'_m32'
 	
 	$default_compiler'_debug_minimal'
-	$default_compiler'_unity_minimal'
+	$default_compiler'_unity_minimal_static'
 	
 	'gcc-freebsd-9.1-i686_debug'
 	
