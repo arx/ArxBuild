@@ -169,7 +169,7 @@ count_warnings=(
 	['style']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['winstyle']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'
-	['msvc-*']='warning [A-Z]+\d+ *\:'
+	['msvc-*']='warning [A-Z]+\d+ *\:|\; restarting link with'
 	['cppcheck*']='\:\d+]\: \([a-z]'
 	['flawfinder*']='\:\d+\: +\[\d+\] \([a-z]'
 	['doxygen*']='Warning\:'
@@ -221,9 +221,12 @@ false_positives=(
 	'cppcheck*'
 	'flawfinder*'
 	'*_xtra'
-	'gcc-4.1*'
-	'gcc-4.3*'
-	'gcc-4.4*'
+	'gcc-4.1'
+	'gcc-4.1_*'
+	'gcc-4.3'
+	'gcc-4.3_*'
+	'gcc-4.4'
+	'gcc-4.4_*'
 )
 
 ignored_branches=()
