@@ -37,6 +37,9 @@ include_directories+=(
 	-I "$repo/tools"
 )
 
+# TODO temp workaround for clang + libc++ + unity build = OOM/crash
+compiler_options[libcxx]+=" -fPIE"
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.
