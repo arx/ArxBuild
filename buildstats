@@ -55,6 +55,24 @@ count() {
 	fi
 }
 
+format_html() {
+	html_header "$project_name: $3 build" "../.." > "$2"
+	echo "<pre>" >> "$2"
+	"$here/console2html.cpp" --format html < "$1" >> "$2"
+	echo "</pre>" >> "$2"
+	html_footer >> "$2"
+}
+
+format_plain() {
+	"$here/console2html.cpp" --format plain < "$1" > "$2"
+}
+
+format() {
+	if [ "$2" -nt "$3" ] || [ "$here/console2html.cpp" -nt "$3" ] ; then
+		format_$1 "${@:2}"
+	fi
+}
+
 handle_build() {
 	
 	local file="$1"
@@ -75,10 +93,16 @@ handle_build() {
 	local loc="commits/$commit/$name"
 	local prefix="$logs/$loc"
 	
-	if [ ! -e "$prefix.txt" ] ; then
+	if [ ! -e "$prefix-raw.txt" ] ; then
 		echo "Skipping missing/incomplete '${esc}[33m$name${esc}[0m' at commit ${esc}[34m$commit${esc}[0m"
 		return
 	fi
+	
+	# Produce a nice colorful html log.
+	format html "$prefix-raw.txt" "$prefix.html" "$name"
+		
+	# Produce a plain text log without shell color codes.
+	format plain "$prefix-raw.txt" "$prefix.txt" "$name"
 	
 	local config_warnings=`count "$prefix-config.txt" "$name" config_warnings`
 	local config_errors=`count "$prefix-config.txt" "$name" config_errors`
@@ -159,12 +183,12 @@ handle_context() {
 
 echo "Updating indices..."
 
-for f in `dir -d $logs/branches/* 2> /dev/null` ; do
-	handle_context 'branch' "$f"
-done
-
 for f in `dir -d $logs/commits/* 2> /dev/null` ; do
 	handle_context 'commit' "$f"
+done
+
+for f in `dir -d $logs/branches/* 2> /dev/null` ; do
+	handle_context 'branch' "$f"
 done
 
 echo "Done."

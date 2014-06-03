@@ -1,3 +1,21 @@
+#if 0
+
+input="$(readlink -f "$(command -v "$0")")"
+output="${0%.*}"
+
+#// Compile ourseves
+if [ "$input" -nt "$output" ] ; then
+	printf 'Compiling %s...\n' "${output##*/}" >&2
+	${CXX:-g++} -std=c++11 -Wall -Wextra "$input" -o "$output" > /dev/null < /dev/null || exit 1
+fi
+
+#// Run the executable
+exec "$output" "$@"
+
+exit
+
+#endif // 0
+
 /*
  * Copyright (C) 2014 Daniel Scharrer
  *
@@ -62,7 +80,7 @@ int main(int argc, char ** argv) {
 	constexpr int fds[npipes] = { 1, 2 };
 	r = 0;
 	for(int i = 0; i < npipes; i++) {
-		if(!fcntl(fds[i], F_GETFD)) {
+		if(fcntl(fds[i], F_GETFD) >= 0) {
 			r = r || pipe(pipes[i]);
 			r = r || fcntl(pipes[i][0], F_SETFL, fcntl(pipes[i][0], F_GETFL, 0) | O_NONBLOCK);
 		} else {

@@ -3,16 +3,6 @@
 cd "$(dirname "$0")" ; here="$(pwd)"
 source "$here/common"
 
-# Build the tools if needed.
-compile_tool() {
-	[ -e "$1" ] || return
-	[ -e "$2" ] && [ "$2" -nt "$1" ] && return
-	printf 'Building %s…\n' "${2##*/}"
-	g++ -std=c++11 -Wall -Wextra "$1" -o "$2"
-}
-compile_tool "$here/console2html.cpp" "$here/console2html"
-compile_tool "$toolchains/runwine.cpp" "$toolchains/runwine"
-
 echo 'Updating repo...'
 cd "$repo" || die "unable to cd to repository at $repo"
 if [ $fetch = 1 ] ; then git fetch || die "git fetch failed" ; fi
@@ -25,7 +15,6 @@ mkdir "$logs/branches" &> /dev/null
 mkdir "$logs/commits" &> /dev/null
 mkdir "$bin/branches" &> /dev/null
 mkdir "$bin/commits" &> /dev/null
-[ "$here/console.css" -nt "$logs/console.css" ] && cp "$here/console.css" "$logs/console.css"
 
 my_replace() {
 	replace "/mnt/overflow$1" "$2" \
@@ -163,8 +152,6 @@ build() {
 	
 	# Final log file locations.
 	local dst_raw="$commit_dst/$buildid-raw.txt"
-	local dst_html="$commit_dst/$buildid.html"
-	local dst_plain="$commit_dst/$buildid.txt"
 	local dst_config="$commit_dst/$buildid-config.txt"
 	local dst_options="$commit_dst/$buildid-options.txt"
 	local dst_time="$commit_dst/$buildid-time.txt"
@@ -228,16 +215,6 @@ build() {
 		then descript < "$log_build" | process_paths | "${process[$compiler]}" > "$dst_raw"
 		else descript < "$log_build" | process_paths > "$dst_raw"
 	fi
-	
-	# Produce a nice colorful html log.
-	html_header "$buildid" "../.." > "$dst_html"
-	echo "<pre>" >> "$dst_html"
-	"$here/console2html" < "$dst_raw" >> "$dst_html"
-	echo "</pre>" >> "$dst_html"
-	html_footer >> "$dst_html"
-	
-	# Produce a plain text log without shell color codes.
-	sed -r "s/${esc}\\[[0-9]*(\\;[0-9]*)*m//g" "$dst_raw" > "$dst_plain"
 	
 	# Update statistics and indices.
 	touch "$commit_dst"
