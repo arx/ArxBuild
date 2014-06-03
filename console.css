@@ -48,10 +48,10 @@ th, td {
 .c30 { color: #686868; } /* black */
 .c31 { color: #ff5454; } /* red */
 .c32 { color: #18b218; } /* green */
-.c33 { color: #ffff54; } /* yellow */
+.c33 { color: #dddd43; } /* yellow */
 .c34 { color: #5454ff; } /* blue */
-.c35 { color: #ff54ff; } /* purple */
-.c36 { color: #54ffff; } /* cyan */
+.c35 { color: #dd43dd; } /* purple */
+.c36 { color: #43dddd; } /* cyan */
 .c37 { color: #eeeeee; } /* white */
 
 .w  { background-color: #fbe; }
