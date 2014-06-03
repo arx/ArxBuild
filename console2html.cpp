@@ -210,7 +210,6 @@ class html_format : public output {
 			}
 		}
 		
-		std::cerr << " /" << tag; // TODO debug
 		std::cout << "</" << tag << ">";
 		
 		stack.pop();
@@ -221,11 +220,6 @@ public:
 	html_format() { }
 	
 	void text(const char * text, std::size_t length) {
-		
-		if(!length) return; // TODO debug
-		std::cerr << "\"" ; // TODO debug
-		print_escaped(text, length); // TODO debug
-		std::cerr << "\"\n"; // TODO debug
 		
 		const char * end = text + length;
 		
@@ -255,8 +249,6 @@ public:
 	
 	void color(commands_t && cmds) {
 		
-		std::cerr << "→"; // TODO debug
-		
 		while(!stack.empty() && is_subset(stack.top().first, cmds)) {
 			// Completely overwrites stack frame, can close now
 			close();
@@ -285,7 +277,6 @@ public:
 			if(tit != tags.end()) {
 				// We have a special tag for this type
 				std::cout << "<" << tit->second << ">";
-				std::cerr << " " << tit->second; // TODO debug
 				commands_t cmd;
 				cmd[it->first] = it->second;
 				stack.emplace(std::move(cmd), current);
@@ -299,7 +290,6 @@ public:
 		
 		if(cmds.empty()) {
 			// No commands left
-			std::cerr << "\n"; // TODO debug
 			return;
 		}
 		
@@ -311,12 +301,9 @@ public:
 			} else {
 				std::cout << ' ';
 			}
-			std::cerr << " c" << cmd.second; // TODO debug
 			std::cout << 'c' << cmd.second;
 		}
 		std::cout << "\">";
-		
-		std::cerr << "\n"; // TODO debug
 		
 		stack.emplace(std::move(cmds), std::move(current));
 		
@@ -324,15 +311,9 @@ public:
 	
 	void reset() {
 		
-		if(stack.empty()) { // TODO debug
-			return; // TODO debug
-		} // TODO debug
-		
-		std::cerr << "→";
 		while(!stack.empty()) {
 			close();
 		}
-		std::cerr << "\n"; // TODO debug
 		
 	}
 	
@@ -431,7 +412,6 @@ int main(int argc,  char * argv[]) {
 			}
 			
 			if(buf[p] == '=') {
-				std::cerr << "\\e=\n"; // TODO debug
 				// msvc/wine generates this
 				p++;
 				continue;
@@ -452,15 +432,10 @@ int main(int argc,  char * argv[]) {
 				}
 			}
 			
-			std::cerr << "\\e[";
-			print_escaped(buf.data() + p, e - p);
-			std::cerr << "\n"; // TODO debug
-			
 			if(p < e && buf[e - 1] == 'm') {
 				
 				// Color command
 				
-				std::cerr << "cmds"; // TODO debug
 				while(p < e) {
 					
 					i = buf.find_first_not_of("0123456789", p);
@@ -477,7 +452,6 @@ int main(int argc,  char * argv[]) {
 						print_escaped(buf.data() + p, i - p);
 						std::cerr << "\"\n";
 					}
-					std::cerr << " " << cmd; // TODO debug
 					
 					if(cmd == 0) {
 						cmds.clear();
@@ -495,7 +469,6 @@ int main(int argc,  char * argv[]) {
 					}
 					
 				}
-				std::cerr << "\n"; // TODO debug
 				
 			} else if(e - p == 3 && buf[p] == '?' && buf[p + 1] == '1' && buf[p + 2] == 'h') {
 				// msvc/wine generates this
@@ -527,6 +500,10 @@ int main(int argc,  char * argv[]) {
 	
 	out->reset();
 	// Ignore trailing commands!
+	
+	for(; newlines > 1; newlines--) {
+		out->text("\n", 1);
+	}
 	
 	return 0;
 }
