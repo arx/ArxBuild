@@ -32,6 +32,8 @@ boost_gcc43="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52-gcc43/\""
 
 set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
 
+libcxx_libs=""
+
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
 cmake_options=(
@@ -53,7 +55,7 @@ cmake_options=(
 	[clang-3.3]="\"$set_cmake_toolchain/clang-3.3-toolchain.cmake\""
 	[clang-3.4]="\"$set_cmake_toolchain/clang-3.4-toolchain.cmake\""
 	[clang-dev]="\"$set_cmake_toolchain/clang-toolchain.cmake\""
-	[ekopath]="\"$set_cmake_toolchain/ekopath-toolchain.cmake\""
+	[ekopath]="\"$set_cmake_toolchain/ekopath-toolchain.cmake\" $boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_55-ekopath/\""
 	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
 	[msvc-9.0-32]="\"$set_cmake_toolchain/msvc-9.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-9.0-64]="\"$set_cmake_toolchain/msvc-9.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
@@ -101,6 +103,7 @@ compiler_options=(
 	[m32]='-m32'
 	[libcxx]='-stdlib=libc++'
 	[libstdcxx]='' # use default
+	[ekopath]='-fstrict-stl'
 )
 
 compiler_options[clang-analyzer]+=" ${compiler_options[libcxx]}"

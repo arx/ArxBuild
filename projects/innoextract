@@ -79,7 +79,7 @@ build_types=(
 	'msvc-10.0-32'
 	'msvc-11.0-32'
 	'msvc-12.0-32'
-	'msvc-12.0-64'
+	'msvc-12.0-64_debug'
 	
 	# Test different build types
 	
