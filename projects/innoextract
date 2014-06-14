@@ -4,6 +4,7 @@
 project_name='innoextract'
 
 # Some additional arx-specific build options
+cmake_options[debugout]='-DDEBUG=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[nolzma]='-DUSE_LZMA=0'
 cmake_options[style]="${cmake_options[debug]}"
@@ -79,7 +80,7 @@ build_types=(
 	'msvc-10.0-32'
 	'msvc-11.0-32'
 	'msvc-12.0-32'
-	'msvc-12.0-64_debug'
+	'msvc-12.0-64_debugout' # for _debug we would need proper debug versions of all libs
 	
 	# Test different build types
 	
