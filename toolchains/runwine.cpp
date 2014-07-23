@@ -3,7 +3,7 @@
 input="$(readlink -f "$(command -v "$0")")"
 output="${0%.*}"
 
-#// Compile ourseves
+#// Compile ourselves
 if [ "$input" -nt "$output" ] ; then
 	printf 'Compiling %s...\n' "${output##*/}" >&2
 	${CXX:-g++} -std=c++11 -Wall -Wextra "$input" -o "$output" > /dev/null < /dev/null || exit 1
