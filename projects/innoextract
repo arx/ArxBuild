@@ -3,7 +3,7 @@
 # What is the project called
 project_name='innoextract'
 
-# Some additional arx-specific build options
+# Some additional innoextract-specific build options
 cmake_options[debugout]='-DDEBUG=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[nolzma]='-DUSE_LZMA=0'
