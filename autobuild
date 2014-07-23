@@ -81,6 +81,11 @@ build() {
 	local ldflags="${linker_options[$compiler]}"
 	local prefixes="${prefix_paths[$compiler]}"
 	
+	if [ ! -z "$default_cmake_options" ] ; then
+		[ ! -z "$options" ] && local options="$options "
+		local options="$options$default_cmake_options"
+	fi
+	
 	for arg in "${@:2}" ; do
 		
 		local buildid="${buildid}_$arg"
