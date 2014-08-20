@@ -20,10 +20,6 @@ bin="$here/bin/$project"
 # Where to find additional toolchains.
 toolchains="$here/toolchains"
 
-# Location of temporary log files.
-log_build="$build/buildlog"
-log_config="$build/config.txt"
-
 deps="$here/deps"
 
 # What part of the checked-out repo to build (location of the CMakeLists.txt)

@@ -31,7 +31,7 @@ build_query() {
 	echo "$query"
 }
 
-count() {
+filter_log() {
 	
 	local file="$1"
 	local name="$2"
@@ -41,17 +41,13 @@ count() {
 	local ignore="$(build_query "$name" "ignore_$type")"
 	
 	if [ "$query" == '' ] ; then
-		echo '0'
 		return
 	fi
 	
 	
-	#echo "'grep -P \"$query\" \"$file\"'" >> /dev/stderr
-	#echo "'$ignore'" >> /dev/stderr
-	
-	if [ "$ignore" == '' ]
-		then grep -P "$query" "$file" |                      wc -l
-		else grep -P "$query" "$file" | grep -vP "$ignore" | wc -l
+	if [ -z "$ignore" ]
+		then grep -P "$query" "$file" |                      sort
+		else grep -P "$query" "$file" | grep -vP "$ignore" | sort
 	fi
 }
 
@@ -73,6 +69,19 @@ format() {
 	fi
 }
 
+is_cache_valid() {
+	local cache="$1"
+	local input="$2"
+	[ ! "$force" = 1 ] \
+		&& [ -f "$cache" ] \
+		&& [ ! "$input" -nt "$cache" ] \
+		&& [ ! "$here/buildstats" -nt "$cache" ] \
+		&& [ ! "$here/common" -nt "$cache" ] \
+		&& [ ! "$here/config" -nt "$cache" ] \
+		&& [ ! "$here/projects/$project" -nt "$cache" ] \
+		&& true
+}
+
 handle_build() {
 	
 	local file="$1"
@@ -80,14 +89,22 @@ handle_build() {
 	local path="${file%.ref}"
 	local name="${path##*/}"
 	
+	local has_false_positives=0
+	if in_wildcard_array "$name" "${false_positives[@]}" ; then
+		has_false_positives=1
+	fi
+	
+	
 	local commit="$(cat "$file")"
 	commits+="$commit
 "
 	local old_file="$path.old"
+	local old_prefix=''
 	if [ -f "$old_file" ] ; then
 		local old_commit="$(cat "$old_file")"
 		old_commits+="$old_commit
 "
+		old_prefix="$logs/commits/$old_commit/$name"
 	fi
 	
 	local prefix="$logs/commits/$commit/$name"
@@ -97,25 +114,42 @@ handle_build() {
 		return
 	fi
 	
+	local cache="$path-cache.html"
+	if is_cache_valid "$cache" "$prefix-raw.txt" ; then
+		local html="$(cat "$cache")
+"
+		if [ $has_false_positives = 0 ]
+			then builds_legit+="$html"
+			else builds_bogus+="$html"
+		fi
+		return
+	fi
+	
 	# Produce a nice colorful html log.
 	format html "$prefix-raw.txt" "$prefix.html" "$name"
 		
 	# Produce a plain text log without shell color codes.
 	format plain "$prefix-raw.txt" "$prefix.txt" "$name"
 	
-	local config_warnings="$(count "$prefix-config.txt" "$name" config_warnings)"
-	local config_errors="$(count "$prefix-config.txt" "$name" config_errors)"
+	local config_warnings="$(filter_log "$prefix-config.txt" "$name" config_warnings | wc -l)"
+	local config_errors="$(filter_log "$prefix-config.txt" "$name" config_errors | wc -l)"
 	
-	local warnings="$(count "$prefix.txt" "$name" warnings)"
-	local errors="$(count "$prefix.txt" "$name" errors)"
+	local warnings_file="$prefix-warnings.txt"
+	local errors_file="$prefix-errors.txt"
+	if ! is_cache_valid "$warnings_file" "$prefix.txt" ; then
+		filter_log "$prefix.txt" "$name" warnings > "$warnings_file"
+	fi
+	if ! is_cache_valid "$errors_file" "$prefix.txt" ; then
+		filter_log "$prefix.txt" "$name" errors > "$errors_file"
+	fi
+	local warnings="$(cat "$warnings_file" | wc -l)"
+	local errors="$(cat "$errors_file" | wc -l)"
 	
 	local time="$(grep real "$prefix-time.txt" 2> /dev/null)"
 	local time="${time##* }"
 	
 	local minutes="$(echo "$time" | sed -r 's/^real\t(.*)m(.*)s$/\1/g')"
 	local seconds="$(echo "$time" | sed -r 's/^real\t(.*)m(.*)s$/\2/g')"
-	
-	#echo "${esc}[34m$name${esc}[0m:   $warnings warnings,   $errors errors,   $minutes min $seconds s"
 	
 	local dir="${file%/*}"
 	local wprefix="$(relative_path "$dir" "$prefix")"
@@ -137,15 +171,50 @@ handle_build() {
 	<td><a href=\"$wprefix.txt\">[txt]</a></td>
 	<td><a href=\"$wprefix-raw.txt\">[raw]</a></td>
 	<td><a href=\"$wprefix-options.txt\">[opt]</a></td>
-	<td$config_class><a href=\"$wprefix-config.txt\">[cfg]</a></td>
-</tr>
-"
+	<td$config_class><a href=\"$wprefix-config.txt\">[cfg]</a></td>"
 	
-	local has_false_positives=0
-	if in_wildcard_array "$name" "${false_positives[@]}"
-		then builds_bogus+="$html"
-		else builds_legit+="$html"
+	if [ ! $has_false_positives = 0 ] ; then
+		
+		if [ ! -z "$old_prefix" ] ; then
+			local old_warnings_file="$old_prefix-warnings.txt"
+			local old_errors_file="$old_prefix-errors.txt"
+			
+			local change="$(
+				diff -uaiw "$old_warnings_file" "$warnings_file" | tail -n +3 | grep -P '^(\+|\-)'
+				diff -uaiw "$old_errors_file" "$errors_file" | tail -n +3 | grep -P '^(\+|\-)'
+			)"
+			local change_file="$path-change.txt"
+			printf '%s\n' "$change" > "$change_file"
+			
+			local changes=''
+			local broken="$(printf '%s' "$change" | grep -P '^\+' | wc -l)"
+			local fixed="$(printf '%s' "$change" | grep -P '^\-' | wc -l)"
+			[ $broken = 0 ] || changes+="<span class=\"bad\">+$broken</span>"
+			[ ! $broken = 0 ] && [ ! $fixed = 0 ] && changes+=' '
+			[ $fixed = 0 ] || changes+="<span class=\"good\">-$fixed</span>"
+			local wchange_file="$(relative_path "$dir" "$change_file")"
+			if [ -z "$changes" ]
+				then changes='='
+				else changes="<a href="$wchange_file"><b>$changes</b></a>"
+			fi
+			html+="
+	<td align=center>$changes</td>"
+		fi
+		
 	fi
+	
+	html+='
+</tr>
+'
+	
+	printf '%s' "$html" > "$cache"
+	
+	if [ $has_false_positives = 0 ]
+		then builds_legit+="$html"
+		else builds_bogus+="$html"
+	fi
+	
+	echo "${esc}[34m$name${esc}[0m:   $warnings warnings,   $errors errors,   $minutes min $seconds s"
 	
 }
 
@@ -190,12 +259,7 @@ handle_context() {
 	local context="${dir##*/}"
 	
 	local timefile="$dir/index.time"
-	if [ "$force" = 1 ] \
-		|| [ "$dir" -nt "$timefile" ] \
-		|| [ "$here/buildstats" -nt "$timefile" ] \
-		|| [ "$here/common" -nt "$timefile" ] \
-		|| [ "$here/config" -nt "$timefile" ] \
-		|| [ "$here/projects/$project" -nt "$timefile" ]
+	if ! is_cache_valid "$timefile" "$dir"
 		then echo "Updating '${esc}[36m$context${esc}[0m'..."
 		else return
 	fi

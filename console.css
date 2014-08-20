@@ -79,3 +79,8 @@ pre {
 
 .stats .tm { border-right: none; }
 .stats .ts { border-left: none; }
+
+.good { color: #008000; text-align: center; }
+.okay { color: #6b8e23; text-align: center; }
+.poor { color: #cc8c00; text-align: center; }
+.bad  { color: #bb0000; text-align: center; }

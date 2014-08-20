@@ -133,6 +133,10 @@ build_suffixes=(
 	'-options.txt'
 	'-raw.txt'
 	'-time.txt'
+	'-errors.txt'
+	'-warnings.txt'
+	'-cache.html'
+	'-change.txt'
 )
 
 rmbuild() {
