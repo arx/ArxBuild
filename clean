@@ -10,9 +10,9 @@ reference_build() {
 	local file="$1"
 	local branch="$2"
 	
-	local name="${file%.ref}"
-	local name="${name##*/}"
-	local commit=`cat "$file" 2> /dev/null`
+	local path="${file%.ref}"
+	local name="${path##*/}"
+	local commit="$(cat "$file" 2> /dev/null)"
 	
 	if ! in_array "$name" "${build_types[@]}" ; then
 		echo "Removing obsolete build type ${esc}[32m$name${esc}[0m in ${esc}[34m$branch${esc}[0m"
@@ -21,6 +21,12 @@ reference_build() {
 	fi
 	
 	references["$commit/$name"]=1
+	
+	local old_file="$path.old"
+	if [ -f "$old_file" ] ; then
+		local old_commit="$(cat "$old_file" 2> /dev/null)"
+		references["$old_commit/$name"]=1
+	fi
 	
 }
 

@@ -124,7 +124,9 @@ in_wildcard_array() {
 }
 
 build_suffixes=(
+	'.force'
 	'.ref'
+	'.old'
 	'.html'
 	'.txt'
 	'-config.txt'
@@ -150,4 +152,24 @@ is_valid_branch() {
 	done
 	
 	return $false
+}
+
+relative_path() {
+	
+	local dir="${1%/}"
+	local target="$2"
+	
+	local up=''
+	
+	# Find the common part of $target and $dir
+	while [ ! -z "$dir" ] && [ "${target#$dir}" = "${target}" ] ; do
+		[ "${dir%/*}" = "$dir" ] && dir=''
+		dir="${dir%/*}"
+		up="../$up"
+	done
+	
+	target="${target#$dir}"
+	target="${target#/}"
+	
+	printf '%s' "$up$target"
 }

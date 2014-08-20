@@ -11,7 +11,7 @@ toclean=( )
 
 pushd "$logs/branches" > /dev/null
 	eval "branches=( $branches_pattern )"
-	[ ${#branches[@]} = 0 ] && die "No matching branches for $barnches_pattern!"
+	[ ${#branches[@]} = 0 ] && die "No matching branches for $branches_pattern!"
 	for branch in "${branches[@]}" ; do
 		pushd "$branch" > /dev/null
 			eval "builds=( $builds_pattern.ref )"
@@ -19,9 +19,8 @@ pushd "$logs/branches" > /dev/null
 				[ -f "$build" ] || continue
 				commit="$(cat "$build")"
 				build="${build%.ref}"
-				echo "Removing ${dim_cyan}$branch${reset}/${dim_green}$build${reset}"
+				# echo "Forcing rebuild for ${dim_cyan}$branch${reset}/${dim_green}$build${reset}"
 				toclean+=( "$commit/$build" )
-				rmbuild "$build"
 			done
 		popd > /dev/null
 	done
@@ -32,7 +31,7 @@ pushd "$logs/commits" > /dev/null
 	for commitbuild in "${toclean[@]}" ; do
 		commit="${commitbuild%%/*}"
 		build="${commitbuild#*/}"
-		echo "Removing ${dim_blue}$commit${reset}/${dim_green}$build${reset}"
-		rmbuild "$commitbuild"
+		echo "Forcing rebuild for ${dim_blue}$commit${reset}/${dim_green}$build${reset}"
+		touch "$commitbuild.force"
 	done
 popd > /dev/null

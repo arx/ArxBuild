@@ -37,8 +37,8 @@ count() {
 	local name="$2"
 	local type="$3"
 	
-	local query=`build_query "$name" "count_$type"`
-	local ignore=`build_query "$name" "ignore_$type"`
+	local query="$(build_query "$name" "count_$type")"
+	local ignore="$(build_query "$name" "ignore_$type")"
 	
 	if [ "$query" == '' ] ; then
 		echo '0'
@@ -76,22 +76,21 @@ format() {
 handle_build() {
 	
 	local file="$1"
-	local allow_false_positives="$2"
 	
-	local name="${file%.ref}"
-	local name="${name##*/}"
-	local commit=`cat "$file"`
+	local path="${file%.ref}"
+	local name="${path##*/}"
 	
-	local has_false_positives=0
-	if in_wildcard_array "$name" "${false_positives[@]}" ; then
-		local has_false_positives=1
+	local commit="$(cat "$file")"
+	commits+="$commit
+"
+	local old_file="$path.old"
+	if [ -f "$old_file" ] ; then
+		local old_commit="$(cat "$old_file")"
+		old_commits+="$old_commit
+"
 	fi
-	if [ $has_false_positives != $allow_false_positives ] ; then
-		return
-	fi
 	
-	local loc="commits/$commit/$name"
-	local prefix="$logs/$loc"
+	local prefix="$logs/commits/$commit/$name"
 	
 	if [ ! -e "$prefix-raw.txt" ] ; then
 		echo "Skipping missing/incomplete '${esc}[33m$name${esc}[0m' at commit ${esc}[34m$commit${esc}[0m"
@@ -104,42 +103,83 @@ handle_build() {
 	# Produce a plain text log without shell color codes.
 	format plain "$prefix-raw.txt" "$prefix.txt" "$name"
 	
-	local config_warnings=`count "$prefix-config.txt" "$name" config_warnings`
-	local config_errors=`count "$prefix-config.txt" "$name" config_errors`
+	local config_warnings="$(count "$prefix-config.txt" "$name" config_warnings)"
+	local config_errors="$(count "$prefix-config.txt" "$name" config_errors)"
 	
-	local warnings=`count "$prefix.txt" "$name" warnings`
-	local errors=`count "$prefix.txt" "$name" errors`
+	local warnings="$(count "$prefix.txt" "$name" warnings)"
+	local errors="$(count "$prefix.txt" "$name" errors)"
 	
-	local time=`grep real "$prefix-time.txt" 2> /dev/null`
+	local time="$(grep real "$prefix-time.txt" 2> /dev/null)"
 	local time="${time##* }"
 	
-	local minutes=`echo "$time" | sed -r 's/^real\t(.*)m(.*)s$/\1/g'`
-	local seconds=`echo "$time" | sed -r 's/^real\t(.*)m(.*)s$/\2/g'`
+	local minutes="$(echo "$time" | sed -r 's/^real\t(.*)m(.*)s$/\1/g')"
+	local seconds="$(echo "$time" | sed -r 's/^real\t(.*)m(.*)s$/\2/g')"
 	
-	echo "${esc}[34m$name${esc}[0m:   $warnings warnings,   $errors errors,   $minutes min $seconds s"
+	#echo "${esc}[34m$name${esc}[0m:   $warnings warnings,   $errors errors,   $minutes min $seconds s"
 	
-	local wprefix="$toroot/$loc"
+	local dir="${file%/*}"
+	local wprefix="$(relative_path "$dir" "$prefix")"
 	
 	local warnings_l='warnings'
 	[ "$warnings" = 1 ] && warnings_l='warning&nbsp;'
 	local errors_l='errors'
 	[ "$errors" = 1 ] && errors_l='error&nbsp;'
 	
-	config_class=''
+	local config_class=''
 	[ $config_warnings = 0 ] || config_class=" class='w w$config_warnings'"
 	[ $config_errors = 0 ] || config_class=" class='e e$config_errors'"
 	
-	echo "<tr>" >> "$index"
-	echo "	<td class='n'><a href=\"$wprefix.html\">$name</a></td>" >> "$index"
-	echo "	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>" >> "$index"
-	echo "	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>" >> "$index"
-	echo "	<td align=right class='tm'>$minutes min</td><td align=right class='ts'>$seconds s</td>" >> "$index"
-	echo "	<td><a href=\"$wprefix.txt\">[txt]</a></td>" >> "$index"
-	echo "	<td><a href=\"$wprefix-raw.txt\">[raw]</a></td>" >> "$index"
-	echo "	<td><a href=\"$wprefix-options.txt\">[opt]</a></td>" >> "$index"
-	echo "	<td$config_class><a href=\"$wprefix-config.txt\">[cfg]</a></td>" >> "$index"
-	echo "</tr>" >> "$index"
+	local html="<tr>
+	<td class='n'><a href=\"$wprefix.html\">$name</a></td>
+	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>
+	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>
+	<td align=right class='tm'>$minutes min</td><td align=right class='ts'>$seconds s</td>
+	<td><a href=\"$wprefix.txt\">[txt]</a></td>
+	<td><a href=\"$wprefix-raw.txt\">[raw]</a></td>
+	<td><a href=\"$wprefix-options.txt\">[opt]</a></td>
+	<td$config_class><a href=\"$wprefix-config.txt\">[cfg]</a></td>
+</tr>
+"
 	
+	local has_false_positives=0
+	if in_wildcard_array "$name" "${false_positives[@]}"
+		then builds_bogus+="$html"
+		else builds_legit+="$html"
+	fi
+	
+}
+
+link_builds() {
+	
+	local name="$1"
+	local dir="$2"
+	local commits="$(printf '%s' "$3" | sort | uniq)"
+	
+	[ -z "$commits" ] && return
+	
+	printf '%s' "<b>$name"
+	
+	local comma=0
+	
+	for commit in $commits ; do
+		
+		if [ $comma = 1 ]
+			then printf '%s' ", "
+			else comma=1
+		fi
+		
+		url="$(relative_path "$dir" "$logs/commits/$commit/")"
+		
+		timestamp="$(git --git-dir="$repo/.git" show -s --format='%ct' "$commit")"
+		datetime="$(date --utc --iso-8601=seconds --date="@$timestamp")"
+		time="$(date --utc --rfc-3339=seconds --date="@$timestamp")"
+		time="${time%+00:00}"
+		
+		printf '%s' "<a href="$url">${commit:0:6}</a> (<time datetime=\"$datetime\">$time</time>)"
+		
+	done
+	
+	printf '%s\n' '</b><br>'
 }
 
 handle_context() {
@@ -149,45 +189,71 @@ handle_context() {
 	
 	local context="${dir##*/}"
 	
-	toroot='../..'
-	
-	context=${dir##*/}
-	
-	index="$dir/index.html"
-	
-	if [ "$dir" -nt "$index" ] || [ "$force" ]
+	local timefile="$dir/index.time"
+	if [ "$force" = 1 ] \
+		|| [ "$dir" -nt "$timefile" ] \
+		|| [ "$here/buildstats" -nt "$timefile" ] \
+		|| [ "$here/common" -nt "$timefile" ] \
+		|| [ "$here/config" -nt "$timefile" ] \
+		|| [ "$here/projects/$project" -nt "$timefile" ]
 		then echo "Updating '${esc}[36m$context${esc}[0m'..."
 		else return
 	fi
 	
-	html_header "$project_name build logs for $type $context" "$toroot" > "$index"
-	echo "<h1>Build logs for $type $context</h1>" >> "$index"
-	echo "<a href=\"../\">Other Logs</a><br><br>" >> "$index"
-	
-	echo "<table cellspacing=1 cellpadding=2 class='legit stats'>" >> "$index"
-	for f in `dir -d $dir/*.ref 2> /dev/null | sort -V` ; do
-		handle_build "$f" 0
+	local commits=''
+	local old_commits=''
+	local builds_legit=''
+	local builds_bogus=''
+	for f in $(dir -d $dir/*.ref 2> /dev/null | sort -V) ; do
+		handle_build "$f"
 	done
-	echo "</table>" >> "$index"
 	
-	echo "<h2 id=\"analyzers\">Static analyzers and other build logs that are likely to contain false positives:</h2>" >> "$index"
-	echo "<table cellspacing=1 cellpadding=2 class='bogus stats'>" >> "$index"
-	for f in `dir -d $dir/*.ref 2> /dev/null | sort -V` ; do
-		handle_build "$f" 1
-	done
-	echo "</table>" >> "$index"
+	local html="$(html_header "$project_name build logs for $type $context" "../..")
 	
-	html_footer >> "$index"
+	<h1>Build logs for $type $context</h1>
+	<a href=\"../\">Other Logs</a><br>
+	<br>
+"
+	if [ ! "$type" = 'commit' ] ; then
+		html+="$(link_builds 'Current build: ' "$dir" "$commits" | sed 's:^:\t:')"
+		html+="$(link_builds 'Previous build: ' "$dir" "$old_commits" | sed 's:^:\t:')"
+	fi
 	
+	if [ ! -z "$builds_legit" ] ; then
+		html+="	
+	<br>
+	<table cellspacing=1 cellpadding=2 class='legit stats'>
+$(printf '%s' "$builds_legit" | sed 's:^:\t\t:')
+	</table>"
+	fi
+	
+	if [ ! -z "$builds_bogus" ] ; then
+		html+="	
+	<h2 id=\"analyzers\">Static analyzers and other build logs that are likely to contain false positives:</h2>
+	<table cellspacing=1 cellpadding=2 class='bogus stats'>
+$(printf '%s' "$builds_bogus" | sed 's:^:\t\t:')
+	</table>"
+	fi
+	
+	html+="	
+$(html_footer)"
+	
+	local index="$dir/index.html"
+	if [ ! -e "$index" ] || [ "$(cat "$index")" != "$html" ]
+		then printf '%s\n' "$html" > "$index"
+		else echo "${esc}[32m(no changes)${esc}[0m"
+	fi
+	
+	touch "$timefile"
 }
 
 echo "Updating indices..."
 
-for f in `dir -d $logs/commits/* 2> /dev/null` ; do
+for f in $(dir -d $logs/commits/* 2> /dev/null) ; do
 	handle_context 'commit' "$f"
 done
 
-for f in `dir -d $logs/branches/* 2> /dev/null` ; do
+for f in $(dir -d $logs/branches/* 2> /dev/null) ; do
 	handle_context 'branch' "$f"
 done
 

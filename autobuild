@@ -41,19 +41,11 @@ descript() {
 }
 
 make_helper() {
-	script -c "$1" "$log_build" &> /dev/null
+	script -c "$1" "$2" &> /dev/null
 }
 
 timed_make() {
-	time make_helper "$1"
-}
-
-build_cancelled() {
-	rm $commit_dst/$buildid.* &> /dev/null
-	rm $commit_dst/$buildid-* &> /dev/null
-	rm $branch_dst/$buildid.* &> /dev/null
-	rm $branch_dst/$buildid-* &> /dev/null
-	die 'Build cancelled!'
+	time make_helper "$1" "$2"
 }
 
 escape() {
@@ -70,6 +62,33 @@ escape_args() {
 }
 
 msvc_started=0
+
+set_branch_commit() {
+	local branch_dst="$1"
+	local buildid="$2"
+	local commit="$3"
+	
+	local bin_branch="$branch_bindst/$buildid"
+	local bin_commit="$commit_bindst/$buildid"
+	if [ -e "$bin_commit" ] \
+		&& ( [ ! -e "$bin_branch" ] \
+		  || [ "$(readlink -f "$bin_branch")" != "$(readlink -f "$bin_commit")" ] \
+		) ; then
+		rm "$bin_branch" &> /dev/null
+		ln -s --relative "$bin_commit" "$bin_branch"
+		touch "$branch_bindst"
+	fi
+	
+	local ref_branch="$branch_dst/$buildid.ref"
+	local old_branch="$branch_dst/$buildid.old"
+	if [ -e "$ref_branch" ] ; then
+		local old_commit="$(cat "$ref_branch")"
+		[ "$old_commit" = "$commit" ] && return # nothing changed
+		mv "$ref_branch" "$old_branch"
+	fi
+	echo "$commit" > "$ref_branch"
+	touch "$branch_dst"
+}
 
 build() {
 	
@@ -124,28 +143,12 @@ build() {
 		local options="$options \"-DCMAKE_PREFIX_PATH=$prefixes\""
 	fi
 	
-	local ref_branch="$branch_dst/$buildid.ref"
 	local ref_commit="$commit_dst/$buildid.ref"
-	
-	trap "build_cancelled" SIGHUP SIGINT SIGTERM
-	
-	if [ -e "$ref_commit" ] ; then
-		# Build already exists.
-		if [ "$branch_dst" ] && ( [ ! -e "$ref_branch" ] || [ `cat "$ref_branch"` != "$commit" ] ) ; then
-			# Record this in the branch anyway.
-			echo "$commit" > "$ref_branch"
-			touch "$branch_dst"
-			"$here/buildstats" "$project" &> /dev/null
-		fi
-		if [ "$branch_bindst" ] && [ -e "$commit_bindst/$buildid" ] ; then
-			rm "$branch_bindst/$buildid" &> /dev/null
-			ln -s --relative "$commit_bindst/$buildid" "$branch_bindst/$buildid"
-		fi
+	local force_commit="$commit_dst/$buildid.force"
+	if [ -e "$ref_commit" ] && [ ! -e "$force_commit" ] ; then
+		set_branch_commit "$branch_dst" "$buildid" "$commit"
 		return
-		else echo "$commit" > "$ref_commit"
 	fi
-	
-	[ ! "$branch_dst" ] || echo "$commit" > "$ref_branch"
 	
 	echo "${esc}[32m[$buildid]${esc}[0m"
 	
@@ -155,21 +158,27 @@ build() {
 		msvc_started=1
 	fi ; esac
 	
-	# Final log file locations.
-	local dst_raw="$commit_dst/$buildid-raw.txt"
-	local dst_config="$commit_dst/$buildid-config.txt"
-	local dst_options="$commit_dst/$buildid-options.txt"
-	local dst_time="$commit_dst/$buildid-time.txt"
 	
 	# Clear the build directory.
 	find "$build" -mindepth 1 -delete
 	rm -r "$repo/bin" &> /dev/null
+	
+	# Final log file locations.
+	[ -d "$stage" ] || mkdir "$stage" || die "Could not create stage directory!"
+	find "$stage" -mindepth 1 -delete
+	local dst_raw="$stage/$buildid-raw.txt"
+	local dst_config="$stage/$buildid-config.txt"
+	local dst_options="$stage/$buildid-options.txt"
+	local dst_time="$stage/$buildid-time.txt"
 	
 	cd "$build"
 	
 	local do_build=1
 	
 	local _config_required="${config_required[$compiler]:-1}"
+	
+	local log_build="$stage/buildlog.script"
+	local log_config="$stage/config.log"
 	
 	if [ ! "$_config_required" = 0 ] ; then
 		echo 'Configuring...'
@@ -185,10 +194,10 @@ build() {
 	if [ $do_build = 1 ] ; then
 		
 		echo 'Building...'
-		timed_make "$_make_command" &> "$dst_time"
+		timed_make "$_make_command" "$log_build" &> "$dst_time"
 		
 		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
-			build_cancelled
+			die "Build cancelled!"
 		fi
 		
 		# Save the resulting binaries.
@@ -198,9 +207,6 @@ build() {
 		if [ "$_make_command" = 'make' ] || [ "$_make_command" = 'make -k' ] ; then
 			DESTDIR="$commit_bindst/$buildid/" make -k install &> /dev/null
 		fi
-		
-		rm "$branch_bindst/$buildid" &> /dev/null
-		ln -s --relative "$commit_bindst/$buildid" "$branch_bindst/$buildid"
 		
 	fi
 	
@@ -221,12 +227,20 @@ build() {
 		else descript < "$log_build" | process_paths > "$dst_raw"
 	fi
 	
-	# Update statistics and indices.
-	touch "$commit_dst"
-	touch "$branch_dst"
-	"$here/buildstats" "$project" &> /dev/null
 	
-	trap "die 'Cancelled!'" SIGHUP SIGINT SIGTERM
+	# Record build for branch
+	touch "$branch_dst"
+	set_branch_commit "$branch_dst" "$buildid" "$commit"
+	
+	# Record build for commit
+	touch "$commit_dst"
+	[ -e "$ref_commit" ] && rm "$ref_commit"
+	mv "$stage/$buildid"* "$commit_dst/"
+	echo "$commit" > "$ref_commit"
+	[ -e "$force_commit" ] && rm "$force_commit"
+	
+	# Update statistics and indices.
+	"$here/buildstats" "$project" &> /dev/null
 	
 }
 

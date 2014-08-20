@@ -8,6 +8,9 @@ repo="$here/repo/$project"
 # Directory to use for building.
 build="$here/build"
 
+# Temporary directory for logs
+stage="$build/.autobuild"
+
 # Where to save the resulting logs. (must end in 'logs' for stats to work)
 logs="$here/logs/$project"
 
