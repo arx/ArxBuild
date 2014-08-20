@@ -100,9 +100,9 @@ build_types=(
 	'mingw_debug'
 	'mingw_unity'
 	
-	'msvc-9.0-32_debug'
-	'msvc-10.0-32_debug'
-	'msvc-11.0-32_debug'
+	'msvc-9.0-32_unity'
+	'msvc-10.0-32_unity'
+	'msvc-11.0-32_unity'
 	'msvc-12.0-32_debug'
 	'msvc-12.0-64_unity'
 	
