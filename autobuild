@@ -274,6 +274,8 @@ build_branch() {
 	mkdir "$branch_bindst" &> /dev/null
 	mkdir "$commit_bindst" &> /dev/null
 	
+	echo "file://$branch_dst/index.html"
+	
 	# Build with different configurations.
 	
 	for build_type in "${build_types[@]}" ; do
