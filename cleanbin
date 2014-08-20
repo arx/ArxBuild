@@ -65,6 +65,13 @@ echo "Cleaning unreferenced binaries..."
 
 branches=(`dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null`)
 
+if [ $build_latest_tag = 1 ] ; then
+	latest_tag="$(
+		git --git-dir="$repo/.git" describe --tags $(git --git-dir="$repo/.git" rev-list --tags --max-count=1)
+	)"
+	[ -z "$latest_tag" ] || branches+=( "$latest_tag" )
+fi
+
 # Collect referenced commits.
 for f in `dir -d $bin/branches/* 2> /dev/null` ; do
 	reference_branch "$f"

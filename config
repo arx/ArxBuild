@@ -238,3 +238,5 @@ favicons=()
 
 # Enable color output on newer GCC versions (4.9+)
 export GCC_COLORS=1
+
+build_latest_tag=1

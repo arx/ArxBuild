@@ -253,7 +253,9 @@ build_branch() {
 	
 	cd "$repo"
 	git reset --hard &> /dev/null
-	git checkout "origin/$branch" &> /dev/null || die "error checking out branch $branch"
+	git checkout "origin/$branch" &> /dev/null \
+		|| git checkout "tags/$branch" &> /dev/null \
+		|| die "error checking out branch $branch"
 	
 	commit=`cat "$repo/.git/HEAD"`
 	
@@ -285,6 +287,13 @@ build_branch() {
 	
 	#build_types
 }
+
+if [ $build_latest_tag = 1 ] ; then
+	latest_tag="$(
+		git --git-dir="$repo/.git" describe --tags $(git --git-dir="$repo/.git" rev-list --tags --max-count=1)
+	)"
+	[ -z "$latest_tag" ] || build_branch "$latest_tag"
+fi
 
 # Build all remote branches.
 for f in `dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null` ; do
