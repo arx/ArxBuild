@@ -244,7 +244,12 @@ link_builds() {
 		time="$(date --utc --rfc-3339=seconds --date="@$timestamp")"
 		time="${time%+00:00}"
 		
-		printf '%s' "<a href="$url">${commit:0:6}</a> (<time datetime=\"$datetime\">$time</time>)"
+		text="$(
+			git --git-dir="$repo/.git" describe --exact-match --tags "$commit" 2> /dev/null \
+			|| printf '%s' "${commit:0:6}"
+		)"
+		
+		printf '%s' "<a href="$url">$text</a> (<time datetime=\"$datetime\">$time</time>)"
 		
 	done
 	
