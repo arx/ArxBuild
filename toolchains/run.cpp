@@ -6,7 +6,7 @@ output="${0%.*}"
 #// Compile ourselves
 if [ "$input" -nt "$output" ] ; then
 	printf 'Compiling %s...\n' "${output##*/}" >&2
-	${CXX:-g++} -std=c++11 -Wall -Wextra "$input" -o "$output" > /dev/null < /dev/null || exit 1
+	${CXX:-g++} -std=c++11 -Wall -Wextra "$input" -o "$output" -lutil > /dev/null < /dev/null || exit 1
 fi
 
 #// Run the executable
@@ -46,15 +46,19 @@ exit
 #include <unistd.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include <sys/ioctl.h>
 #include <sys/select.h>
 #include <sys/signalfd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <pty.h>
+
 extern char ** environ;
 
-#define error(err, ...) std::fprintf(stderr, "[runwine] " err "\n", ## __VA_ARGS__);
+#define error(err, ...) std::fprintf(stderr, "[run] " err "\n", ## __VA_ARGS__);
 
 /*!
  * Wine sometimes leaves stdin/stdout file descriptors open indefinitely in wineserver or
@@ -68,8 +72,15 @@ extern char ** environ;
 
 int main(int argc, char ** argv) {
 	
+	bool tty = false;
+	if(argc > 1 && !strcmp(argv[1], "--tty")) {
+		argc--;
+		argv++;
+		tty = true;
+	}
+	
 	if(argc < 2) {
-		error("Usage: runwine [command]");
+		error("Usage: run [command]");
 		return 1;
 	}
 	
@@ -79,13 +90,21 @@ int main(int argc, char ** argv) {
 	int pipes[npipes][2];
 	constexpr int fds[npipes] = { 1, 2 };
 	r = 0;
-	for(int i = 0; i < npipes; i++) {
-		if(fcntl(fds[i], F_GETFD) >= 0) {
-			r = r || pipe(pipes[i]);
-			r = r || fcntl(pipes[i][0], F_SETFL, fcntl(pipes[i][0], F_GETFL, 0) | O_NONBLOCK);
-		} else {
-			pipes[i][0] = -1;
-			pipes[i][1] = -1;
+	int readpipes = tty ? 1 : 2;
+	if(tty) {
+		r = r || openpty(&pipes[0][0], &pipes[0][1], NULL, NULL, NULL);
+		r = r || fcntl(pipes[0][0], F_SETFL, fcntl(pipes[0][0], F_GETFL, 0) | O_NONBLOCK);
+		pipes[1][0] = pipes[0][0];
+		pipes[1][1] = pipes[0][1];
+	} else {
+		for(int i = 0; i < npipes; i++) {
+			if(fcntl(fds[i], F_GETFD) >= 0) {
+				r = r || pipe(pipes[i]);
+				r = r || fcntl(pipes[i][0], F_SETFL, fcntl(pipes[i][0], F_GETFL, 0) | O_NONBLOCK);
+			} else {
+				pipes[i][0] = -1;
+				pipes[i][1] = -1;
+			}
 		}
 	}
 	if(r) {
@@ -116,6 +135,10 @@ int main(int argc, char ** argv) {
 	for(int i = 0; i < npipes; i++) {
 		if(pipes[i][0] >= 0) {
 			r = r || posix_spawn_file_actions_adddup2(&file_actions, pipes[i][1], fds[i]);
+		}
+	}
+	for(int i = 0; i < npipes; i++) {
+		if(pipes[i][0] >= 0) {
 			r = r || posix_spawn_file_actions_addclose(&file_actions, pipes[i][0]);
 			r = r || posix_spawn_file_actions_addclose(&file_actions, pipes[i][1]);
 		}
@@ -144,7 +167,7 @@ int main(int argc, char ** argv) {
 	FD_ZERO(&readfds);
 	FD_SET(signal, &readfds);
 	int nfds = signal;
-	for(int i = 0; i < npipes; i++) {
+	for(int i = 0; i < readpipes; i++) {
 		if(pipes[i][0] >= 0) {
 			FD_SET(pipes[i][0], &readfds);
 			nfds = std::max(nfds, pipes[i][0]);
@@ -187,7 +210,7 @@ int main(int argc, char ** argv) {
 			FD_SET(signal, &readfds);
 		}
 		
-		for(int i = 0; i < npipes; i++) {
+		for(int i = 0; i < readpipes; i++) {
 			
 			if(pipes[i][0] < 0) {
 				continue;
@@ -198,12 +221,12 @@ int main(int argc, char ** argv) {
 				do {
 					
 					// Read as much as we can from the pipe
-					char buffer[4096];
+					char buffer[BUFSIZ];
 					ssize_t nread = read(pipes[i][0], buffer, sizeof(buffer));
 					if(nread <= 0) {
 						if(nread == -1 && errno != EAGAIN && errno != EINTR) {
 							// Input is broken, close output
-							if(errno != EBADF) {
+							if(errno != EBADF && errno != EIO) {
 								error("Read error on pipe %d (%d): %d", i, pipes[i][0], errno);
 							}
 							FD_CLR(pipes[i][0], &readfds);
