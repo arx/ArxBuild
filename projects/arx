@@ -45,6 +45,15 @@ compiler_options[libcxx]+=" -fPIE"
 # cmake_options, compiler_options and make_options.
 build_types=(
 	
+	# Static analyzers and style checks
+	
+	'clang-analyzer'
+	'clang-analyzer_unity'
+	
+	'cppcheck'
+	
+	'flawfinder'
+	
 	# Test different compilers/stdlibs and versions
 	
 	'clang-3.1_libcxx_debug'
@@ -137,15 +146,6 @@ build_types=(
 	
 	$default_compiler'_olddeps'
 	$default_compiler'_olddeps_debug'
-	
-	# Static analyzers and style checks
-	
-	'clang-analyzer'
-	'clang-analyzer_unity'
-	
-	'cppcheck'
-	
-	'flawfinder'
 	
 	# TODO 'include-what-you-use'
 	
