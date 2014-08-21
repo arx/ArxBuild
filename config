@@ -8,9 +8,6 @@ repo="$here/repo/$project"
 # Directory to use for building.
 build="$here/build"
 
-# Temporary directory for logs
-stage="$build/.autobuild"
-
 # Where to save the resulting logs. (must end in 'logs' for stats to work)
 logs="$here/logs/$project"
 
@@ -155,9 +152,6 @@ prefix_paths=(
 "
 )
 
-# Declare compiler-specific scripts to process build logs.
-declare -A process
-
 # Define how buildstats counts errors and warnings.
 # Numbered entries are used for all builds.
 # For other entries, the key is matched agains the build type.
@@ -240,3 +234,5 @@ favicons=()
 export GCC_COLORS=1
 
 build_latest_tag=1
+
+default_jobs=3

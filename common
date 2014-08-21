@@ -43,11 +43,14 @@ force=0
 fetch=1
 project=''
 args=( )
+jobs=0
 for arg in "$@" ; do
 	case "$arg" in
 		-f|--force)   force=1 ;;
 		-n|--nofetch) fetch=0 ;;
 		-p|--project) project=0 ;;
+		-j*) jobs="${arg#-j}" ;;
+		--jobs=*) jobs="${arg#--jobs=}" ;;
 		*) [ -z "$project" ] && project="$arg" && continue
 		   args+=( "$arg" )
 	esac
@@ -58,6 +61,8 @@ set -- "${args[@]}"
 [ -f "$here/projects/$project" ] || die "Unknown project: $project"
 . "$here/projects/$project"
 [ -f "$here/projects/$project.local" ] && . "$here/projects/$project.local"
+
+[ $jobs = 0 ] && jobs="$default_jobs"
 
 html_header() {
 	

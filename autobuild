@@ -16,36 +16,27 @@ mkdir "$logs/commits" &> /dev/null
 mkdir "$bin/branches" &> /dev/null
 mkdir "$bin/commits" &> /dev/null
 
-my_replace() {
-	replace "/mnt/overflow$1" "$2" \
-	         "Z:$(printf '%s' "$1" | tr '/' '\\')" "$2" \
-	         "z:$(printf '%s' "$1" | tr '/' '\\')" "$2" \
-	         "Z:$(printf '%s' "$1" | sed 's:/:\\\\:g')" "$2" \
-	         "z:$(printf '%s' "$1" | sed 's:/:\\\\:g')" "$2" \
-	         "$1" "$2"
+add_replace_rule() {
+	replace_rules+=(
+		"/mnt/overflow$1" "$2" \
+		"Z:$(printf '%s' "$1" | tr '/' '\\')" "$2" \
+		"z:$(printf '%s' "$1" | tr '/' '\\')" "$2" \
+		"Z:$(printf '%s' "$1" | sed 's:/:\\\\:g')" "$2" \
+		"z:$(printf '%s' "$1" | sed 's:/:\\\\:g')" "$2" \
+		"$1" "$2"
+	)
 }
 
 # Shorten long paths and make them independent of where arxbuild is installed.
 process_paths() {
-	my_replace "$build"             "Build" | \
-	my_replace "$repo"              "$project_name"  | \
-	my_replace "$toolchains"        "Toolchains" | \
-	my_replace "$deps/msvc/drive_c" "C:" | \
-	my_replace "$deps"              "Deps" | \
-	my_replace "$here/"             ""
-}
-
-# Remove header and footer created by the script command.
-descript() {
-	sed -e '$d;1d' | sed -e '$d'
-}
-
-make_helper() {
-	script -c "$1" "$2" &> /dev/null
-}
-
-timed_make() {
-	time make_helper "$1" "$2"
+	local replace_rules=( )
+	add_replace_rule "$build"             "Build"
+	add_replace_rule "$repo"              "$project_name"
+	add_replace_rule "$toolchains"        "Toolchains"
+	add_replace_rule "$deps/msvc/drive_c" "C:"
+	add_replace_rule "$deps"              "Deps"
+	add_replace_rule "$here/"             ""
+	exec replace "${replace_rules[@]}"
 }
 
 escape() {
@@ -88,6 +79,103 @@ set_branch_commit() {
 	fi
 	echo "$commit" > "$ref_branch"
 	touch "$branch_dst"
+}
+
+do_build() {
+	
+	# Clear the build directory.
+	local _build="$build"
+	local build="$_build/$buildid"
+	[ -d "$build" ] || mkdir "$build" || die "${esc}[32m[$buildid]${esc}[0m Could not create build directory!"
+	find "$build" -mindepth 1 -delete
+	
+	# Clear the build directory.
+	local work="$build/work"
+	mkdir "$work" || die "${esc}[32m[$buildid]${esc}[0m Could not create work directory!"
+	
+	# Final log file locations.
+	local stage="$build/stage"
+	mkdir "$stage" || die "${esc}[32m[$buildid]${esc}[0m Could not create stage directory!"
+	local dst_raw="$stage/$buildid-raw.txt"
+	local dst_config="$stage/$buildid-config.txt"
+	local dst_options="$stage/$buildid-options.txt"
+	local dst_time="$stage/$buildid-time.txt"
+	
+	cd "$work"
+	
+	local _config_required="${config_required[$compiler]:-1}"
+	local do_build=1
+	if [ ! "$_config_required" = 0 ] ; then
+		echo "$options" | process_paths > "$dst_options"
+		echo "${esc}[32m[$buildid]${esc}[0m Configuring..."
+		local cmake_args="$(escape "$repo/$path") -DCMAKE_INSTALL_PREFIX=/ $options"
+		if ! eval "cmake --no-warn-unused-cli $cmake_args" 2>&1 | process_paths > "$dst_config" ; then
+			echo "${esc}[32m[$buildid]${esc}[0m ${esc}[31mConfigure failed!${esc}[0m"
+			echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$dst_raw"
+			do_build=0
+		fi
+	else
+		echo "$_make_command" | process_paths > "$dst_options"
+		echo "no config step" > "$dst_config"
+	fi
+	
+	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
+	if [ $do_build = 1 ] ; then
+		
+		echo "${esc}[32m[$buildid]${esc}[0m Building..."
+		
+		{
+			time "$toolchains/run.cpp" --tty sh -c "exec $_make_command" \
+				| process_paths > "$dst_raw"
+		} &> "$dst_time"
+		
+		
+		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$dst_raw")" ] ; then
+			die "${esc}[32m[$buildid]${esc}[0m Build cancelled!"
+		fi
+		
+		# Save the resulting binaries.
+		rm -rf "$commit_bindst/$buildid" &> /dev/null
+		mkdir "$commit_bindst/$buildid" &> /dev/null
+		
+		if [ "$_make_command" = 'make' ] || [ "$_make_command" = 'make -k' ] ; then
+			DESTDIR="$commit_bindst/$buildid/" make -k install &> /dev/null
+		fi
+		
+	fi
+	
+	# Record build for branch
+	touch "$branch_dst"
+	set_branch_commit "$branch_dst" "$buildid" "$commit"
+	
+	# Record build for commit
+	touch "$commit_dst"
+	[ -e "$ref_commit" ] && rm "$ref_commit"
+	mv "$stage"/* "$commit_dst/"
+	echo "$commit" > "$ref_commit"
+	[ -e "$force_commit" ] && rm "$force_commit"
+	
+	rm -r "$build"
+	
+	echo "${esc}[1;32m[$buildid]${esc}[0m Done."
+	
+}
+
+build_wait() {
+	
+	while true ; do
+		for pid in "${!pids[@]}"; do
+			if ! kill -0 "$pid" &> /dev/null ; then
+				unset pids[$pid]
+				break 2
+			fi
+		done
+		sleep 0.1
+	done
+	
+	# Update statistics and indices.
+	"$here/buildstats" "$project" &> /dev/null
+	
 }
 
 build() {
@@ -150,7 +238,10 @@ build() {
 		return
 	fi
 	
-	echo "${esc}[32m[$buildid]${esc}[0m"
+	# Wait for jobs to complete
+	if [ $jobs -gt 1 ] && [ ! ${#pids[@]} -lt $jobs ] ; then
+		build_wait
+	fi
 	
 	case "$compiler" in msvc-*) if [ $msvc_started = 0 ] ; then
 		echo "${esc}[36mStarting MSVC environment${esc}[0m"
@@ -158,90 +249,20 @@ build() {
 		msvc_started=1
 	fi ; esac
 	
-	
-	# Clear the build directory.
-	find "$build" -mindepth 1 -delete
-	rm -r "$repo/bin" &> /dev/null
-	
-	# Final log file locations.
-	[ -d "$stage" ] || mkdir "$stage" || die "Could not create stage directory!"
-	find "$stage" -mindepth 1 -delete
-	local dst_raw="$stage/$buildid-raw.txt"
-	local dst_config="$stage/$buildid-config.txt"
-	local dst_options="$stage/$buildid-options.txt"
-	local dst_time="$stage/$buildid-time.txt"
-	
-	cd "$build"
-	
-	local do_build=1
-	
-	local _config_required="${config_required[$compiler]:-1}"
-	
-	local log_build="$stage/buildlog.script"
-	local log_config="$stage/config.log"
-	
-	if [ ! "$_config_required" = 0 ] ; then
-		echo 'Configuring...'
-		local cmake_args="$(escape "$repo/$path") -DCMAKE_INSTALL_PREFIX=/ $options"
-		if ! eval "cmake --no-warn-unused-cli $cmake_args" &> "$log_config" ; then
-			echo "${esc}[31mConfigure failed!${esc}[0m"
-			echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$log_build"
-			do_build=0
-		fi
-	fi
-	
-	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
-	if [ $do_build = 1 ] ; then
-		
-		echo 'Building...'
-		timed_make "$_make_command" "$log_build" &> "$dst_time"
-		
-		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$log_build")" ] ; then
-			die "Build cancelled!"
-		fi
-		
-		# Save the resulting binaries.
-		rm -rf "$commit_bindst/$buildid" &> /dev/null
-		mkdir "$commit_bindst/$buildid" &> /dev/null
-		
-		if [ "$_make_command" = 'make' ] || [ "$_make_command" = 'make -k' ] ; then
-			DESTDIR="$commit_bindst/$buildid/" make -k install &> /dev/null
-		fi
-		
-	fi
-	
-	echo 'Processing...'
-	
-	# Save the cmake output and used options.
-	if [ ! "$_config_required" = 0 ] ; then
-		process_paths < "$log_config" > "$dst_config"
-		echo "$options" | process_paths > "$dst_options"
+	if [ $jobs -gt 1 ] ; then
+		do_build &
+		local pid=$!
+		pids[$pid]=1
 	else
-		echo "no config step" > "$dst_config"
-		echo "$_make_command" | process_paths > "$dst_options"
+		do_build
 	fi
-	
-	# Process the raw shell-colored log.
-	if [ "${process[$compiler]}" ]
-		then descript < "$log_build" | process_paths | "${process[$compiler]}" > "$dst_raw"
-		else descript < "$log_build" | process_paths > "$dst_raw"
-	fi
-	
-	
-	# Record build for branch
-	touch "$branch_dst"
-	set_branch_commit "$branch_dst" "$buildid" "$commit"
-	
-	# Record build for commit
-	touch "$commit_dst"
-	[ -e "$ref_commit" ] && rm "$ref_commit"
-	mv "$stage/$buildid"* "$commit_dst/"
-	echo "$commit" > "$ref_commit"
-	[ -e "$force_commit" ] && rm "$force_commit"
-	
-	# Update statistics and indices.
-	"$here/buildstats" "$project" &> /dev/null
-	
+}
+
+stop_builds() {
+	trap - SIGHUP SIGINT SIGTERM
+	echo 'Interrupted!'
+	kill 0
+	exit 1
 }
 
 build_branch() {
@@ -264,6 +285,12 @@ build_branch() {
 		
 	echo "Checked out branch ${esc}[36m'$branch'${esc}[0m at commit ${esc}[34m$commit${esc}[0m"
 	
+	# Clear the build directory.
+	local _build="$build"
+	local build="$_build/$branch"
+	[ -d "$build" ] || mkdir "$build" || die "Could not create branch build directory!"
+	find "$build" -mindepth 1 -delete
+	
 	# Prepare the output directories.
 	branch_dst="$logs/branches/$branch"
 	commit_dst="$logs/commits/$commit"
@@ -278,6 +305,11 @@ build_branch() {
 	
 	# Build with different configurations.
 	
+	unset pids
+	declare -gA pids
+	
+	[ $jobs -gt 1 ] && trap "stop_builds" SIGHUP SIGINT SIGTERM
+	
 	for build_type in "${build_types[@]}" ; do
 		
 		local args;
@@ -287,8 +319,21 @@ build_branch() {
 		
 	done
 	
-	#build_types
+	if [ $jobs -gt 1 ] ; then
+		while [ ! ${#pids[@]} = 0 ] ; do
+			build_wait
+		done
+		wait # just to be sure
+	fi
+	
+	[ $jobs -gt 1 ] && trap - SIGHUP SIGINT SIGTERM
+	
 }
+
+# Clear the build directory.
+build="$build/$project"
+[ -d "$build" ] || mkdir "$build" || die "Could not create project build directory!"
+find "$build" -mindepth 1 -delete
 
 if [ $build_latest_tag = 1 ] ; then
 	latest_tag="$(
