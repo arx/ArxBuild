@@ -5,7 +5,9 @@ source "$here/common"
 
 echo 'Updating repo...'
 cd "$repo" || die "unable to cd to repository at $repo"
-if [ $fetch = 1 ] ; then git fetch || die "git fetch failed" ; fi
+if [ $fetch = 1 ] ; then
+	git fetch --tags || die "git fetch failed"
+fi
 git remote prune origin &> /dev/null || die "failed to prune repository"
 
 # Initialize the output directory.
