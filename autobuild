@@ -271,6 +271,8 @@ build_branch() {
 	
 	branch="$1"
 	
+	[ ! -z "$selected_branch" ] && [ ! "$branch" = "$selected_branch" ] && return
+	
 	# Abort if the branch is empty
 	if [ ! "$branch" ] ; then return ; fi
 	

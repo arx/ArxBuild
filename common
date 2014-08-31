@@ -44,6 +44,7 @@ fetch=1
 project=''
 args=( )
 jobs=0
+selected_branch=''
 for arg in "$@" ; do
 	case "$arg" in
 		-f|--force)   force=1 ;;
@@ -51,6 +52,7 @@ for arg in "$@" ; do
 		-p|--project) project=0 ;;
 		-j*) jobs="${arg#-j}" ;;
 		--jobs=*) jobs="${arg#--jobs=}" ;;
+		--branch=*) selected_branch="${arg#--branch=}" ;;
 		*) [ -z "$project" ] && project="$arg" && continue
 		   args+=( "$arg" )
 	esac
