@@ -161,6 +161,7 @@ prefix_paths=(
 declare -A count_warnings
 count_warnings=(
 	[0]='\:\d+\: warning\:'
+	[1]='cc1plus\: warning\:'
 	['ekopath*']='pathCC WARNING\:'
 	['icc*']='warning \#\d+\:'
 	['style']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
