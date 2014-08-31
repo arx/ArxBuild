@@ -9,9 +9,10 @@ cmake_options[unity]='-DUNITY_BUILD=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
 
-# The environments for these don't have Qt installed - disable the crash reporter
-cmake_options[gcc-freebsd-9.1-i686]+=" -DBUILD_CRASHREPORTER=0"
-cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0"
+# The environments for these don't have Qt installed - disable the crash reporter & profiler
+cmake_options[gcc-freebsd-9.1-i686]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+cmake_options[mingw]+=" -DBUILD_PROFILER=0"
 
 arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
 arx_use_qt5="-DUSE_QT4=0 -DWITH_QT=5"
