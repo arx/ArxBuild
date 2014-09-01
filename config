@@ -160,8 +160,8 @@ prefix_paths=(
 # Declare patterns that count as a warning.
 declare -A count_warnings
 count_warnings=(
-	[0]='\:\d+\: warning\:'
-	[1]='cc1plus\: warning\:'
+	[0]='\: warning\:'
+	[1]='\: Warning\:'
 	['ekopath*']='pathCC WARNING\:'
 	['icc*']='warning \#\d+\:'
 	['style']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
@@ -192,8 +192,7 @@ count_errors=(
 # Declare patterns for warnings that should be ignored.
 declare -A ignore_warnings
 ignore_warnings=(
-	[0]='ub_.*\.cpp\:\d+\:(\d+\:)? warning\: (\[|ignoring \#pragma message)'
-	['ekopath*']='the anonymous namespace'
+	['ekopath*']='the anonymous namespace|Olimit|creating a DT_TEXTREL in object|relocation in readonly section'
 )
 
 declare -A count_config_warnings
@@ -203,7 +202,7 @@ count_config_warnings=(
 )
 
 declare -A ignore_config_warnings
-ignore_warnings=(
+ignore_config_warnings=(
 )
 
 declare -A count_config_errors
