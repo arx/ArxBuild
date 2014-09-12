@@ -163,11 +163,19 @@ do_build() {
 	
 }
 
+build_done() {
+	_builds_done=$(($_builds_done + ${1:-1}))
+	printf '\033]2;%s%s%s\007' "Building $project branch $branch: " \
+		"$_builds_done/$_builds_total done, " \
+		"${#pids[@]}/$(($_builds_total - $_builds_done)) running" > /dev/tty
+}
+
 build_wait() {
 	
 	while true ; do
 		for pid in "${!pids[@]}"; do
 			if ! kill -0 "$pid" &> /dev/null ; then
+				build_done
 				unset pids[$pid]
 				break 2
 			fi
@@ -237,6 +245,7 @@ build() {
 	local force_commit="$commit_dst/$buildid.force"
 	if [ -e "$ref_commit" ] && [ ! -e "$force_commit" ] ; then
 		set_branch_commit "$branch_dst" "$buildid" "$commit"
+		build_done
 		return
 	fi
 	
@@ -255,8 +264,10 @@ build() {
 		do_build &
 		local pid=$!
 		pids[$pid]=1
+		build_done 0
 	else
 		do_build
+		build_done
 	fi
 }
 
@@ -314,6 +325,10 @@ build_branch() {
 	
 	[ $jobs -gt 1 ] && trap "stop_builds" SIGHUP SIGINT SIGTERM
 	
+	_builds_total="${#build_types[@]}"
+	_builds_done=0
+	build_done 0
+	
 	for build_type in "${build_types[@]}" ; do
 		
 		local args;
@@ -363,5 +378,7 @@ if [ $msvc_started = 1 ] ; then
 	"$toolchains/msvcrun" --stop
 	msvc_started=0
 fi
+
+printf '\033]2;%s\007' "Done building $project" > /dev/tty
 
 echo "Done, logs saved to $logs"
