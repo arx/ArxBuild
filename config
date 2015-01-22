@@ -30,6 +30,11 @@ set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
 
 libcxx_libs=""
 
+declare -A cmake_command
+cmake_command=(
+	[olddeps]="$deps/cmake-2.8.0/bin/cmake"
+)
+
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
 cmake_options=(
