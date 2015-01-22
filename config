@@ -25,6 +25,7 @@ path=''
 boost_no_autodetect='-DBoost_NO_SYSTEM_PATHS=1 -DBoost_NO_BOOST_CMAKE=1'
 boost_gcc41="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52-gcc41/\""
 boost_gcc43="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52-gcc43/\""
+boost_gcc410="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_55-gcc410/\""
 
 set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
 
@@ -46,7 +47,7 @@ cmake_options=(
 	[gcc-4.7]="\"$set_cmake_toolchain/gcc-4.7-toolchain.cmake\""
 	[gcc-4.8]="\"$set_cmake_toolchain/gcc-4.8-toolchain.cmake\""
 	[gcc-4.9]="\"$set_cmake_toolchain/gcc-4.9-toolchain.cmake\""
-	[gcc-4.10]="\"$set_cmake_toolchain/gcc-4.10-toolchain.cmake\""
+	[gcc-4.10]="\"$set_cmake_toolchain/gcc-4.10-toolchain.cmake\" $boost_gcc410"
 	[gcc-armv6j-hf]="\"$set_cmake_toolchain/armv6j-hardfloat-linux-gnueabi-toolchain.cmake\""
 	[gcc-freebsd-9.1-i686]="\"$set_cmake_toolchain/i686-gentoo-freebsd9.1-toolchain.cmake\""
 	[gcc-freebsd-9.1-x86_64]="\"$set_cmake_toolchain/x86_64-gentoo-freebsd9.1-toolchain.cmake\""
