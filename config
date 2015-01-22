@@ -191,6 +191,7 @@ count_errors=(
 	[4]='\: defined in discarded section '
 	[5]='ld returned 1 exit status'
 	[6]='\: recipe for target .all. failed'
+	[7]='no makefile found\.  Stop\.'
 	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
 	['ekopath*']='psclang\: error\:'
