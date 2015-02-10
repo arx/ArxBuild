@@ -55,6 +55,8 @@ build_types=(
 	
 	'flawfinder'
 	
+	'shellcheck'
+	
 	# Test different compilers/stdlibs and versions
 	
 	'clang-3.1_libcxx_debug'

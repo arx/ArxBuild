@@ -124,6 +124,7 @@ declare -A config_required
 config_required=(
 	[cppcheck]=0
 	[flawfinder]=0
+	[shellcheck]=0
 )
 
 # Declare directories containing source code (for cppcheck and flawfinder)
@@ -145,6 +146,7 @@ make_command=(
 	# TODO include  "${include_directories[@]}" for better coverage, bit it's slooooooow
 	[cppcheck]='cppcheck --quiet --force --enable=style,unusedFunction "${source_directories[@]}"'
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
+	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
 )
 
 declare -A prefix_paths
@@ -178,6 +180,7 @@ count_warnings=(
 	['msvc-*']='warning [A-Z]+\d+ *\:|\; restarting link with'
 	['cppcheck*']='\:\d+]\: \([a-z]'
 	['flawfinder*']='\:\d+\: +\[\d+\] \([a-z]'
+	['shellcheck*']='\: note\:'
 	['doxygen*']='Warning\:'
 )
 
@@ -226,6 +229,7 @@ false_positives=(
 	'clang-analyzer*'
 	'cppcheck*'
 	'flawfinder*'
+	'shellcheck*'
 	'*_xtra'
 	'gcc-4.1'
 	'gcc-4.1_*'
