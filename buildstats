@@ -261,6 +261,8 @@ handle_context() {
 	local type="$1"
 	local dir="$2"
 	
+	[ -d "$dir" ] || return
+	
 	local context="${dir##*/}"
 	
 	local timefile="$dir/index.time"

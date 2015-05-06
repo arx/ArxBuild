@@ -20,12 +20,12 @@ reference_build() {
 		return
 	fi
 	
-	references["$commit/$name"]=1
+	references["$commit"]=1
 	
 	local old_file="$path.old"
 	if [ -f "$old_file" ] ; then
 		local old_commit="$(cat "$old_file" 2> /dev/null)"
-		references["$old_commit/$name"]=1
+		references["$old_commit"]=1
 	fi
 	
 }
@@ -33,6 +33,8 @@ reference_build() {
 reference_branch() {
 	
 	local dir="$1"
+	
+	[ -d "$dir" ] || return
 	
 	# Remove obsolete branches.
 	branch="${f##*/}"
@@ -48,46 +50,34 @@ reference_branch() {
 	
 }
 
-clean_build() {
-	
-	local file="$1"
-	
-	local name="${file%.ref}"
-	local name="${name##*/}"
-	local commit=`cat "$file" 2> /dev/null`
-	
-	if [ ! "$commit" ] ; then
-		# Empty commit.
-		return
-	fi
-	
-	if [ "${references["$commit/$name"]}" ] ; then
-		# Referenced, don't delete
-		return
-	fi
-	
-	rmbuild "$logs/commits/$commit/$name"
-	
-}
 
 clean_commit() {
 	
 	local dir="$1"
 	
-	for f in `dir -d $dir/*.ref 2> /dev/null` ; do
-		clean_build "$f"
-	done
+	[ -d "$dir" ] || return
 	
 	local commit="${dir##*/}"
+	if [ -z "$commit" ] ; then
+		# Empty commit.
+		return
+	fi
+	if [ ! -z "${references["$commit"]}" ] ; then
+		# Referenced, don't delete
+		return
+	fi
+	
+	echo "Archiving unreferenced commit dir ${esc}[34m$commit${esc}[0m"
 	
 	# Remove empty directories.
-	if [ "$(ls -A "$dir")" == "index.html" ]; then
-		rm "$dir/index.html"
+	local archive="$dir.tar.xz"
+	pushd "$logs/commits/" > /dev/null
+	if ! tar -cJf "$archive" "$commit" || [ ! -f "$archive" ] ; then
+		popd > /dev/null
+		return
 	fi
-	if [ ! "$(ls -A "$dir")" ]; then
-		echo "Removing empty commit dir ${esc}[34m$commit${esc}[0m"
-		rmdir "$dir"
-	fi
+	rm -r "$commit"
+	popd > /dev/null
 	
 }
 
