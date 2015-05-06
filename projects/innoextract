@@ -146,3 +146,6 @@ ignore_config_warnings['*nolzma*']='CMake Warning' # A warning is expeded here
 favicons['../images/favicon.ico']=''
 favicons['../images/logo.png']='128x128'
 favicons['../images/favicon.png']='16x16'
+
+covertiy_scan_project='585'
+travis_ci_project='dscharrer/innoextract'
