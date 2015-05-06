@@ -39,6 +39,7 @@ die() {
 true=0
 false=1
 
+flags=( )
 force=0
 fetch=1
 project=''
@@ -47,17 +48,25 @@ jobs=0
 selected_branch=''
 for arg in "$@" ; do
 	case "$arg" in
-		-f|--force)   force=1 ;;
-		-n|--nofetch) fetch=0 ;;
-		-p|--project) project=0 ;;
-		-j*) jobs="${arg#-j}" ;;
-		--jobs=*) jobs="${arg#--jobs=}" ;;
-		--branch=*) selected_branch="${arg#--branch=}" ;;
+		-f|--force)   force=1 ; flags+=( --force ) ;;
+		-n|--nofetch) fetch=0 ; flags+=( --nofetch ) ;;
+		-p|--project) project=0 ; flags+=( --project );;
+		-j*) jobs="${arg#-j}" ; flags+=( --jobs="$jobs" );;
+		--jobs=*) jobs="${arg#--jobs=}" ; flags+=( --jobs="$jobs" ) ;;
+		--branch=*) selected_branch="${arg#--branch=}" ; flags+=( --branch="$selected_branch" );;
 		*) [ -z "$project" ] && project="$arg" && continue
 		   args+=( "$arg" )
 	esac
 done
 set -- "${args[@]}"
+
+if [ -z "$project" ] || [ "$project" = '*' ] ; then
+	for project in $(find projects -type f ! -name '*.*' -printf '%f\n' | sort) ; do
+		printf ':: %s\n' "$project"
+		"$0" "${flags[@]}" "$project" "${args[@]}"
+	done
+	exit
+fi
 
 . "$here/config"
 [ -f "$here/config.local" ] && . "$here/config.local"

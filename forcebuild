@@ -13,6 +13,7 @@ pushd "$logs/branches" > /dev/null
 	eval "branches=( $branches_pattern )"
 	[ ${#branches[@]} = 0 ] && die "No matching branches for $branches_pattern!"
 	for branch in "${branches[@]}" ; do
+		[ -d "$branch" ] || continue
 		pushd "$branch" > /dev/null
 			eval "builds=( $builds_pattern.ref )"
 			for build in "${builds[@]}" ; do
