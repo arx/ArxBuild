@@ -206,6 +206,9 @@ build() {
 		local options="$options$default_cmake_options"
 	fi
 	
+	local disabled=''
+	in_array "$compiler" "${disabled_configs[@]}" && disabled="$compiler"
+	
 	for arg in "${@:2}" ; do
 		
 		local buildid="${buildid}_$arg"
@@ -235,6 +238,11 @@ build() {
 			prefixes="$prefixes${prefix_paths[$arg]}"
 		fi
 		
+		if in_array "$arg" "${disabled_configs[@]}" ; then
+			[ -z "$disabled" ] || disabled="$disabled, "
+			disabled="$disabled$arg"
+		fi
+		
 	done
 	
 	[ -z "$cmake" ] && cmake='cmake'
@@ -255,6 +263,12 @@ build() {
 	local force_commit="$commit_dst/$buildid.force"
 	if [ -e "$ref_commit" ] && [ ! -e "$force_commit" ] ; then
 		set_branch_commit "$branch_dst" "$buildid" "$commit"
+		build_done
+		return
+	fi
+	
+	if [ ! -z "$disabled" ] ; then
+		echo "${esc}[32m[$buildid]${esc}[0m Ignoring ($disabled disabled)"
 		build_done
 		return
 	fi
