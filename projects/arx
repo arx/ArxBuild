@@ -164,3 +164,6 @@ build_types=(
 favicons['/favicon.ico']=''
 favicons['/images/arx-libertatis.png']='128x128'
 favicons['/favicon.png']='16x16'
+
+covertiy_scan_project='1656'
+travis_ci_project='arx/ArxLibertatis'
