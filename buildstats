@@ -163,7 +163,22 @@ handle_build() {
 	[ $config_warnings = 0 ] || config_class=" class='w w$config_warnings'"
 	[ $config_errors = 0 ] || config_class=" class='e e$config_errors'"
 	
-	local html="<tr>
+	local args
+	local disabled=''
+	parse_build_type "$name" 'args'
+	for arg in "${args[@]}" ; do
+		if in_array "$arg" "${disabled_configs[@]}" ; then
+			[ -z "$disabled" ] || disabled="$disabled, "
+			disabled="$disabled$arg"
+		fi
+	done
+	
+	local dclass=''
+	if [ ! -z "$disabled" ] ; then
+		dclass=" class=\"disabled\" title=\"$disabled disabled\""
+	fi
+	
+	local html="<tr$dclass>
 	<td class='n'><a href=\"$wprefix.html\">$name</a></td>
 	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>
 	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>

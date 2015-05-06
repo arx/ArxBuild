@@ -84,3 +84,25 @@ pre {
 .okay { color: #6b8e23; text-align: center; }
 .poor { color: #cc8c00; text-align: center; }
 .bad  { color: #bb0000; text-align: center; }
+
+
+.stats .disabled  { color: #888; }
+.stats .disabled a { color: #9af; }
+.stats .disabled .n a { color: #9af; }
+.stats .disabled td:first-child { background: #fee; }
+
+.stats .disabled .w  { background-color: #fcf; }
+.stats .disabled .w5 { background-color: #fde; }
+.stats .disabled .w4 { background-color: #fed; }
+.stats .disabled .w3 { background-color: #ffc; }
+.stats .disabled .w2 { background-color: #ffb; }
+.stats .disabled .w1 { background-color: #ffb; }
+.stats .disabled .w0 { background-color: #bfb; }
+
+.stats .disabled .e  { background-color: #fbb; }
+.stats .disabled .e0 { background-color: #bfb; }
+
+.stats .disabled .good { color: #66b366; }
+.stats .disabled .okay { color: #a6bb7b; }
+.stats .disabled .poor { color: #e0ba66; }
+.stats .disabled .bad  { color: #d66666; }
