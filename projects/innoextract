@@ -132,6 +132,7 @@ build_types=(
 	$default_compiler'_debug_boost-1.55'
 	$default_compiler'_debug_boost-1.56'
 	$default_compiler'_debug_boost-1.57'
+	$default_compiler'_debug_boost-1.58'
 	
 	$default_compiler'_libiconv'
 	$default_compiler'_olddeps'
