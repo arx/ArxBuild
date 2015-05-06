@@ -32,9 +32,29 @@ foreach(lang IN ITEMS C CXX)
 		"${_gcc_command}${_gcc_suffix}.2"
 		"${_gcc_command}${_gcc_suffix}.1"
 		"${_gcc_command}${_gcc_suffix}.0"
+		"${_gcc_command}${_gcc_suffix}.9.0"
+		"${_gcc_command}${_gcc_suffix}.8.0"
+		"${_gcc_command}${_gcc_suffix}.7.0"
+		"${_gcc_command}${_gcc_suffix}.6.0"
+		"${_gcc_command}${_gcc_suffix}.5.0"
+		"${_gcc_command}${_gcc_suffix}.4.0"
+		"${_gcc_command}${_gcc_suffix}.3.0"
+		"${_gcc_command}${_gcc_suffix}.2.0"
+		"${_gcc_command}${_gcc_suffix}.1.0"
+		"${_gcc_command}${_gcc_suffix}.0.0"
 		"${_gcc_command}${_gcc_suffix}.0-pre9999"
 	)
 	mark_as_advanced(GCC${_gcc_short_suffix}_${lang}_COMPILER)
+	
+	if(NOT GCC${_gcc_short_suffix}_${lang}_COMPILER)
+		file(GLOB _gcc_binary "/usr/bin/${_gcc_command}${_gcc_suffix}.*")
+		list(LENGTH _gcc_binary _gcc_count)
+		if(_gcc_count GREATER 0)
+			list(GET _gcc_binary 0 GCC${_gcc_short_suffix}_${lang}_COMPILER)
+		endif()
+		unset(_gcc_binary)
+		unset(_gcc_count)
+	endif()
 	
 	if(NOT GCC${_gcc_short_suffix}_${lang}_COMPILER)
 		message(FATAL_ERROR "${_gcc_command}${_gcc_suffix} not found")
