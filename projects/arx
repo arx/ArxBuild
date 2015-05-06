@@ -115,6 +115,9 @@ build_types=(
 	'gcc-5_debug'
 	'gcc-5_unity'
 	
+	'gcc-6_debug'
+	'gcc-6_unity'
+	
 	'mingw_debug'
 	'mingw_unity'
 	
