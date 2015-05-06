@@ -11,7 +11,7 @@ cmake_options[style]="${cmake_options[debug]}"
 cmake_options[winstyle]="${cmake_options[debug]}"
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-4.8'
+default_compiler='gcc-4.9'
 
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
