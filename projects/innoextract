@@ -84,8 +84,8 @@ build_types=(
 	'gcc-4.9_debug'
 	'gcc-4.9'
 	
-	'gcc-4.10_debug'
-	'gcc-4.10'
+	'gcc-5_debug'
+	'gcc-5'
 	
 	'mingw_debug'
 	'mingw'
