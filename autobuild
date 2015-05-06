@@ -165,9 +165,11 @@ do_build() {
 
 build_done() {
 	_builds_done=$(($_builds_done + ${1:-1}))
+	_builds_running=1
+	[ $jobs -gt 1 ] && _builds_running="${#pids[@]}"
 	printf '\033]2;%s%s%s\007' "Building $project branch $branch: " \
 		"$_builds_done/$_builds_total done, " \
-		"${#pids[@]}/$(($_builds_total - $_builds_done)) running" > /dev/tty
+		"$_builds_running/$(($_builds_total - $_builds_done)) running" > /dev/tty
 }
 
 build_wait() {
