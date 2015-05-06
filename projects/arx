@@ -138,6 +138,8 @@ build_types=(
 	
 	'gcc-armv6j-hf_unity_static'
 	
+	'gcc-bindist-x86-64_unity'
+	
 	# Test different library versions
 	
 	$default_compiler'_debug_boost-1.48_boostfs'

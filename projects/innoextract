@@ -112,9 +112,13 @@ build_types=(
 	$default_compiler'_m32_debug'
 	$default_compiler'_m32'
 	
-	'gcc-freebsd-9.1-i686_static'
-	
 	'gcc-armv6j-hf_static'
+	
+	'gcc-bindist-i686_static'
+	'gcc-bindist-x86-64_static'
+	
+	'gcc-freebsd-9.1-i686_static'
+	'gcc-freebsd-9.1-x86-64_static'
 	
 	# Test different library versions
 	
