@@ -60,6 +60,7 @@ done
 set -- "${args[@]}"
 
 . "$here/config"
+[ -f "$here/config.local" ] && . "$here/config.local"
 [ -f "$here/projects/$project" ] || die "Unknown project: $project"
 . "$here/projects/$project"
 [ -f "$here/projects/$project.local" ] && . "$here/projects/$project.local"
