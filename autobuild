@@ -210,29 +210,29 @@ build() {
 		
 		local buildid="${buildid}_$arg"
 		
-		if [ "${cmake_command[$arg]}" != "" ] ; then
+		if [ ! -z "${cmake_command[$arg]}" ] ; then
 			[ -z "$cmake" ] || die '$cmake_command can only be set once!'
-			local cmake="${cmake_command[$arg]}"
+			cmake="${cmake_command[$arg]}"
 		fi
 		
-		if [ "${cmake_options[$arg]}" != "" ] ; then
-			[ "$options" != "" ] && local options="$options "
-			local options="$options${cmake_options[$arg]}"
+		if [ ! -z "${cmake_options[$arg]}" ] ; then
+			[ -z "$options" ] || options="$options "
+			options="$options${cmake_options[$arg]}"
 		fi
 		
-		if [ "${compiler_options[$arg]}" != "" ] ; then
-			[ "$flags" != "" ] && local flags="$flags "
-			local flags="$flags${compiler_options[$arg]}"
+		if [ ! -z "${compiler_options[$arg]}" ] ; then
+			[ -z "$flags" ] || flags="$flags "
+			flags="$flags${compiler_options[$arg]}"
 		fi
 		
-		if [ "${linker_options[$arg]}" != "" ] ; then
-			[ "$ldflags" != "" ] && local ldflags="$ldflags "
-			local ldflags="$ldflags${linker_options[$arg]}"
+		if [ ! -z "${linker_options[$arg]}" ] ; then
+			[ -z "$ldflags" ] || ldflags="$ldflags "
+			ldflags="$ldflags${linker_options[$arg]}"
 		fi
 		
-		if [ "${prefix_paths[$arg]}" != "" ] ; then
-			[ "$prefixes" != "" ] && local prefixes="$prefixes;"
-			local prefixes="$prefixes${prefix_paths[$arg]}"
+		if [ ! -z "${prefix_paths[$arg]}" ] ; then
+			[ -z "$prefixes" ] || prefixes="$prefixes;"
+			prefixes="$prefixes${prefix_paths[$arg]}"
 		fi
 		
 	done
@@ -240,15 +240,15 @@ build() {
 	[ -z "$cmake" ] && cmake='cmake'
 	
 	if [ "$flags" != "" ] ; then
-		local options="$options \"-DCMAKE_C_FLAGS=$flags\" \"-DCMAKE_CXX_FLAGS=$flags\""
+		options="$options \"-DCMAKE_C_FLAGS=$flags\" \"-DCMAKE_CXX_FLAGS=$flags\""
 	fi
 	
 	if [ "$ldflags" != "" ] ; then
-		local options="$options \"-DCMAKE_EXE_LINKER_FLAGS=$ldflags\" \"-DCMAKE_SHARED_LINKER_FLAGS=$ldflags\" \"-DCMAKE_MODULE_LINKER_FLAGS=$ldflags\""
+		options="$options \"-DCMAKE_EXE_LINKER_FLAGS=$ldflags\" \"-DCMAKE_SHARED_LINKER_FLAGS=$ldflags\" \"-DCMAKE_MODULE_LINKER_FLAGS=$ldflags\""
 	fi
 	
 	if [ "$prefixes" != "" ] ; then
-		local options="$options \"-DCMAKE_PREFIX_PATH=$prefixes\""
+		options="$options \"-DCMAKE_PREFIX_PATH=$prefixes\""
 	fi
 	
 	local ref_commit="$commit_dst/$buildid.ref"
