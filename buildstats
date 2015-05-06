@@ -306,6 +306,22 @@ $(printf '%s' "$builds_bogus" | sed 's:^:\t\t:')
 	</table>"
 	fi
 	
+	if [ ! -z "$covertiy_scan_project$travis_ci_project" ] ; then
+		html+="
+	<h2 id=\"external\">External tools:</h2>
+	<ul>"
+		if [ ! -z "$covertiy_scan_project" ] ; then
+			html+="
+		<li><b><a href=\"https://scan.coverity.com/projects/$covertiy_scan_project\">Coverity Scan</a></b>"
+		fi
+		if [ ! -z "$travis_ci_project" ] ; then
+			html+="
+		<li><b><a href=\"https://travis-ci.org/$travis_ci_project\">Travis CI</a></b>"
+		fi
+		html+="
+	</ul>"
+	fi
+	
 	html+="	
 $(html_footer)"
 	

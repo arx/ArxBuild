@@ -244,6 +244,12 @@ ignored_branches=()
 declare -A favicons
 favicons=()
 
+# Coverity Scan project id to link to
+covertiy_scan_project=''
+
+# Travis CI project id to link to
+travis_ci_project=''
+
 # Enable color output on newer GCC versions (4.9+)
 export GCC_COLORS=1
 
