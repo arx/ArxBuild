@@ -57,6 +57,7 @@ cmake_options=(
 	[clang-3.3]="\"$set_cmake_toolchain/clang-3.3-toolchain.cmake\""
 	[clang-3.4]="\"$set_cmake_toolchain/clang-3.4-toolchain.cmake\""
 	[clang-3.5]="\"$set_cmake_toolchain/clang-3.5-toolchain.cmake\""
+	[clang-3.6]="\"$set_cmake_toolchain/clang-3.6-toolchain.cmake\""
 	[clang-dev]="\"$set_cmake_toolchain/clang-toolchain.cmake\""
 	[ekopath]="\"$set_cmake_toolchain/ekopath-toolchain.cmake\" $boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_55-ekopath/\""
 	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
