@@ -51,8 +51,8 @@ build_types=(
 	
 	'clang-dev_libcxx_m32_debug'
 	
-	'clang_libstdcxx_debug'
-	'clang_libstdcxx'
+	'clang-dev_libstdcxx_debug'
+	'clang-dev_libstdcxx'
 	
 	'ekopath_debug'
 	'ekopath'
