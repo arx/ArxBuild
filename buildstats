@@ -78,7 +78,9 @@ is_cache_valid() {
 		&& [ ! "$here/buildstats" -nt "$cache" ] \
 		&& [ ! "$here/common" -nt "$cache" ] \
 		&& [ ! "$here/config" -nt "$cache" ] \
+		&& [ ! "$here/config.local" -nt "$cache" ] \
 		&& [ ! "$here/projects/$project" -nt "$cache" ] \
+		&& [ ! "$here/projects/$project.local" -nt "$cache" ] \
 		&& true
 }
 
