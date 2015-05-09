@@ -97,6 +97,7 @@ cmake_options=(
 	[boost-1.58]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_58/\""
 	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52-libcxx/\""
 	[static]="-DUSE_STATIC_LIBS=1"
+	[lto]="-DUSE_STATIC_LIBS=1"
 )
 
 # Temp: As of version 1.52, parts of Boost don't work with icc in C++11 mode
@@ -113,6 +114,13 @@ compiler_options=(
 	[libcxx]='-stdlib=libc++'
 	[libstdcxx]='' # use default
 	[ekopath]='-fstrict-stl'
+	[gcc-armv6j-hf]="-fno-lto"
+	[gcc-freebsd-9.1-i686]="-fno-lto"
+	[gcc-freebsd-9.1-x86-64]="-fno-lto"
+	[gcc-bindist-i686]="-fno-lto"
+	[gcc-bindist-x86-64]="-fno-lto"
+	[mingw]="-ffat-lto-objects -fno-lto"
+	[lto]='-static-libgcc -static-libstdc++ -flto -fuse-linker-plugin'
 )
 
 compiler_options[clang-analyzer]+=" ${compiler_options[libcxx]}"
@@ -121,6 +129,13 @@ compiler_options[clang-analyzer]+=" ${compiler_options[libcxx]}"
 declare -A linker_options
 linker_options=(
 	[m32]='-Wl,--no-warn-search-mismatch'
+	[gcc-armv6j-hf]="-fno-lto"
+	[gcc-freebsd-9.1-i686]="-fno-lto"
+	[gcc-freebsd-9.1-x86-64]="-fno-lto"
+	[gcc-bindist-i686]="-fno-lto"
+	[gcc-bindist-x86-64]="-fno-lto"
+	[mingw]="-ffat-lto-objects -fno-lto"
+	[lto]='-static-libgcc -static-libstdc++ -flto -fuse-linker-plugin'
 )
 
 # Declare if a CMake step is required (default is `1`)

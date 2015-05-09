@@ -12,6 +12,7 @@ cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
 # The environments for these don't have Qt installed - disable the crash reporter & profiler
 cmake_options[gcc-freebsd-9.1-i686]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+cmake_options[gcc-bindist-x86-64]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 cmake_options[mingw]+=" -DBUILD_PROFILER=0"
 
 arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
@@ -25,7 +26,6 @@ cmake_options[msvc-11.0-32]+=" $arx_use_qt5"
 cmake_options[msvc-11.0-64]+=" $arx_use_qt5"
 cmake_options[msvc-12.0-32]+=" $arx_use_qt5"
 cmake_options[msvc-12.0-64]+=" $arx_use_qt5"
-cmake_options[gcc-armv6j-hf]+=" -DWITH_SDL=1"
 
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-4.9'
@@ -113,7 +113,7 @@ build_types=(
 	'gcc-6_unity'
 	
 	'mingw_debug'
-	'mingw_unity'
+	'mingw_unity_lto'
 	
 	'msvc-10.0-32_unity'
 	'msvc-11.0-32_unity'
@@ -135,10 +135,11 @@ build_types=(
 	$default_compiler'_unity_minimal_static'
 	
 	'gcc-freebsd-9.1-i686_debug'
+	'gcc-freebsd-9.1-i686_unity' # TODO use 'gcc-freebsd-9.1-i686_unity_lto'
 	
-	'gcc-armv6j-hf_unity_static'
+	'gcc-armv6j-hf_unity_lto'
 	
-	'gcc-bindist-x86-64_unity'
+	'gcc-bindist-x86-64_unity_lto'
 	
 	# Test different library versions
 	
