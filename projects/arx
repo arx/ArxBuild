@@ -135,7 +135,7 @@ build_types=(
 	$default_compiler'_unity_minimal_static'
 	
 	'gcc-freebsd-9.1-i686_debug'
-	'gcc-freebsd-9.1-i686_unity' # TODO use 'gcc-freebsd-9.1-i686_unity_lto'
+	'gcc-freebsd-9.1-i686_unity_lto'
 	
 	'gcc-armv6j-hf_unity_lto'
 	

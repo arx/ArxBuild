@@ -119,7 +119,7 @@ build_types=(
 	'gcc-bindist-x86-64_lto'
 	
 	'gcc-freebsd-9.1-i686_debug'
-	'gcc-freebsd-9.1-x86-64' # TODO use gcc-freebsd-9.1-x86-64_lto
+	'gcc-freebsd-9.1-x86-64_lto'
 	
 	# Test different library versions
 	
