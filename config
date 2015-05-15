@@ -120,7 +120,7 @@ compiler_options=(
 	[gcc-bindist-i686]="-fno-lto"
 	[gcc-bindist-x86-64]="-fno-lto"
 	[mingw]="-ffat-lto-objects -fno-lto"
-	[lto]='-static-libgcc -static-libstdc++ -flto -fuse-linker-plugin'
+	[lto]='-static-libgcc -static-libstdc++ -flto'
 )
 
 compiler_options[clang-analyzer]+=" ${compiler_options[libcxx]}"
