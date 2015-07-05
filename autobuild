@@ -150,6 +150,9 @@ do_build() {
 		
 	fi
 	
+	local results="$build/results"
+	[ -d "$results"/* ] && mv "$results"/* "$stage/$buildid-results"
+	
 	# Record build for branch
 	touch "$branch_dst"
 	set_branch_commit "$branch_dst" "$buildid" "$commit"
@@ -157,6 +160,7 @@ do_build() {
 	# Record build for commit
 	touch "$commit_dst"
 	[ -e "$ref_commit" ] && rm "$ref_commit"
+	rmbuilddir "$commit_dst/$buildid"
 	mv "$stage"/* "$commit_dst/"
 	echo "$commit" > "$ref_commit"
 	[ -e "$force_commit" ] && rm "$force_commit"

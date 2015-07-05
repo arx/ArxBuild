@@ -154,6 +154,7 @@ build_suffixes=(
 	'-warnings.txt'
 	'-cache.html'
 	'-change.txt'
+	'-results'
 )
 
 rmbuild() {
@@ -161,6 +162,15 @@ rmbuild() {
 	for suffix in "${build_suffixes[@]}" ; do
 		file="$name$suffix"
 		[ -f "$file" ] && rm "$file"
+		[ -d "$file" ] && rm -r "$file"
+	done
+}
+
+rmbuilddir() {
+	name="$1"
+	for suffix in "${build_suffixes[@]}" ; do
+		file="$name$suffix"
+		[ -d "$file" ] && rm -r "$file"
 	done
 }
 
