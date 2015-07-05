@@ -152,6 +152,10 @@ do_build() {
 	
 	local results="$build/results"
 	[ -d "$results"/* ] && mv "$results"/* "$stage/$buildid-results"
+	if [ -f "$stage/$buildid-results/index.html" ] ; then
+		sed -i 's!^.*<th>\(User\|Working Directory\):</th>.*$!!' \
+			"$stage/$buildid-results/index.html"
+	fi
 	
 	# Record build for branch
 	touch "$branch_dst"
