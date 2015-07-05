@@ -31,9 +31,14 @@ set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
 
 libcxx_libs=""
 
+scan_build="scan-build --use-cc=clang --use-c++=clang++"
+scan_build+=" --html-title=\"\$project_name: \$buildid build\""
+scan_build+=" -no-failure-reports"
+
 declare -A cmake_command
 cmake_command=(
-	[olddeps]="$deps/cmake-2.8.0/bin/cmake"
+	[olddeps]="\"$deps/cmake-2.8.0/bin/cmake\""
+	[clang-analyzer]="$scan_build -o \"\$build/config-results\" cmake"
 )
 
 # Declare possible build options (passed to cmake).
@@ -166,6 +171,7 @@ make_command=(
 	[cppcheck]='cppcheck --quiet --force --enable=style,unusedFunction "${source_directories[@]}"'
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
 	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
+	[clang-analyzer]="$scan_build -o \"\$build/results\" make -k"
 )
 
 qt_gcc48="$deps/Qt-5.4-gcc48"
