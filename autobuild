@@ -105,6 +105,8 @@ do_build() {
 	
 	cd "$work"
 	
+	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
+	
 	local _config_required="${config_required[$compiler]:-1}"
 	local do_build=1
 	if [ ! "$_config_required" = 0 ] ; then
@@ -121,7 +123,6 @@ do_build() {
 		echo "no config step" > "$dst_config"
 	fi
 	
-	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
 	if [ $do_build = 1 ] ; then
 		
 		echo "${esc}[32m[$buildid]${esc}[0m Building..."
