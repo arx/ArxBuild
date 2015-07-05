@@ -185,8 +185,13 @@ handle_build() {
 		dclass=" class=\"disabled\" title=\"$disabled\""
 	fi
 	
+	local details=''
+	if [ -d "$prefix-results/" ] ; then
+		local details=" [<a href=\"$wprefix-results/\">details</a>]"
+	fi
+	
 	local html="<tr$dclass>
-	<td class='n'><a href=\"$wprefix.html\">$name</a></td>
+	<td class='n'><a href=\"$wprefix.html\">$name</a>$details</td>
 	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>
 	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>
 	<td align=right class='tm'>$minutes min</td><td align=right class='ts'>$seconds s</td>
