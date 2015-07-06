@@ -155,6 +155,10 @@ do_build() {
 	if [ -f "$stage/$buildid-results/index.html" ] ; then
 		sed -i 's!^.*<th>\(User\|Working Directory\):</th>.*$!!' \
 			"$stage/$buildid-results/index.html"
+		for f in $(find "$stage/$buildid-results" -type f) ; do
+			cp "$f" "$build/tmpfile"
+			cat "$build/tmpfile" | process_paths > "$f"
+		done
 	fi
 	
 	# Record build for branch
