@@ -111,8 +111,8 @@ do_build() {
 	local do_build=1
 	if [ ! "$_config_required" = 0 ] ; then
 		echo "${esc}[32m[$buildid]${esc}[0m Configuring..."
-		local _cmake_command="$cmake $(escape "$repo/$path")"
-		_cmake_command+=" --no-warn-unused-cli -DCMAKE_INSTALL_PREFIX=/"
+		local _cmake_command="$cmake --no-warn-unused-cli $(escape "$repo/$path")"
+		_cmake_command+=" -DCMAKE_INSTALL_PREFIX=/"
 		_cmake_command="$(eval escape_args "$_cmake_command")"
 		_cmake_command+=" $options"
 		echo "$_cmake_command" | process_paths > "$dst_options"
