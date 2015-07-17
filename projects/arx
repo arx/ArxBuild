@@ -3,6 +3,8 @@
 # What is the project called
 project_name='Arx'
 
+project_buildlogs_url='http://arx-libertatis.org/buildlogs/arx/'
+
 # Some additional arx-specific build options
 cmake_options[minimal]='-DBUILD_EDIT_LOADSAVE=0'
 cmake_options[unity]='-DUNITY_BUILD=1'

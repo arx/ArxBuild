@@ -358,6 +358,33 @@ $(html_footer)"
 		else echo "${esc}[32m(no changes)${esc}[0m"
 	fi
 	
+	if [ ! -z "$project_buildlogs_url" ] && [ "$type" = 'branch' ] ; then
+		local _commits="$(printf '%s' "$commits" | sort | uniq)"
+		local _buildlogs_url="${project_buildlogs_url}branches/${context}/"
+		local _buildlogs_feed="$dir/feed.rss"
+		echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">
+<channel>
+<title>${project_name} build logs for branch ${context}</title>
+<link>${_buildlogs_url}</link>
+<description>Errors, warnings and notices for ${project_name} built with different compilers.</description>
+<language>en-us</language>
+<atom:link href=\"${_buildlogs_url}feed.rss\" rel=\"self\" type=\"application/rss+xml\" />" \
+			> "$_buildlogs_feed"
+		for commit in $_commits ; do
+			local _time="$(git --git-dir="$repo/.git" show -s --format='%ct' "$commit")"
+			echo "<item>
+<title>${project_name} build logs for branch ${context} updated to ${commit}</title>
+<link>${_buildlogs_url}</link>
+<pubDate>$(date --rfc-2822 --utc --date="@${_time}")</pubDate>
+<guid>${project_buildlogs_url}commits/${commit}/</guid>
+</item>" >> "$_buildlogs_feed"
+		done
+		echo '</channel>
+</rss>' >> "$_buildlogs_feed"
+		touch --reference="$index" "$_buildlogs_feed"
+	fi
+	
 	touch "$timefile"
 }
 
