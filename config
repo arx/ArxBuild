@@ -162,6 +162,7 @@ include_directories=(
 )
 
 # Declare how to build the projects (default is `make -k`).
+scan_build+=" \$([[ \"\$buildid\" == *unity* ]] && printf '%s' '-analyze-headers')"
 declare -A make_command
 make_command=(
 	[style]='make -k style'
