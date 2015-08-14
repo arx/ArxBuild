@@ -204,3 +204,8 @@ relative_path() {
 	
 	printf '%s' "$up$target"
 }
+
+# Escape for use in a sed replacement string
+escape_sed() {
+	sed 's/\([\\\*\.\^\$\/]\|\[\|\]\)/\\\1/g' | perl -pe 's/\n/\\\n/'
+}
