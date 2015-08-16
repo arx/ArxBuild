@@ -124,8 +124,8 @@ build_types=(
 	
 	# Test different build types
 	
-	$default_compiler''
-	$default_compiler'_unity_debug'
+	$default_compiler'_glm-git'
+	$default_compiler'_glm-git_unity_debug'
 	$default_compiler'_unity_xtra'
 	
 	# Test different architectures
@@ -158,7 +158,7 @@ build_types=(
 	$default_compiler'_debug_boost-1.58_boostfs'
 	$default_compiler'_debug_boost-1.59_boostfs'
 	
-	$default_compiler'_olddeps'
+	$default_compiler'_olddeps_unity'
 	$default_compiler'_olddeps_debug'
 	
 	# TODO 'include-what-you-use'

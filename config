@@ -104,6 +104,7 @@ cmake_options=(
 	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_52-libcxx/\""
 	[static]="-DUSE_STATIC_LIBS=1"
 	[lto]="-DUSE_STATIC_LIBS=1"
+	[glm-git]="-DCMAKE_INCLUDE_PATH=$deps/glm-git/"
 )
 
 # Temp: As of version 1.52, parts of Boost don't work with icc in C++11 mode
