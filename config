@@ -188,7 +188,7 @@ prefix_paths=(
 ;$deps/openal-soft-1.0.38\
 ;$deps/glew-1.5.2\
 ;$deps/freetype-2.3.0\
-;$deps/glm-0.9.2.7\
+;$deps/glm-0.9.5.0\
 "
 	[gcc-4.3]="$qt_gcc48"
 	[gcc-4.4]="$qt_gcc48"
