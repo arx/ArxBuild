@@ -39,6 +39,9 @@ declare -A cmake_command
 cmake_command=(
 	[olddeps]="\"$deps/cmake-2.8.0/bin/cmake\""
 	[clang-analyzer]="$scan_build -o \"\$build/config-results\" cmake"
+	[cppcheck]="cppcheck --version #"
+	[flawfinder]="printf 'Flawfinder ' ; flawfinder --version #"
+	[shellcheck]="shellcheck --version #"
 )
 
 # Declare possible build options (passed to cmake).
@@ -145,12 +148,9 @@ linker_options=(
 	[lto]='-static-libgcc -static-libstdc++ -flto -fuse-linker-plugin'
 )
 
-# Declare if a CMake step is required (default is `1`)
+# Declare if a configure step (cmake_command) is required (default is `1`)
 declare -A config_required
 config_required=(
-	[cppcheck]=0
-	[flawfinder]=0
-	[shellcheck]=0
 )
 
 # Declare directories containing source code (for cppcheck and flawfinder)
