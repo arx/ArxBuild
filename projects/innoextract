@@ -17,6 +17,13 @@ cmake_options[gcc-freebsd-9.1-x86-64]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-4.9'
 
+merge_config olddeps cmake-2.8.0
+merge_config olddeps boost-1.37
+merge_config olddeps libiconv-1.7
+merge_config olddeps liblzma-5.0.0
+
+merge_config libiconv libiconv-1.14
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.

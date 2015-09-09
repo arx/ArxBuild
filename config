@@ -71,7 +71,6 @@ cmake_options=(
 	[winstyle]="\"$set_cmake_toolchain/mingw-toolchain.cmake\""
 	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
-	[olddeps]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_48/\""
 	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_37/\""
 	[boost-1.39]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_39/\""
 	[boost-1.41]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1_41/\""
@@ -152,7 +151,7 @@ scan_build+=" -no-failure-reports"
 # Configure command (default is "cmake")
 declare -A config_command
 config_command=(
-	[olddeps]="\"$deps/cmake-2.8.0/bin/cmake\""
+	[cmake-2.8.0]="\"$deps/cmake-2.8.0/bin/cmake\""
 	[clang-analyzer]="$scan_build -o \"\$build/config-results\" cmake"
 	[cppcheck]="cppcheck --version #"
 	[flawfinder]="printf 'Flawfinder ' ; flawfinder --version #"
@@ -177,16 +176,14 @@ qt_gcc48="$deps/Qt-5.4-gcc48"
 
 declare -A prefix_paths
 prefix_paths=(
-	[libiconv]="$deps/libiconv-1.14"
-	[olddeps]="${prefix_paths[olddeps]}\
-;$deps/libiconv-1.7\
-;$deps/liblzma-5.0.0\
-;$deps/SDL-1.2.10\
-;$deps/openal-soft-1.0.38\
-;$deps/glew-1.5.2\
-;$deps/freetype-2.3.0\
-;$deps/glm-0.9.5.0\
-"
+	[libiconv-1.7]="$deps/libiconv-1.7"
+	[libiconv-1.14]="$deps/libiconv-1.14"
+	[liblzma-5.0.0]="$deps/liblzma-5.0.0"
+	[sdl-1.2.10]="$deps/SDL-1.2.10"
+	[openal-soft-1.0.38]="$deps/openal-soft-1.0.38"
+	[glew-1.5.2]="$deps/glew-1.5.2"
+	[freetype-2.3.0]="$deps/freetype-2.3.0"
+	[glm-0.9.5.0]="$deps/glm-0.9.5.0"
 	[gcc-4.3]="$qt_gcc48"
 	[gcc-4.4]="$qt_gcc48"
 	[gcc-4.5]="$qt_gcc48"

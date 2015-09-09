@@ -43,6 +43,14 @@ include_directories+=(
 # TODO temp workaround for clang + libc++ + unity build = OOM/crash
 compiler_options[libcxx]+=" -fPIE"
 
+merge_config olddeps cmake-2.8.0
+merge_config olddeps boost-1.48
+merge_config olddeps sdl-1.2.10
+merge_config olddeps openal-soft-1.0.38
+merge_config olddeps glew-1.5.2
+merge_config olddeps freetype-2.3.0
+merge_config olddeps glm-0.9.5.0
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.

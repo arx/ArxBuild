@@ -68,6 +68,35 @@ if [ -z "$project" ] || [ "$project" = '*' ] ; then
 	exit
 fi
 
+_merge_config() {
+	local var="$1"
+	local separator="$2"
+	eval "if [ ! -z \"\${${var}[\$source]}\" ] ; then
+		[ ! -z \"\${${var}[\$target]}\" ] && ${var}[\$target]+=\"$separator\"
+		${var}[\$target]+=\"\${${var}[\$source]}\"
+	fi"
+}
+
+_copy_config() {
+	local var="$1"
+	eval "if [ ! -z \"\${${var}[\$source]}\" ] ; then
+		[ ! -z \"\${${var}[\$target]}\" ] \\
+			&& die \"Cannot merge config \$source into \$target: ${var} already set!\"
+		${var}[\$target]=\"\${${var}[\$source]}\"
+	fi"
+}
+
+merge_config() {
+	local target="$1"
+	local source="$2"
+	_merge_config cmake_options ' '
+	_merge_config compiler_options ' '
+	_merge_config linker_options ' '
+	_copy_config config_command
+	_copy_config make_command
+	_merge_config prefix_paths ';'
+}
+
 . "$here/config"
 [ -f "$here/config.local" ] && . "$here/config.local"
 [ -f "$here/projects/$project" ] || die "Unknown project: $project"
