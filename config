@@ -35,8 +35,9 @@ scan_build="scan-build --use-cc=clang --use-c++=clang++"
 scan_build+=" --html-title=\"\$project_name: \$buildid build\""
 scan_build+=" -no-failure-reports"
 
-declare -A cmake_command
-cmake_command=(
+# Configure command (default is "cmake")
+declare -A config_command
+config_command=(
 	[olddeps]="\"$deps/cmake-2.8.0/bin/cmake\""
 	[clang-analyzer]="$scan_build -o \"\$build/config-results\" cmake"
 	[cppcheck]="cppcheck --version #"

@@ -109,13 +109,13 @@ do_build() {
 	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
 	
 	echo "${esc}[32m[$buildid]${esc}[0m Configuring..."
-	local _cmake_command="$cmake --no-warn-unused-cli $(escape "$repo/$path")"
-	_cmake_command+=" -DCMAKE_INSTALL_PREFIX=/"
-	_cmake_command="$(eval escape_args "$_cmake_command")"
-	_cmake_command+=" $options"
-	echo "$_cmake_command" | process_paths > "$dst_options"
+	local _config_command="$config --no-warn-unused-cli $(escape "$repo/$path")"
+	_config_command+=" -DCMAKE_INSTALL_PREFIX=/"
+	_config_command="$(eval escape_args "$_config_command")"
+	_config_command+=" $options"
+	echo "$_config_command" | process_paths > "$dst_options"
 	
-	if ! eval "$_cmake_command" 2>&1 | process_paths > "$dst_config" ; then
+	if ! eval "$_config_command" 2>&1 | process_paths > "$dst_config" ; then
 		
 		echo "${esc}[32m[$buildid]${esc}[0m ${esc}[31mConfigure failed!${esc}[0m"
 		echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$dst_raw"
@@ -205,7 +205,7 @@ build() {
 	local compiler="$1"
 	buildid="${compiler}"
 	
-	local cmake="${cmake_command[$compiler]}"
+	local config="${config_command[$compiler]}"
 	local options="${cmake_options[$compiler]}"
 	local flags="${compiler_options[$compiler]}"
 	local ldflags="${linker_options[$compiler]}"
@@ -223,9 +223,9 @@ build() {
 		
 		local buildid="${buildid}_$arg"
 		
-		if [ ! -z "${cmake_command[$arg]}" ] ; then
-			[ -z "$cmake" ] || die '$cmake_command can only be set once!'
-			cmake="${cmake_command[$arg]}"
+		if [ ! -z "${config_command[$arg]}" ] ; then
+			[ -z "$config" ] || die '$config_command can only be set once!'
+			config="${config_command[$arg]}"
 		fi
 		
 		if [ ! -z "${cmake_options[$arg]}" ] ; then
@@ -255,7 +255,7 @@ build() {
 		
 	done
 	
-	[ -z "$cmake" ] && cmake='cmake'
+	[ -z "$config" ] && config='cmake'
 	
 	if [ "$flags" != "" ] ; then
 		options="$options \"-DCMAKE_C_FLAGS=$flags\" \"-DCMAKE_CXX_FLAGS=$flags\""
