@@ -148,11 +148,6 @@ linker_options=(
 	[lto]='-static-libgcc -static-libstdc++ -flto -fuse-linker-plugin'
 )
 
-# Declare if a configure step (cmake_command) is required (default is `1`)
-declare -A config_required
-config_required=(
-)
-
 # Declare directories containing source code (for cppcheck and flawfinder)
 source_directories=(
 	"$repo/src"

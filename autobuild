@@ -108,26 +108,19 @@ do_build() {
 	
 	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
 	
-	local _config_required="${config_required[$compiler]:-1}"
-	local do_build=1
-	if [ ! "$_config_required" = 0 ] ; then
-		echo "${esc}[32m[$buildid]${esc}[0m Configuring..."
-		local _cmake_command="$cmake --no-warn-unused-cli $(escape "$repo/$path")"
-		_cmake_command+=" -DCMAKE_INSTALL_PREFIX=/"
-		_cmake_command="$(eval escape_args "$_cmake_command")"
-		_cmake_command+=" $options"
-		echo "$_cmake_command" | process_paths > "$dst_options"
-		if ! eval "$_cmake_command" 2>&1 | process_paths > "$dst_config" ; then
-			echo "${esc}[32m[$buildid]${esc}[0m ${esc}[31mConfigure failed!${esc}[0m"
-			echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$dst_raw"
-			do_build=0
-		fi
-	else
-		echo "$_make_command" | process_paths > "$dst_options"
-		echo "no config step" > "$dst_config"
-	fi
+	echo "${esc}[32m[$buildid]${esc}[0m Configuring..."
+	local _cmake_command="$cmake --no-warn-unused-cli $(escape "$repo/$path")"
+	_cmake_command+=" -DCMAKE_INSTALL_PREFIX=/"
+	_cmake_command="$(eval escape_args "$_cmake_command")"
+	_cmake_command+=" $options"
+	echo "$_cmake_command" | process_paths > "$dst_options"
 	
-	if [ $do_build = 1 ] ; then
+	if ! eval "$_cmake_command" 2>&1 | process_paths > "$dst_config" ; then
+		
+		echo "${esc}[32m[$buildid]${esc}[0m ${esc}[31mConfigure failed!${esc}[0m"
+		echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$dst_raw"
+		
+	else
 		
 		echo "${esc}[32m[$buildid]${esc}[0m Building..."
 		
