@@ -308,7 +308,12 @@ handle_context() {
 	
 	local html="$(html_header "$project_name build logs for $type $context" "../..")
 	
-	<h1>Build logs for $type $context</h1>
+	<h1>Build logs for $type "
+	if [ ! -z "$commit_url" ]
+		then html+="<a href="$commit_url$context">$context</a>"
+		else html+="$context"
+	fi
+	html+="</h1>
 	<a href=\"../\">Other Logs</a><br>
 	<br>
 "

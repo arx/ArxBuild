@@ -289,3 +289,5 @@ default_jobs=1
 
 # Compliers and libraries to not run new builds for (but keep old logs)
 disabled_configs=()
+
+commit_url=

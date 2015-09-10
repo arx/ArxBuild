@@ -179,3 +179,5 @@ favicons['../images/icon_256.png']='256x256'
 
 covertiy_scan_project='585'
 travis_ci_project='dscharrer/innoextract'
+
+commit_url=https://github.com/dscharrer/innoextract/commits/
