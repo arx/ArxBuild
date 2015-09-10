@@ -285,7 +285,7 @@ export GCC_COLORS=1
 
 build_latest_tag=1
 
-default_jobs=3
+default_jobs=1
 
 # Compliers and libraries to not run new builds for (but keep old logs)
 disabled_configs=()
