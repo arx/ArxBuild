@@ -115,7 +115,8 @@ do_build() {
 	_config_command+=" $options"
 	echo "$_config_command" | process_paths > "$dst_options"
 	
-	if ! eval "$_config_command" 2>&1 | process_paths > "$dst_config" ; then
+	eval "$_config_command" 2>&1 | process_paths > "$dst_config"
+	if [ ! ${PIPESTATUS[0]} = 0 ] ; then
 		
 		echo "${esc}[32m[$buildid]${esc}[0m ${esc}[31mConfigure failed!${esc}[0m"
 		echo -e "\nConfigure.h:0:0: error: Configure error, see config log.\n\n" > "$dst_raw"
