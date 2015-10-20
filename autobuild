@@ -115,7 +115,15 @@ do_build() {
 	_config_command+=" $options"
 	echo "$_config_command" | process_paths > "$dst_options"
 	
-	eval "$_config_command" 2>&1 | process_paths > "$dst_config"
+	eval "_config_cmd=(
+		$_config_command
+	)"
+	if [ "${_config_cmd[0]}" = 'cmake' ] || [[ "${_config_cmd[0]}" == *'/cmake' ]]
+		then "${_config_cmd[0]}" --version > "$dst_config"
+		else touch "$dst_config"
+	fi
+	
+	eval "$_config_command" 2>&1 | process_paths >> "$dst_config"
 	if [ ! ${PIPESTATUS[0]} = 0 ] ; then
 		
 		echo "${esc}[32m[$buildid]${esc}[0m ${esc}[31mConfigure failed!${esc}[0m"
