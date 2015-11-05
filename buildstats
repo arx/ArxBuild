@@ -190,8 +190,26 @@ handle_build() {
 		local details=" [<a href=\"$wprefix-results/\">details</a>]"
 	fi
 	
+	local primary_id=''
+	local extra_ids=''
+	local id="$name"
+	while [ ! -z "$id" ] && [ -z "${html_ids["$id"]}" ] ; do
+		if [ -z "$primary_id" ]
+			then primary_id="id=\"$id\" "
+			else extra_ids="<a id=\"$id\"></a>$extra_ids"
+		fi
+		html_ids["$id"]=1
+		if [[ "$id" == *_* ]] ; then
+			id="${id%_*}"
+		elif [ $has_false_positives = 0 ] && [[ "$id" == *-* ]] ; then
+			id="${id%-*}"
+		else
+			break
+		fi
+	done
+	
 	local html="<tr$dclass>
-	<td class='n'><a href=\"$wprefix.html\">$name</a>$details</td>
+	<td class='n'>${extra_ids}<a ${primary_id}href=\"$wprefix.html\">$name</a>$details</td>
 	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>
 	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>
 	<td align=right class='tm'>$minutes min</td><td align=right class='ts'>$seconds s</td>
@@ -297,6 +315,8 @@ handle_context() {
 		then echo "Updating '${esc}[36m$context${esc}[0m'..."
 		else return
 	fi
+	
+	local -A html_ids
 	
 	local commits=''
 	local old_commits=''
