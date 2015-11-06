@@ -200,6 +200,11 @@ handle_build() {
 		fi
 		html_ids["$id"]=1
 		if [[ "$id" == *_* ]] ; then
+			local part="${id##*_}"
+			if [ $has_false_positives = 0 ] && [ -z "${html_ids["$part"]}" ] ; then
+				extra_ids="<a id=\"$part\"></a>$extra_ids"
+				html_ids["$part"]=1
+			fi
 			id="${id%_*}"
 		elif [ $has_false_positives = 0 ] && [[ "$id" == *-* ]] ; then
 			id="${id%-*}"
@@ -317,6 +322,8 @@ handle_context() {
 	fi
 	
 	local -A html_ids
+	html_ids['analyzers']=1
+	html_ids['external']=1
 	
 	local commits=''
 	local old_commits=''
@@ -329,52 +336,85 @@ handle_context() {
 	local html="$(html_header "$project_name build logs for $type $context" "../.." "
 <script type=\"text/javascript\">
 
-function set_row_class(id, className) {
-	var tr = document.getElementById(id);
-	if(!tr || !tr.parentElement) {
+function nextElementSibling(e) {
+	do {
+		e = e.nextSibling;
+	} while(e && e.nodeType != 1);
+	return e;
+}
+
+function startsWith(str, needle) {
+	return str.substring(0, needle.length) == needle;
+}
+
+function endsWith(str, needle) {
+	return str.indexOf(needle, str.length - needle.length) !== -1;
+}
+
+function contains(str, needle) {
+	return str.indexOf(needle) !== -1;
+}
+
+function isInCategory(e, id) {
+	if(!e || !e.id) {
+		return 0;
+	}
+	if(startsWith(e.id, id + '_')) {
+		return 1;
+	}
+	if(!contains(id, '_')) {
+		if(startsWith(e.id, id + '-')) {
+			return 1;
+		}
+		if(contains(e.id, '_' + id + '_')) {
+			return 2;
+		}
+		if(endsWith(e.id, '_' + id)) {
+			return 2;
+		}
+	}
+	return isInCategory(nextElementSibling(e), id);
+}
+
+function setCategoryClass(id, className) {
+	var e = document.getElementById(id);
+	if(!e || !e.parentElement || !e.parentElement.parentElement) {
 		return;
 	}
-	tr = tr.parentElement.parentElement;
-	while(tr != null) {
-		tr.className = className;
-		tr = tr.nextSibling;
-		while(tr != null && tr.nodeType != 1) {
-			tr = tr.nextSibling;
-		}
-		if(tr && tr.firstElementChild && tr.firstElementChild.firstElementChild) {
-			var a = tr.firstElementChild.firstElementChild;
-			if(a.id) {
-				var valid = false;
-				if(a.id.substring(0, id.length + 1) == id + '_') {
-					valid = true;
-				}
-				if(id.indexOf('_') == -1 && a.id.substring(0, id.length + 1) == id + '-') {
-					valid = true;
-				}
-				if(!valid) {
-					break;
-				}
-			}
+	var tr = e.parentElement.parentElement;
+	tr.className = className;
+	var contiguous = contains(id, '_') || isInCategory(nextElementSibling(e), id) != 2;
+	while(tr = nextElementSibling(tr)) {
+		var a = tr.firstElementChild ? tr.firstElementChild.firstElementChild : null;
+		if(isInCategory(a, id)) {
+			tr.className = className;
+		} else if(contiguous) {
+			break;
 		}
 	}
 }
 
 var oldid = null;
 window.onload = function () {
-	var id = window.location.hash.substr(1);
-	if(oldid) {
-		if(id == oldid) {
-			return;
-		}
-		set_row_class(oldid, null);
+	var newid = window.location.hash.substr(1);
+	if(newid == '') {
+		newid = null;
 	}
-	set_row_class(id, 'selected');
-	oldid = id;
+	if(newid != oldid) {
+		if(oldid) {
+			setCategoryClass(oldid, null);
+		}
+		if(newid) {
+			setCategoryClass(newid, 'selected');
+		}
+		oldid = newid;
+	}
 }
 
 if('onhashchange' in window) {
-	window.onhashchange = window.onload
+	window.onhashchange = window.onload;
 }
+
 </script>")
 	
 	<h1>Build logs for $type "
