@@ -38,6 +38,8 @@ th {
 }
 tr:nth-child(odd)  { background: #fdfdfd; }
 tr:nth-child(even) { background: #f8f8f8; }
+tr:nth-child(odd).selected  { background: #ededff; }
+tr:nth-child(even).selected { background: #e8e8fa; }
 
 th, td {
 	border: 1px solid #d4d4ff;

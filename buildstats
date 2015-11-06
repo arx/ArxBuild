@@ -326,7 +326,56 @@ handle_context() {
 		handle_build "$f"
 	done
 	
-	local html="$(html_header "$project_name build logs for $type $context" "../..")
+	local html="$(html_header "$project_name build logs for $type $context" "../.." "
+<script type=\"text/javascript\">
+
+function set_row_class(id, className) {
+	var tr = document.getElementById(id);
+	if(!tr || !tr.parentElement) {
+		return;
+	}
+	tr = tr.parentElement.parentElement;
+	while(tr != null) {
+		tr.className = className;
+		tr = tr.nextSibling;
+		while(tr != null && tr.nodeType != 1) {
+			tr = tr.nextSibling;
+		}
+		if(tr && tr.firstElementChild && tr.firstElementChild.firstElementChild) {
+			var a = tr.firstElementChild.firstElementChild;
+			if(a.id) {
+				var valid = false;
+				if(a.id.substring(0, id.length + 1) == id + '_') {
+					valid = true;
+				}
+				if(id.indexOf('_') == -1 && a.id.substring(0, id.length + 1) == id + '-') {
+					valid = true;
+				}
+				if(!valid) {
+					break;
+				}
+			}
+		}
+	}
+}
+
+var oldid = null;
+window.onload = function () {
+	var id = window.location.hash.substr(1);
+	if(oldid) {
+		if(id == oldid) {
+			return;
+		}
+		set_row_class(oldid, null);
+	}
+	set_row_class(id, 'selected');
+	oldid = id;
+}
+
+if('onhashchange' in window) {
+	window.onhashchange = window.onload
+}
+</script>")
 	
 	<h1>Build logs for $type "
 	if [ ! -z "$commit_url" ]
