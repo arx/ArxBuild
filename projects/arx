@@ -44,6 +44,7 @@ include_directories+=(
 compiler_options[libcxx]+=" -fPIE"
 
 merge_config olddeps cmake-2.8.3
+merge_config olddeps curl-7.20.0
 merge_config olddeps boost-1.48
 merge_config olddeps sdl-1.2.10
 merge_config olddeps openal-soft-1.0.38

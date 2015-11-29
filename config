@@ -173,6 +173,7 @@ qt_gcc48="$deps/Qt-5.4-gcc48"
 
 declare -A prefix_paths
 prefix_paths=(
+	[curl-7.20.0]="$deps/CURL-7.20.0"
 	[libiconv-1.7]="$deps/libiconv-1.7"
 	[libiconv-1.14]="$deps/libiconv-1.14"
 	[liblzma-5.0.0]="$deps/liblzma-5.0.0"
