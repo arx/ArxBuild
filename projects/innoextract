@@ -57,6 +57,9 @@ build_types=(
 	'clang-3.6_libcxx_debug'
 	'clang-3.6_libcxx'
 	
+	'clang-3.7_libcxx_debug'
+	'clang-3.7_libcxx'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx'
 	
