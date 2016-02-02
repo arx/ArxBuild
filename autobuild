@@ -112,7 +112,9 @@ do_build() {
 	local _config_command="$config --no-warn-unused-cli $(escape "$repo/$path")"
 	_config_command+=" -DCMAKE_INSTALL_PREFIX=/"
 	_config_command="$(eval escape_args "$_config_command")"
-	_config_command+=" $options"
+	if [ ! "${config##*#}" = '' ] ; then
+		_config_command+=" $options"
+	fi
 	echo "$_config_command" | process_paths > "$dst_options"
 	
 	eval "_config_cmd=(
