@@ -216,16 +216,18 @@ build() {
 	local compiler="$1"
 	buildid="${compiler}"
 	
+	local options="$default_cmake_options"
+	
 	local config="${config_command[$compiler]}"
-	local options="${cmake_options[$compiler]}"
+	
+	if [ ! -z "${cmake_options[$compiler]}" ] ; then
+		[ ! -z "$options" ] && local options="$options "
+		local options="$options${cmake_options[$compiler]}"
+	fi
+	
 	local flags="${compiler_options[$compiler]}"
 	local ldflags="${linker_options[$compiler]}"
 	local prefixes="${prefix_paths[$compiler]}"
-	
-	if [ ! -z "$default_cmake_options" ] ; then
-		[ ! -z "$options" ] && local options="$options "
-		local options="$options$default_cmake_options"
-	fi
 	
 	local disabled=''
 	in_array "$compiler" "${disabled_configs[@]}" && disabled="$compiler"
