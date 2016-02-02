@@ -32,6 +32,8 @@ set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
 
 libcxx_libs=""
 
+default_cmake_options=''
+
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
 cmake_options=(
