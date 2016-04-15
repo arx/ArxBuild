@@ -88,6 +88,9 @@ build_types=(
 	'clang-3.7_libcxx_debug'
 	'clang-3.7_libcxx_unity'
 	
+	'clang-3.8_libcxx_debug'
+	'clang-3.8_libcxx_unity'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx_unity'
 	
