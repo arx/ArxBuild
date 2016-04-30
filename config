@@ -52,7 +52,6 @@ cmake_options=(
 	[gcc-freebsd-9.1-x86-64]="\"$set_cmake_toolchain/x86_64-gentoo-freebsd9.1-toolchain.cmake\""
 	[gcc-bindist-i686]="\"$set_cmake_toolchain/i686-bindist-linux-gnu-toolchain.cmake\""
 	[gcc-bindist-x86-64]="\"$set_cmake_toolchain/x86_64-bindist-linux-gnu-toolchain.cmake\""
-	[clang-3.1]="\"$set_cmake_toolchain/clang-3.1-toolchain.cmake\""
 	[clang-3.2]="\"$set_cmake_toolchain/clang-3.2-toolchain.cmake\""
 	[clang-3.3]="\"$set_cmake_toolchain/clang-3.3-toolchain.cmake\""
 	[clang-3.4]="\"$set_cmake_toolchain/clang-3.4-toolchain.cmake\""

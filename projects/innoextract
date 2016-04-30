@@ -39,9 +39,6 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	'clang-3.1_libcxx_debug'
-	'clang-3.1_libcxx'
-	
 	'clang-3.2_libcxx_debug'
 	'clang-3.2_libcxx'
 	
