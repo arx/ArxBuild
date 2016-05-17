@@ -7,6 +7,7 @@ project_buildlogs_url='http://arx-libertatis.org/buildlogs/arx/'
 
 default_cmake_options+=' -DUNITY_BUILD=0'
 default_cmake_options+=' -DBUILD_PROFILER=1'
+default_cmake_options+=' -DICON_TYPE=none'
 
 # Some additional arx-specific build options
 cmake_options[minimal]='-DBUILD_EDIT_LOADSAVE=0'
