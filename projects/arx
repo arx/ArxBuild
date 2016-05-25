@@ -23,7 +23,7 @@ cmake_options[mingw]+=" -DBUILD_PROFILER=0"
 
 arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
 arx_use_qt5="-DUSE_QT4=0 -DWITH_QT=5"
-cmake_options[olddeps]+=" $arx_use_qt4 -DWITH_SDL=1"
+cmake_options[olddeps]+=" $arx_use_qt4 -DWITH_SDL=1 -DICON_TYPE=all"
 cmake_options[m32]+=" $arx_use_qt4"
 cmake_options[msvc-9.0-32]+=" $arx_use_qt4"
 cmake_options[msvc-9.0-64]+=" $arx_use_qt4"
