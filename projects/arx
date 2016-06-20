@@ -56,6 +56,8 @@ merge_config olddeps glew-1.5.2
 merge_config olddeps freetype-2.3.0
 merge_config olddeps glm-0.9.5.0
 
+merge_config newdeps glm-git
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.
@@ -143,8 +145,8 @@ build_types=(
 	
 	# Test different build types
 	
-	$default_compiler'_glm-git'
-	$default_compiler'_glm-git_unity_debug'
+	$default_compiler'_newdeps'
+	$default_compiler'_newdeps_unity_debug'
 	$default_compiler'_unity_xtra'
 	
 	# Test different architectures
