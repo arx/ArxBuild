@@ -46,6 +46,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 file(GLOB _msvc_dirs RELATIVE ${_msvc_wineroot} "${_msvc_wineroot}/Code/*")
+list(SORT _msvc_dirs)
 foreach(_msvc_dir IN LISTS _msvc_dirs)
 	if(EXISTS ${_msvc_wineroot}/${_msvc_dir}/lib OR
 	   EXISTS ${_msvc_wineroot}/${_msvc_dir}/bin OR
@@ -62,6 +63,7 @@ get_filename_component(_msvc_paths ${_msvc_paths} REALPATH)
 include(${_msvc_paths})
 if(DEFINED msvc_redist)
 	file(GLOB _msvc_redist_dirs RELATIVE ${_msvc_wineroot} "${_msvc_wineroot}/${msvc_redist}/*")
+	list(SORT _msvc_redist_dirs)
 	foreach(_msvc_redist_dir IN LISTS _msvc_redist_dirs)
 		if(IS_DIRECTORY "${_msvc_wineroot}/${_msvc_redist_dir}")
 			list(APPEND CMAKE_SYSTEM_LIBRARY_PATH "/${_msvc_redist_dir}")
