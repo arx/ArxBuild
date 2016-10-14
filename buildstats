@@ -133,8 +133,16 @@ handle_build() {
 	# Produce a plain text log without shell color codes.
 	format plain "$prefix-raw.txt" "$prefix.txt" "$name"
 	
-	local config_warnings="$(filter_log "$prefix-config.txt" "$name" config_warnings | wc -l)"
-	local config_errors="$(filter_log "$prefix-config.txt" "$name" config_errors | wc -l)"
+	local config_warnings_file="$prefix-config-warnings.txt"
+	local config_errors_file="$prefix-config-errors.txt"
+	if ! is_cache_valid "$config_warnings_file" "$prefix-config.txt" ; then
+		filter_log "$prefix-config.txt" "$name" config_warnings > "$config_warnings_file"
+	fi
+	if ! is_cache_valid "$config_errors_file" "$prefix-config.txt" ; then
+		filter_log "$prefix-config.txt" "$name" config_errors > "$config_errors_file"
+	fi
+	local config_warnings="$(wc -l < "$config_warnings_file")"
+	local config_errors="$(wc -l < "$config_errors_file")"
 	
 	local warnings_file="$prefix-warnings.txt"
 	local errors_file="$prefix-errors.txt"
@@ -144,8 +152,8 @@ handle_build() {
 	if ! is_cache_valid "$errors_file" "$prefix.txt" ; then
 		filter_log "$prefix.txt" "$name" errors > "$errors_file"
 	fi
-	local warnings="$(cat "$warnings_file" | wc -l)"
-	local errors="$(cat "$errors_file" | wc -l)"
+	local warnings="$(wc -l < "$warnings_file")"
+	local errors="$(wc -l < "$errors_file")"
 	
 	local time="$(grep real "$prefix-time.txt" 2> /dev/null)"
 	local time="${time##* }"
@@ -221,7 +229,10 @@ handle_build() {
 	<td><a href=\"$wprefix.txt\">[txt]</a></td>
 	<td><a href=\"$wprefix-raw.txt\">[raw]</a></td>
 	<td><a href=\"$wprefix-options.txt\">[opt]</a></td>
-	<td$config_class><a href=\"$wprefix-config.txt\">[cfg]</a></td>"
+	<td$config_class><a href=\"$wprefix-config.txt\">[cfg]</a>"
+	[ $config_warnings -gt 0 ] && html+="<a href=\"$wprefix-config-warnings.txt\">[w]</a>"
+	[ $config_errors -gt 0 ] && html+="<a href=\"$wprefix-config-errors.txt\">[e]</a>"
+	html+="</td>"
 	
 	if [ ! $has_false_positives = 0 ] ; then
 		
