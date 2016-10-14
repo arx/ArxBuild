@@ -206,3 +206,14 @@ covertiy_scan_project='1656'
 travis_ci_project='arx/ArxLibertatis'
 
 commit_url=https://github.com/arx/ArxLibertatis/commits/
+
+# Sanity check configuration for release targets
+boostfs='Filesystem backend\: Boost'
+nocrashhandler='Features\: (\(none\)|profiler instrumentation)'
+expected_symbols='dirfd|fstatat|fpathconf|_PC_NAME_MAX|readlink|fcntl|chdir|open|fork|dup2'
+expected_symbols+='|pipe|read|close|posix_spawnp|execvp|isatty|waitpid|kill|gepid|sigaction'
+expected_symbols+='|getcwd|clock_gettime|setenv|unsetenv|popen|pclose'
+count_config_warnings['gcc-bindist*']="$boostfs|$nocrashhandler|Looking for ($expected_symbols) \\- not found"
+count_config_warnings['gcc-freebsd*']="$boostfs|$nocrashhandler|Looking for (sysctl(byname)?|$expected_symbols) \\- not found"
+count_config_warnings['mingw*']="$boostfs"
+count_config_warnings['msvc*']="$boostfs|$nocrashhandler"
