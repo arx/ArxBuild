@@ -17,6 +17,11 @@ a {
 	-moz-outline: none;
 }
 
+td.e > a, td.w > a {
+	color: #333;
+	text-shadow: none;
+}
+
 a:hover {
 	color: #34f;
 	text-decoration: underline;

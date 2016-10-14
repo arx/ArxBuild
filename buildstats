@@ -223,8 +223,16 @@ handle_build() {
 	
 	local html="<tr$dclass>
 	<td class='n'>${extra_ids}<a ${primary_id}href=\"$wprefix.html\">$name</a>$details</td>
-	<td align=right class='w w$warnings'><b>$warnings</b> $warnings_l</td>
-	<td align=right class='e e$errors'><b>$errors</b> $errors_l</td>
+	<td align=right class='w w$warnings'>"
+	[ $warnings -gt 0 ] && html+="<a href=\"$wprefix-warnings.txt\">"
+	html+="<b>$warnings</b> $warnings_l"
+	[ $warnings -gt 0 ] && html+="</a>"
+	html+="</td>
+	<td align=right class='e e$errors'>"
+	[ $errors -gt 0 ] && html+="<a href=\"$wprefix-errors.txt\">"
+	html+="<b>$errors</b> $errors_l"
+	[ $errors -gt 0 ] && html+="</a>"
+	html+="</td>
 	<td align=right class='tm'>$minutes min</td><td align=right class='ts'>$seconds s</td>
 	<td><a href=\"$wprefix.txt\">[txt]</a></td>
 	<td><a href=\"$wprefix-raw.txt\">[raw]</a></td>
