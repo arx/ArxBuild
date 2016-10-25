@@ -466,7 +466,7 @@ $(printf '%s' "$builds_bogus" | sed 's:^:\t\t:')
 	</table>"
 	fi
 	
-	if [ ! -z "$covertiy_scan_project$travis_ci_project" ] ; then
+	if [ ! -z "$covertiy_scan_project$travis_ci_project$appveyor_project" ] ; then
 		html+="
 	<h2 id=\"external\">External tools:</h2>
 	<ul>"
@@ -477,6 +477,10 @@ $(printf '%s' "$builds_bogus" | sed 's:^:\t\t:')
 		if [ ! -z "$travis_ci_project" ] ; then
 			html+="
 		<li><b><a href=\"https://travis-ci.org/$travis_ci_project\">Travis CI</a></b>"
+		fi
+		if [ ! -z "$appveyor_project" ] ; then
+			html+="
+		<li><b><a href=\"https://ci.appveyor.com/project/$appveyor_project\">AppVeyor</a></b>"
 		fi
 		html+="
 	</ul>"
