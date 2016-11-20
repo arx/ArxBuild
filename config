@@ -177,6 +177,9 @@ make_command=(
 )
 
 qt_gcc48="$deps/Qt-5.4-gcc48"
+cppunit_gcc48="$deps/cppunit-1.13.2-gcc48"
+cppunit_gcc5="$deps/cppunit-1.13.2-gcc5"
+cppunit_libcxx="$deps/cppunit-1.13.2-libcxx"
 
 declare -A prefix_paths
 prefix_paths=(
@@ -189,12 +192,18 @@ prefix_paths=(
 	[glew-1.5.2]="$deps/glew-1.5.2"
 	[freetype-2.3.0]="$deps/freetype-2.3.0"
 	[glm-0.9.5.0]="$deps/glm-0.9.5.0"
-	[gcc-4.3]="$qt_gcc48"
-	[gcc-4.4]="$qt_gcc48"
-	[gcc-4.5]="$qt_gcc48"
-	[gcc-4.6]="$qt_gcc48"
-	[gcc-4.7]="$qt_gcc48"
-	[gcc-4.8]="$qt_gcc48"
+	[icc]="$qt_gcc48;$cppunit_gcc48"
+	[gcc-4.3]="$qt_gcc48;$cppunit_gcc48"
+	[gcc-4.4]="$qt_gcc48;$cppunit_gcc48"
+	[gcc-4.5]="$qt_gcc48;$cppunit_gcc48"
+	[gcc-4.6]="$qt_gcc48;$cppunit_gcc48"
+	[gcc-4.7]="$qt_gcc48;$cppunit_gcc48"
+	[gcc-4.8]="$qt_gcc48;$cppunit_gcc48"
+	[gcc-5]="$cppunit_gcc5"
+	[gcc-6]="$cppunit_gcc5"
+	[libcxx]="$cppunit_libcxx"
+	[clang-analyzer]="$cppunit_libcxx"
+	[ekopath]="$deps/cppunit-1.13.2-ekopath"
 )
 
 # Define how buildstats counts errors and warnings.
