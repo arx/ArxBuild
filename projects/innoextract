@@ -117,6 +117,7 @@ build_types=(
 	# Test different build types
 	
 	$default_compiler'_xtra'
+	'clang-dev_libcxx_xtra'
 	
 	$default_compiler'_static'
 	
