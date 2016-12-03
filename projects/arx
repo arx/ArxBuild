@@ -193,6 +193,7 @@ build_types=(
 	$default_compiler'_olddeps_debug'
 	$default_compiler'_newdeps_unity'
 	$default_compiler'_newdeps_debug'
+	$default_compiler'_newdeps_unity_m32'
 	
 	# TODO 'include-what-you-use'
 	
