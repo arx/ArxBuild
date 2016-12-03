@@ -155,6 +155,7 @@ build_types=(
 	$default_compiler
 	$default_compiler'_unity_debug'
 	$default_compiler'_unity_xtra'
+	'clang-dev_libcxx_unity_xtra'
 	
 	# Test different architectures
 	
