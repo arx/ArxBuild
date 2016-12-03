@@ -152,8 +152,8 @@ build_types=(
 	
 	# Test different build types
 	
-	$default_compiler'_newdeps'
-	$default_compiler'_newdeps_unity_debug'
+	$default_compiler
+	$default_compiler'_unity_debug'
 	$default_compiler'_unity_xtra'
 	
 	# Test different architectures
@@ -191,6 +191,8 @@ build_types=(
 	
 	$default_compiler'_olddeps_unity'
 	$default_compiler'_olddeps_debug'
+	$default_compiler'_newdeps_unity'
+	$default_compiler'_newdeps_debug'
 	
 	# TODO 'include-what-you-use'
 	
