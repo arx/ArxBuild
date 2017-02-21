@@ -60,6 +60,9 @@ build_types=(
 	'clang-3.8_libcxx_debug'
 	'clang-3.8_libcxx'
 	
+	'clang-3.9_libcxx_debug'
+	'clang-3.9_libcxx'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx'
 	
