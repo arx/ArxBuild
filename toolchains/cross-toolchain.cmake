@@ -1,6 +1,6 @@
 
 # This toolchain file determines the target triple used from its own filename.
-# It should be named clang-<target>-toolchain.cmake
+# It should be named <target>-toolchain.cmake
 #
 # Compilers should be installed as <target>-gcc and <target>-g++
 # Target environment should be installed at /usr/<target>
