@@ -192,6 +192,7 @@ build_types=(
 	$default_compiler'_debug_boost-1.60_boostfs'
 	$default_compiler'_debug_boost-1.61_boostfs'
 	$default_compiler'_debug_boost-1.62_boostfs'
+	$default_compiler'_debug_boost-1.63_boostfs'
 	
 	$default_compiler'_olddeps_unity'
 	$default_compiler'_olddeps_debug'
