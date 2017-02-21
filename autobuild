@@ -315,6 +315,7 @@ build() {
 	else
 		do_build
 		build_done
+		"$here/buildstats" "$project" &> /dev/null
 	fi
 }
 
