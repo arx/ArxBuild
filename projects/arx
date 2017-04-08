@@ -21,6 +21,11 @@ cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 cmake_options[gcc-bindist-x86-64]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 cmake_options[mingw]+=" -DBUILD_PROFILER=0"
 
+# Newer Qt versions require the CMake compile feature "cxx_decltype", but
+# CMake does not support compile feature detection for these compilers
+cmake_options[clang-3.3]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+cmake_options[ekopath]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+
 arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
 arx_use_qt5="-DUSE_QT4=0 -DWITH_QT=5"
 arx_no_tests="-DBUILD_TESTS=0"
