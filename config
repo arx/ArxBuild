@@ -218,6 +218,7 @@ declare -A count_warnings
 count_warnings=(
 	[0]='\: warning\:'
 	[1]='\: Warning\:'
+	[2]='\: note\: \#pragma message'
 	['ekopath*']='pathCC WARNING\:'
 	['icc*']='warning \#\d+\:'
 	['style']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
