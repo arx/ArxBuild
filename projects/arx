@@ -118,6 +118,9 @@ build_types=(
 	'clang-3.9_libcxx_debug'
 	'clang-3.9_libcxx_unity'
 	
+	'clang-4_libcxx_debug'
+	'clang-4_libcxx_unity'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx_unity'
 	

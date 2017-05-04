@@ -19,6 +19,9 @@ fi
 export LD_LIBRARY_PATH="$basedir/lib:$basedir/lib64:$basedir/lib32:$LD_LIBRARY_PATH"
 export PATH="$basedir/bin:$PATH"
 
+export LD_LIBRARY_PATH="$basedir/lib/llvm/$ver/lib:$basedir/lib/llvm/$ver/lib64:$basedir/lib/llvm/$ver/lib32:$LD_LIBRARY_PATH"
+export PATH="$basedir/lib/llvm/$ver/bin:$PATH"
+
 if [ -t 1 ] && [ -t 2 ] && [ ! "${TERM:-dumb}" = 'dumb' ] ; then
 	set -- -fcolor-diagnostics "$@"
 fi
