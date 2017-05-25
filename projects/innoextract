@@ -111,6 +111,9 @@ build_types=(
 	'gcc-6_debug'
 	'gcc-6'
 	
+	'gcc-7_debug'
+	'gcc-7'
+	
 	'mingw_debug'
 	'mingw_lto'
 	
