@@ -115,19 +115,27 @@ cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
 declare -A compiler_options
 compiler_options=(
 	[m32]='-m32'
-	[libcxx]='-stdlib=libc++'
-	[libstdcxx]='' # use default
-	[ekopath]='-fstrict-stl'
 	[gcc-armv6j-hf]="-fno-lto"
 	[gcc-freebsd-9.1-i686]="-fno-lto"
 	[gcc-freebsd-9.1-x86-64]="-fno-lto"
 	[gcc-bindist-i686]="-fno-lto"
 	[gcc-bindist-x86-64]="-fno-lto"
 	[mingw]="-ffat-lto-objects -fno-lto"
-	[lto]='-static-libgcc -static-libstdc++ -flto'
+	[lto]='-static-libgcc -flto'
 )
 
-compiler_options[clang-analyzer]+=" ${compiler_options[libcxx]}"
+
+declare -A c_compiler_options
+c_compiler_options=( )
+
+declare -A cxx_compiler_options
+cxx_compiler_options=(
+	[ekopath]='-fstrict-stl'
+	[libstdcxx]='' # use default
+	[libcxx]='-stdlib=libc++'
+	[clang-analyzer]='-stdlib=libc++'
+	[lto]='-static-libstdc++'
+)
 
 # Declare possible build options (passed to the linker).
 declare -A linker_options

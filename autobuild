@@ -225,9 +225,20 @@ build() {
 		local options="$options${cmake_options[$compiler]}"
 	fi
 	
-	local flags="${compiler_options[$compiler]}"
+	local cflags="${compiler_options[$compiler]}"
+	local cxxflags="${compiler_options[$compiler]}"
 	local ldflags="${linker_options[$compiler]}"
 	local prefixes="${prefix_paths[$compiler]}"
+	
+	if [ ! -z "${c_compiler_options[$compiler]}" ] ; then
+		[ -z "$cflags" ] || cflags="$cflags "
+		cflags="$cflags${c_compiler_options[$compiler]}"
+	fi
+	
+	if [ ! -z "${cxx_compiler_options[$compiler]}" ] ; then
+		[ -z "$cxxflags" ] || cxxflags="$cxxflags "
+		cxxflags="$cxxflags${cxx_compiler_options[$compiler]}"
+	fi
 	
 	local disabled=''
 	in_array "$compiler" "${disabled_configs[@]}" && disabled="$compiler"
@@ -247,8 +258,23 @@ build() {
 		fi
 		
 		if [ ! -z "${compiler_options[$arg]}" ] ; then
-			[ -z "$flags" ] || flags="$flags "
-			flags="$flags${compiler_options[$arg]}"
+			[ -z "$cflags" ] || cflags="$cflags "
+			cflags="$cflags${compiler_options[$arg]}"
+		fi
+		
+		if [ ! -z "${c_compiler_options[$arg]}" ] ; then
+			[ -z "$cflags" ] || cflags="$cflags "
+			cflags="$cflags${c_compiler_options[$arg]}"
+		fi
+		
+		if [ ! -z "${compiler_options[$arg]}" ] ; then
+			[ -z "$cxxflags" ] || cxxflags="$cxxflags "
+			cxxflags="$cxxflags${compiler_options[$arg]}"
+		fi
+		
+		if [ ! -z "${cxx_compiler_options[$arg]}" ] ; then
+			[ -z "$cxxflags" ] || cxxflags="$cxxflags "
+			cxxflags="$cxxflags${cxx_compiler_options[$arg]}"
 		fi
 		
 		if [ ! -z "${linker_options[$arg]}" ] ; then
@@ -270,12 +296,16 @@ build() {
 	
 	[ -z "$config" ] && config='cmake'
 	
-	if [ "$flags" != "" ] ; then
-		options="$options \"-DCMAKE_C_FLAGS=$flags\" \"-DCMAKE_CXX_FLAGS=$flags\""
+	if [ "$cflags" != "" ] ; then
+		options="$options -DCMAKE_C_FLAGS=\"$cflags\""
+	fi
+	
+	if [ "$cxxflags" != "" ] ; then
+		options="$options -DCMAKE_CXX_FLAGS=\"$cxxflags\""
 	fi
 	
 	if [ "$ldflags" != "" ] ; then
-		options="$options \"-DCMAKE_EXE_LINKER_FLAGS=$ldflags\" \"-DCMAKE_SHARED_LINKER_FLAGS=$ldflags\" \"-DCMAKE_MODULE_LINKER_FLAGS=$ldflags\""
+		options="$options -DCMAKE_EXE_LINKER_FLAGS=\"$ldflags\" -DCMAKE_SHARED_LINKER_FLAGS=\"$ldflags\" -DCMAKE_MODULE_LINKER_FLAGS=\"$ldflags\""
 	fi
 	
 	if [ "$prefixes" != "" ] ; then
