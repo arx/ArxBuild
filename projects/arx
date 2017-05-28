@@ -47,7 +47,8 @@ cmake_options[msvc-12.0-64]+=" $arx_use_qt5 $arx_no_tests"
 cmake_options[icc]+=" -DUSE_CXX11=0"
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-4.9'
+default_compiler='gcc-6'
+old_compiler='gcc-4.9'
 
 # Declare directories containing source code (for cppcheck and flawfinder)
 source_directories+=(
@@ -197,26 +198,26 @@ build_types=(
 	
 	# Test different library versions
 	
-	$default_compiler'_debug_boost-1.48_boostfs'
-	$default_compiler'_debug_boost-1.49_boostfs'
-	$default_compiler'_debug_boost-1.50_boostfs'
-	$default_compiler'_debug_boost-1.51_boostfs'
-	$default_compiler'_debug_boost-1.52_boostfs'
-	$default_compiler'_debug_boost-1.53_boostfs'
-	$default_compiler'_debug_boost-1.54_boostfs'
-	$default_compiler'_debug_boost-1.55_boostfs'
-	$default_compiler'_debug_boost-1.56_boostfs'
-	$default_compiler'_debug_boost-1.57_boostfs'
-	$default_compiler'_debug_boost-1.58_boostfs'
-	$default_compiler'_debug_boost-1.59_boostfs'
-	$default_compiler'_debug_boost-1.60_boostfs'
-	$default_compiler'_debug_boost-1.61_boostfs'
-	$default_compiler'_debug_boost-1.62_boostfs'
-	$default_compiler'_debug_boost-1.63_boostfs'
-	$default_compiler'_debug_boost-1.64_boostfs'
+	'gcc-4.9_debug_boost-1.48_boostfs'
+	'gcc-4.9_debug_boost-1.49_boostfs'
+	'gcc-4.9_debug_boost-1.50_boostfs'
+	'gcc-4.9_debug_boost-1.51_boostfs'
+	'gcc-4.9_debug_boost-1.52_boostfs'
+	'gcc-4.9_debug_boost-1.53_boostfs'
+	'gcc-4.9_debug_boost-1.54_boostfs'
+	'gcc-4.9_debug_boost-1.55_boostfs'
+	'gcc-4.9_debug_boost-1.56_boostfs'
+	'gcc-4.9_debug_boost-1.57_boostfs'
+	'gcc-4.9_debug_boost-1.58_boostfs'
+	'gcc-4.9_debug_boost-1.59_boostfs'
+	'gcc-4.9_debug_boost-1.60_boostfs'
+	'gcc-4.9_debug_boost-1.61_boostfs'
+	'gcc-4.9_debug_boost-1.62_boostfs'
+	'gcc-4.9_debug_boost-1.63_boostfs'
+	'gcc-4.9_debug_boost-1.64_boostfs'
 	
-	$default_compiler'_olddeps_unity'
-	$default_compiler'_olddeps_debug'
+	$old_compiler'_olddeps_unity'
+	$old_compiler'_olddeps_debug'
 	$default_compiler'_newdeps_unity'
 	$default_compiler'_newdeps_debug'
 	$default_compiler'_newdeps_unity_m32'
