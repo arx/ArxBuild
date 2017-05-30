@@ -10,7 +10,6 @@ default_cmake_options+=' -DBUILD_ALL=1'
 default_cmake_options+=' -DICON_TYPE=none'
 
 # Some additional arx-specific build options
-cmake_options[minimal]='-DBUILD_EDIT_LOADSAVE=0'
 cmake_options[unity]='-DUNITY_BUILD=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
@@ -178,6 +177,7 @@ build_types=(
 	
 	$default_compiler
 	$default_compiler'_unity_debug'
+	$default_compiler'_unity_static'
 	$default_compiler'_unity_xtra'
 	'clang-dev_libcxx_unity_xtra'
 	
@@ -185,9 +185,6 @@ build_types=(
 	
 	$default_compiler'_m32_debug'
 	$default_compiler'_m32'
-	
-	$default_compiler'_debug_minimal'
-	$default_compiler'_unity_minimal_static'
 	
 	'gcc-freebsd-9.1-i686_debug'
 	'gcc-freebsd-9.1-i686_unity_lto'
