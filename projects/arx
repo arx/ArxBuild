@@ -44,6 +44,7 @@ cmake_options[gcc-freebsd-9.1-i686]+=" $arx_use_glew"
 cmake_options[gcc-armv6j-hf]+=" $arx_use_glew"
 cmake_options[gcc-bindist-x86-64]+=" $arx_use_glew"
 cmake_options[mingw]+=" $arx_use_glew"
+cmake_options[winstyle]+=" $arx_use_glew"
 cmake_options[msvc-11.0-32]+=" $arx_use_glew"
 cmake_options[msvc-12.0-32]+=" $arx_use_glew"
 cmake_options[msvc-12.0-64]+=" $arx_use_glew"
@@ -77,6 +78,7 @@ merge_config olddeps glew-1.5.2
 merge_config olddeps freetype-2.3.0
 merge_config olddeps glm-0.9.5.0
 merge_config olddeps prebuilt-icons
+cmake_options[olddeps]+=" $arx_use_glew"
 count_warnings["*olddeps*"]='(Rendering|Generating|Scaling) .*\.(svg|png|ico)'
 
 merge_config newdeps boost-git
