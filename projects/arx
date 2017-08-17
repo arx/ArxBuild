@@ -82,6 +82,7 @@ count_warnings["*olddeps*"]='(Rendering|Generating|Scaling) .*\.(svg|png|ico)'
 merge_config newdeps boost-git
 merge_config newdeps glm-git
 merge_config newdeps build-icons
+merge_config newdeps libepoxy-1.2 # not really new
 
 # glm/detail/setup.hpp:456:100: note: #pragma message: GLM: GCC older than 4.6 has a bug presenting the use of rgba and stpq components
 merge_config gcc-4.3 glm-0.9.5.0

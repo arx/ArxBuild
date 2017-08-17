@@ -201,6 +201,7 @@ prefix_paths=(
 	[sdl-1.2.10]="$deps/SDL-1.2.10"
 	[openal-soft-1.0.38]="$deps/openal-soft-1.0.38"
 	[glew-1.5.2]="$deps/glew-1.5.2"
+	[libepoxy-1.2]="$deps/libepoxy-1.2"
 	[freetype-2.3.0]="$deps/freetype-2.3.0"
 	[glm-0.9.5.0]="$deps/glm-0.9.5.0"
 	[icc]="$qt_gcc48"
