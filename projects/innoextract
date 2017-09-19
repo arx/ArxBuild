@@ -15,7 +15,7 @@ cmake_options[gcc-freebsd-9.1-i686]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 cmake_options[gcc-freebsd-9.1-x86-64]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-6'
+default_compiler='gcc-7'
 old_compiler='gcc-4.5'
 
 merge_config olddeps cmake-2.8.0
