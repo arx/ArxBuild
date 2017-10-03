@@ -101,9 +101,10 @@ handle_build() {
 	commits+="$commit
 "
 	local old_file="$path.old"
+	local old_commit=''
 	local old_prefix=''
 	if [ -f "$old_file" ] ; then
-		local old_commit="$(cat "$old_file")"
+		old_commit="$(cat "$old_file")"
 		old_commits+="$old_commit
 "
 		old_prefix="$logs/commits/$old_commit/$name"
@@ -242,33 +243,35 @@ handle_build() {
 	[ $config_errors -gt 0 ] && html+="<a href=\"$wprefix-config-errors.txt\">[e]</a>"
 	html+="</td>"
 	
-	if [ ! $has_false_positives = 0 ] ; then
+	if [ ! $has_false_positives = 0 ] && [ ! -z "$old_prefix" ] ; then
 		
-		if [ ! -z "$old_prefix" ] ; then
-			local old_warnings_file="$old_prefix-warnings.txt"
-			local old_errors_file="$old_prefix-errors.txt"
-			
+		local change_file="$path-change.txt"
+		local old_warnings_file="$old_prefix-warnings.txt"
+		local old_errors_file="$old_prefix-errors.txt"
+		if ! is_cache_valid "$change_file" "$here/warningdiff.cpp" \
+			|| [ "$warnings_file" -nt "$change_file" ] || [ "$old_warnings_file" -nt "$change_file" ] \
+			|| [ "$errors_file" -nt "$change_file" ] || [ "$old_errors_file" -nt "$change_file" ]
+		then
 			local change="$(
-				diff -uaiw "$old_warnings_file" "$warnings_file" | tail -n +3 | grep -P '^(\+|\-)'
-				diff -uaiw "$old_errors_file" "$errors_file" | tail -n +3 | grep -P '^(\+|\-)'
+				"$here/warningdiff.cpp" "$project_name/" "$repo/.git" "$old_commit" "$old_warnings_file" "$commit" "$warnings_file"
+				"$here/warningdiff.cpp" "$project_name/" "$repo/.git" "$old_commit" "$old_errors_file" "$commit" "$errors_file"
 			)"
-			local change_file="$path-change.txt"
 			printf '%s\n' "$change" > "$change_file"
-			
-			local changes=''
-			local broken="$(printf '%s' "$change" | grep -P '^\+' | wc -l)"
-			local fixed="$(printf '%s' "$change" | grep -P '^\-' | wc -l)"
-			[ $broken = 0 ] || changes+="<span class=\"bad\">+$broken</span>"
-			[ ! $broken = 0 ] && [ ! $fixed = 0 ] && changes+=' '
-			[ $fixed = 0 ] || changes+="<span class=\"good\">-$fixed</span>"
-			local wchange_file="$(relative_path "$dir" "$change_file")"
-			if [ -z "$changes" ]
-				then changes='='
-				else changes="<a href="$wchange_file"><b>$changes</b></a>"
-			fi
-			html+="
-	<td align=center>$changes</td>"
 		fi
+		
+		local changes=''
+		local broken="$(cat "$change_file" | grep -P '^\+' | wc -l)"
+		local fixed="$(cat "$change_file" | grep -P '^\-' | wc -l)"
+		[ $broken = 0 ] || changes+="<span class=\"bad\">+$broken</span>"
+		[ ! $broken = 0 ] && [ ! $fixed = 0 ] && changes+=' '
+		[ $fixed = 0 ] || changes+="<span class=\"good\">-$fixed</span>"
+		local wchange_file="$(relative_path "$dir" "$change_file")"
+		if [ -z "$changes" ]
+			then changes='='
+			else changes="<a href="$wchange_file"><b>$changes</b></a>"
+		fi
+		html+="
+	<td align=center>$changes</td>"
 		
 	fi
 	
