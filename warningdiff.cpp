@@ -337,7 +337,7 @@ void match_lines(const warnings & a, const warnings & b) {
 	// Backtrace path for cheapest edit
 	std::vector<int> edits;
 	std::size_t i = a.size(), j = b.size();
-	while(i != 0 && j != 0) {
+	while(i != 0 || j != 0) {
 		if(j != 0 && m[i][j] == m[i][j - 1] + insert_cost) {
 			edits.push_back(int(j));
 			j--;
