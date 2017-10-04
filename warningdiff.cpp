@@ -316,21 +316,17 @@ void match_lines(const warnings & a, const warnings & b) {
 	// Calculate edit costs
 	boost::multi_array<size_t, 2> m(boost::extents[a.size() + 1][b.size() + 1]);
 	for(std::size_t i = 0; i <= a.size(); i++) {
-		for(std::size_t j = 0; j <= b.size(); j++) {
-			
-			if(i == 0) {
-				m[i][j] = j * insert_cost;
-			} else if(j == 0) {
-				m[i][j] = i * insert_cost;
-			} else {
-				
-				size_t cost = m[i - 1][j - 1] + edit_cost(a[i - 1], b[j - 1]);
-				cost = std::min(cost, m[i][j - 1] + insert_cost);
-				cost = std::min(cost, m[i - 1][j] + insert_cost);
-				m[i][j] = cost;
-				
-			}
-			
+		m[i][0] = i * insert_cost;
+	}
+	for(std::size_t j = 0; j <= b.size(); j++) {
+		m[0][j] = j * insert_cost;
+	}
+	for(std::size_t i = 1; i <= a.size(); i++) {
+		for(std::size_t j = 1; j <= b.size(); j++) {
+			size_t cost = m[i - 1][j - 1] + edit_cost(a[i - 1], b[j - 1]);
+			cost = std::min(cost, m[i][j - 1] + insert_cost);
+			cost = std::min(cost, m[i - 1][j] + insert_cost);
+			m[i][j] = cost;
 		}
 	}
 	
