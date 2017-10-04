@@ -48,7 +48,6 @@ exit
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/multi_array.hpp>
-#include <boost/range/adaptor/reversed.hpp>
 
 struct warning {
 	
@@ -137,18 +136,18 @@ struct WarningSorter {
 	bool operator()(const warning & a, const warning & b) {
 		
 		if(a.line < b.line) {
-			return true;
-		} else if(a.line > b.line) {
 			return false;
+		} else if(a.line > b.line) {
+			return true;
 		}
 		
 		if(a.pos < b.pos) {
-			return true;
-		} else if(a.pos > b.pos) {
 			return false;
+		} else if(a.pos > b.pos) {
+			return true;
 		}
 		
-		return a.text.compare(b.text) < 0;
+		return a.text.compare(b.text) > 0;
 	}
 	
 };
@@ -233,7 +232,8 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 			}
 		}
 		
-		// Sort warnings within a file by line number and position in the line
+		// Sort warnings in reverse within a file by line number and position in the line
+		// Reverse sort allows us to avoid a reverse step later
 		std::sort(file.second.begin(), file.second.end(), WarningSorter());
 	}
 	
@@ -331,27 +331,18 @@ void match_lines(const warnings & a, const warnings & b) {
 	}
 	
 	// Backtrace path for cheapest edit
-	std::vector<int> edits;
+	// Warnings were sorted in reverse so we get the correct order here
 	std::size_t i = a.size(), j = b.size();
 	while(i != 0 || j != 0) {
-		if(j != 0 && m[i][j] == m[i][j - 1] + insert_cost) {
-			edits.push_back(int(j));
-			j--;
-		} else if(i != 0 && m[i][j] == m[i - 1][j] + insert_cost) {
-			edits.push_back(-int(i));
+		if(i != 0 && m[i][j] == m[i - 1][j] + insert_cost) {
 			i--;
+			std::cout << "-" << a[i].text << "\n";
+		} else if(j != 0 && m[i][j] == m[i][j - 1] + insert_cost) {
+			j--;
+			std::cout << "+" << b[j].text << "\n";
 		} else {
 			i--;
 			j--;
-		}
-	}
-	
-	// Print required edits
-	for(int e : boost::adaptors::reverse(edits)) {
-		if(e > 0) {
-			std::cout << "+" << b[std::size_t(e) - 1].text << "\n";
-		} else {
-			std::cout << "-" << a[std::size_t(-e) - 1].text << "\n";
 		}
 	}
 	
