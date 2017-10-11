@@ -194,6 +194,7 @@ build_types=(
 	$default_compiler'_unity_static'
 	$default_compiler'_unity_xtra'
 	'clang-dev_libcxx_unity_xtra'
+	'msvc-12.0-64_unity_xtra'
 	
 	# Test different architectures
 	
