@@ -240,6 +240,7 @@ build_types=(
 	
 	'style'
 	'winstyle'
+	'style_xtra'
 	
 )
 
