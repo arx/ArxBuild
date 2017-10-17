@@ -185,6 +185,10 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 			file_start = 1;
 		}
 		std::size_t file_end = line.find(':', file_start);
+		std::size_t alt_file_end = line.find('(', file_start);
+		if(file_end == std::string::npos || (alt_file_end != std::string::npos && alt_file_end < file_end)) {
+			file_end = alt_file_end;
+		}
 		if(file_end != std::string::npos && file_end != file_start) {
 			file = line.substr(file_start, file_end - file_start);
 			w.message = line.substr(file_end);
