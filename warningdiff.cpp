@@ -95,7 +95,7 @@ std::string escape(const std::string & str) {
 	return str; // TODO
 }
 
-std::vector<std::string> git_get_file(const std::string & repo, std::string & filename,
+std::vector<std::string> git_get_file(const std::string & repo, const std::string & filename,
                                       const std::string & commit) {
 	
 	std::vector<std::string> result;
@@ -221,21 +221,25 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 	for(parsed_warnings::value_type & file : result) {
 		
 		// Get the corresponding code line for each warning as well as some context
+		std::vector<std::string> code;
 		if(boost::starts_with(file.first, prefix)) {
 			std::string filename = file.first.substr(prefix.length());
-			std::vector<std::string> code = git_get_file(repo, filename, commit);
+			code = git_get_file(repo, filename, commit);
 			if(code.empty()) {
 				std::cerr << "could not find file \"" << filename << "\" at commit " << commit << "\n";
-			} else {
-				for(warning & w : file.second) {
-					if(w.line != std::size_t(-1) && w.line > 0 && w.line <= code.size()) {
-						if(w.line > 1) {
-							w.prev = code[w.line - 2];
-						}
-						w.code = code[w.line - 1];
-						if(w.line + 1 <= code.size()) {
-							w.next = code[w.line];
-						}
+			}
+		} else {
+			code = git_get_file(repo, file.first, commit);
+		}
+		if(!code.empty()) {
+			for(warning & w : file.second) {
+				if(w.line != std::size_t(-1) && w.line > 0 && w.line <= code.size()) {
+					if(w.line > 1) {
+						w.prev = code[w.line - 2];
+					}
+					w.code = code[w.line - 1];
+					if(w.line + 1 <= code.size()) {
+						w.next = code[w.line];
 					}
 				}
 			}
