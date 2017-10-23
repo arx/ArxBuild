@@ -46,8 +46,8 @@ filter_log() {
 	
 	
 	if [ -z "$ignore" ]
-		then grep -P "$query" "$file" |                      sort
-		else grep -P "$query" "$file" | grep -vP "$ignore" | sort
+		then grep -P "$query" "$file" |                      sort --human-numeric-sort | uniq
+		else grep -P "$query" "$file" | grep -vP "$ignore" | sort --human-numeric-sort | uniq
 	fi
 }
 
