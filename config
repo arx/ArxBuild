@@ -104,7 +104,7 @@ cmake_options=(
 	[boost-1.64]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.64/\""
 	[boost-1.65]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.65/\""
 	[boost-git]="$boost_no_autodetect \"-DBOOST_INCLUDEDIR=$deps/boost-git/\""
-	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.52-libcxx/\""
+	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.65-libcxx/\""
 	[static]="-DUSE_STATIC_LIBS=1"
 	[lto]="-DUSE_STATIC_LIBS=1"
 	[glm-git]="-DCMAKE_INCLUDE_PATH=$deps/glm-git/"
