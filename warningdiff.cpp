@@ -36,6 +36,7 @@ exit
  * 3. This notice may not be removed or altered from any source distribution.
  */
 
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <map>
@@ -63,6 +64,10 @@ struct warning {
 	std::string prev;
 	std::string code;
 	std::string next;
+	
+	bool operator==(const warning & other) const {
+		return text == other.text;
+	}
 	
 };
 
@@ -239,6 +244,7 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 		// Sort warnings in reverse within a file by line number and position in the line
 		// Reverse sort allows us to avoid a reverse step later
 		std::sort(file.second.begin(), file.second.end(), WarningSorter());
+		file.second.erase(std::unique(file.second.begin(), file.second.end()), file.second.end());
 	}
 	
 	return result;
