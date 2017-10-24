@@ -107,6 +107,7 @@ std::vector<std::string> git_get_file(const std::string & repo, const std::strin
 		std::istringstream iss(contents);
 		std::string line;
 		while(std::getline(iss, line)) {
+			boost::trim(line);
 			result.push_back(line);
 		}
 	}
