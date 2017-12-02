@@ -1,0 +1,50 @@
+#!/bin/bash
+
+self="$(which "$0")"
+here="$(readlink -f "$self")"
+here="${here%/*}"
+
+exe="${self}.exe"
+
+export WINEPREFIX="$(readlink -f "$here/../deps/msvc/")"
+export WINEDEBUG='-all'
+unset DISPLAY # run in headless mode to prevent dialog on wine updates
+
+if [ ! -e "$WINEPREFIX" ] ; then
+	echo "Please install MSVC into a WINEPREFIX at $WINEPREFIX"
+	exit 1
+fi
+
+# TODO should be case-insensitive and / can be swapped with -
+prefixes=(
+	''
+)
+
+args=()
+
+for arg in "$@" ;  do
+	
+	for prefix in "${prefixes[@]}" '' ; do
+		if [[ "$arg" == "$prefix"* ]] ; then
+			path="${arg#$prefix}"
+			if [ "$prefix" != '' ] || ( [ -e "$path" ] && [ "$path" != "/lib" ] ) ; then
+				case $path in
+					/*)  path="$(winepath -w "$path")" ;;
+					*/*) path="$(printf '%s' "$path" | sed 's:/:\\:g')" ;;
+				esac
+			fi
+			arg="$prefix$path"
+			break
+		fi
+	done
+	
+	if [ "$exe" = rc ] && ( [[ "$arg" == /GR* ]] || [[ "$arg" == /MP* ]] ) ; then
+		# bad rc options
+		continue
+	fi
+	
+	args+=( "$arg" )
+	
+done
+
+exec "$here/run.cpp" wine "$exe" "${args[@]}"
