@@ -63,7 +63,6 @@ cmake_options=(
 	[clang-4]="\"$set_cmake_toolchain/clang-4-toolchain.cmake\""
 	[clang-5]="\"$set_cmake_toolchain/clang-5-toolchain.cmake\""
 	[clang-dev]="\"$set_cmake_toolchain/clang-toolchain.cmake\""
-	[ekopath]="\"$set_cmake_toolchain/ekopath-toolchain.cmake\" $boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.55-ekopath/\""
 	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
 	[msvc-9.0-32]="\"$set_cmake_toolchain/msvc-9.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-9.0-64]="\"$set_cmake_toolchain/msvc-9.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
@@ -132,7 +131,6 @@ c_compiler_options=( )
 
 declare -A cxx_compiler_options
 cxx_compiler_options=(
-	[ekopath]='-fstrict-stl'
 	[libstdcxx]='' # use default
 	[libcxx]='-stdlib=libc++'
 	[clang-analyzer]='-stdlib=libc++'
@@ -330,7 +328,6 @@ prefix_paths=(
 	[gcc-4.9]="$qt_gcc48;$cppunit_gcc48"
 	[libcxx]="$cppunit_libcxx"
 	[clang-analyzer]="$cppunit_libcxx"
-	[ekopath]="$deps/cppunit-1.13.2-ekopath"
 )
 
 # Define how buildstats counts errors and warnings.
@@ -343,7 +340,6 @@ count_warnings=(
 	[0]='\: warning\:'
 	[1]='\: Warning\:'
 	[2]='\: note\: \#pragma message'
-	['ekopath*']='pathCC WARNING\:'
 	['icc*']='warning \#\d+\:'
 	['style*']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['winstyle']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
@@ -374,14 +370,11 @@ count_errors=(
 	[12]='Bus error'
 	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
-	['ekopath*']='psclang\: error\:'
 )
 
 # Declare patterns for warnings that should be ignored.
 declare -A ignore_warnings
-ignore_warnings=(
-	['ekopath*']='the anonymous namespace|Olimit|creating a DT_TEXTREL in object|relocation in readonly section'
-)
+ignore_warnings=( )
 
 declare -A count_config_warnings
 count_config_warnings=(

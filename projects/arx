@@ -23,7 +23,6 @@ cmake_options[mingw]+=" -DBUILD_PROFILER=0"
 # Newer Qt versions require the CMake compile feature "cxx_decltype", but
 # CMake does not support compile feature detection for these compilers
 cmake_options[clang-3.3]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
-cmake_options[ekopath]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 
 arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
 arx_use_qt5="-DUSE_QT4=0 -DWITH_QT=5"
@@ -195,9 +194,6 @@ build_types=(
 	
 	'clang-dev_libstdcxx_debug'
 	'clang-dev_libstdcxx_unity'
-	
-	'ekopath_debug'
-	'ekopath_unity'
 	
 	'icc_debug'
 	'icc_unity'

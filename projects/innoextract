@@ -114,10 +114,6 @@ build_types=(
 	'clang-dev_libstdcxx_debug'
 	'clang-dev_libstdcxx'
 	
-	# Broken as of 6.0.661_p20160124
-	#'ekopath_debug'
-	#'ekopath'
-	
 	'icc_debug'
 	'icc'
 	
