@@ -69,6 +69,55 @@ include_directories+=(
 # TODO temp workaround for clang + libc++ + unity build = OOM/crash
 cxx_compiler_options[libcxx]+=" -fPIE"
 
+clang_tidy_checks+=(
+	"${clang_tidy_checks_nocxx11[@]}" # TODO Enable these once we move to C++11
+	'-hicpp-vararg' # Variadic function used for asserts
+)
+clang_tidy_checks_relaxed+=(
+	# TODO Consider fixing and enabling these
+	'-bugprone-integer-division'
+	'-bugprone-undefined-memory-manipulation'
+	'-cert-err34-c'
+	'-cert-err58-cpp'
+	'-cert-flp30-c'
+	'-cppcoreguidelines-interfaces-global-init'
+	'-cppcoreguidelines-pro-type-cstyle-cast'
+	'-cppcoreguidelines-slicing'
+	'-google-readability-casting'
+	'-google-runtime-int'
+	'-google-runtime-references'
+	'-hicpp-member-init'
+	'-hicpp-no-malloc'
+	'-hicpp-special-member-functions'
+	'-llvm-namespace-comment'
+	'-misc-incorrect-roundings'
+	'-misc-misplaced-widening-cast'
+	'-misc-suspicious-enum-usage'
+	'-misc-unused-parameters'
+	'-modernize-use-bool-literals'
+	'-readability-avoid-const-params-in-decls'
+	'-readability-braces-around-statements'
+	'-readability-else-after-return'
+	'-readability-function-size'
+	'-readability-inconsistent-declaration-parameter-name'
+	'-readability-misleading-indentation'
+	'-readability-named-parameter'
+	'-readability-non-const-parameter'
+	'-readability-redundant-declaration'
+	'-readability-redundant-member-init'
+	'-readability-redundant-smartptr-get'
+	'-readability-redundant-string-cstr'
+	'-readability-simplify-boolean-expr'
+	'-readability-static-accessed-through-instance'
+	'-readability-static-definition-in-anonymous-namespace'
+)
+clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
+clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"u"'
+clang_tidy_config['google-runtime-int.SignedTypePrefix']='"s"'
+clang_tidy_config['google-runtime-int.TypeSuffix']='""'
+# TODO Qt moc / ui files won't be generated before clang-tidy is run, resulting in errors
+cmake_options[clang-tidy]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+
 merge_config olddeps cmake-2.8.3
 merge_config olddeps curl-7.20.0
 merge_config olddeps boost-1.48
@@ -100,6 +149,9 @@ build_types=(
 	
 	'clang-analyzer'
 	'clang-analyzer_unity'
+	
+	'clang-tidy_strict'
+	'clang-tidy_relaxed'
 	
 	'cppcheck'
 	

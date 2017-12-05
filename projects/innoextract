@@ -18,6 +18,39 @@ cmake_options[gcc-freebsd-9.1-x86-64]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 default_compiler='gcc-7'
 old_compiler='gcc-4.5'
 
+clang_tidy_checks+=(
+	# innoextract should stay compatible with older compilers, disable C++11-specific checks
+	"${clang_tidy_checks_nocxx11[@]}"
+	'-google-runtime-references'
+)
+clang_tidy_checks_relaxed+=(
+	# TODO Consider fixing and enabling these
+	'-cert-err58-cpp'
+	'-google-readability-casting'
+	'-google-runtime-member-string-references'
+	'-hicpp-exception-baseclass'
+	'-hicpp-member-init'
+	'-hicpp-special-member-functions'
+	'-hicpp-vararg'
+	'-llvm-namespace-comment'
+	'-misc-suspicious-string-compare'
+	'-misc-throw-by-value-catch-by-reference'
+	'-performance-unnecessary-copy-initialization'
+	'-performance-unnecessary-value-param'
+	'-readability-avoid-const-params-in-decls'
+	'-readability-braces-around-statements'
+	'-readability-else-after-return'
+	'-readability-inconsistent-declaration-parameter-name'
+	'-readability-named-parameter'
+	'-readability-non-const-parameter'
+	'-readability-redundant-member-init'
+	'-readability-simplify-boolean-expr'
+	'-readability-static-accessed-through-instance'
+	'-readability-static-definition-in-anonymous-namespace'
+)
+clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"boost::uint"'
+clang_tidy_config['google-runtime-int.SignedTypePrefix']='"boost::int"'
+
 merge_config olddeps cmake-2.8.0
 merge_config olddeps boost-1.37
 merge_config olddeps libiconv-1.7
@@ -33,6 +66,9 @@ build_types=(
 	# Static analyzers and style checks
 	
 	'clang-analyzer'
+	
+	'clang-tidy_strict'
+	'clang-tidy_relaxed'
 	
 	'cppcheck'
 	

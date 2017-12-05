@@ -111,6 +111,7 @@ cmake_options=(
 )
 
 cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
+cmake_options[clang-tidy]="${cmake_options[clang-dev]} ${cmake_options[libcxx]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 
 # Declare possible build options (passed to the compiler).
 declare -A compiler_options
@@ -161,6 +162,118 @@ include_directories=(
 	-I "$repo/src"
 )
 
+# Clang Tidy optons
+clang_tidy_options=(
+	-quiet
+	-header-filter='.*' # Otherwise we don't get warnings in headers without corresponding .cpp files
+)
+clang_tidy_checks=(
+	# Enable everything by default so that we will notice new checks
+	'*'
+	# Disable regular clang wanrings
+	'-clang-diagnostic-*' # Already covered by regular builds
+	'-clang-analyzer-*' # Already covered by clang-analyzer builds
+	# Disable aliases - use the direct name
+	'-cert-dcl03-c'
+	'-cert-dcl54-cpp'
+	'-cert-dcl59-cpp'
+	'-cert-err09-cpp'
+	'-cert-err61-cpp'
+	'-cert-fio38-c'
+	'-cert-msc30-c'
+	'-cert-oop11-cpp'
+	'-cppcoreguidelines-c-copy-assignment-signature'
+	'-cppcoreguidelines-no-malloc'
+	'-cppcoreguidelines-pro-type-member-init'
+	'-cppcoreguidelines-pro-type-vararg'
+	'-cppcoreguidelines-special-member-functions'
+	'-google-readability-braces-around-statements'
+	'-google-readability-function-size'
+	'-google-readability-namespace-comments'
+	'-google-readability-redundant-smartptr-get'
+	'-hicpp-braces-around-statements'
+	'-hicpp-deprecated-headers'
+	'-hicpp-explicit-conversions'
+	'-hicpp-function-size'
+	'-hicpp-invalid-access-moved'
+	'-hicpp-move-const-arg'
+	'-hicpp-named-parameter'
+	'-hicpp-new-delete-operators'
+	'-hicpp-no-array-decay'
+	'-hicpp-noexcept-move'
+	'-hicpp-static-assert'
+	'-hicpp-undelegated-constructor'
+	'-hicpp-use-auto'
+	'-hicpp-use-emplace'
+	'-hicpp-use-equals-default'
+	'-hicpp-use-equals-delete'
+	'-hicpp-use-noexcept'
+	'-hicpp-use-nullptr'
+	'-hicpp-use-override'
+	# Disable warnings that advertise using the GSL support library
+	'-cppcoreguidelines-owning-memory'
+	'-cppcoreguidelines-pro-bounds-array-to-pointer-decay'
+	'-cppcoreguidelines-pro-bounds-constant-array-index'
+	'-cppcoreguidelines-pro-bounds-pointer-arithmetic'
+	'-cppcoreguidelines-pro-type-union-access'
+	# Disable warnings we never want
+	'-android-cloexec-fopen' # Suggests nonstandard flags
+	'-cppcoreguidelines-pro-type-static-cast-downcast' # Advocates using dynamic_cast
+	'-fuchsia-default-arguments' # Completely forbids default arguments
+	'-google-default-arguments' # Forbids default arguments on virtual member functions
+	'-google-readability-todo' # Wants usernames in TODOs
+	'-hicpp-signed-bitwise' # Warns even on positive integer constants
+	'-llvm-header-guard' # Very specific to LLVM
+	'-llvm-include-order' # Wants to sort "a/b.hpp" before "b.hpp"
+	'-llvm-twine-local' # Very specific to LLVM
+	'-readability-implicit-bool-conversion' # These are just too useful
+)
+clang_tidy_checks_relaxed=(
+	'-cppcoreguidelines-pro-type-const-cast' # Required sometimes to interact with C APIs
+	'-cppcoreguidelines-pro-type-reinterpret-cast' # Required sometimes to interact with C APIs
+	'-google-explicit-constructor' # Already checkd by `make style` with the option to suppress the warning
+	'-misc-macro-parentheses' # Parentheses are not always correct
+	'-misc-misplaced-widening-cast' # Warns on cast to enum
+	'-misc-redundant-expression' # Does not consider that functions might have side effects
+	'-modernize-deprecated-headers' # Not always possible
+)
+clang_tidy_checks_nocxx11=(
+	'-modernize-*'
+	'modernize-redundant-void-arg'
+	'modernize-use-bool-literals'
+	'-boost-use-to-string' # std::to_string is C++11-only
+)
+declare -A clang_tidy_config
+clang_tidy_config=(
+	['bugprone-argument-comment.StrictMode']=1
+	['cppcoreguidelines-pro-type-member-init.IgnoreArrays']=1
+	['cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions']=1
+	['google-runtime-int.UnsignedTypePrefix']='"std::uint"'
+	['google-runtime-int.SignedTypePrefix']='"std::int"'
+	['google-runtime-int.TypeSuffix']='"_t"'
+	['hicpp-special-member-functions.AllowMissingMoveFunctions']=1
+	['readability-implicit-bool-conversion.AllowPointerConditions']=1
+)
+generate_clang_tidy_config() {
+	local checks=''
+	local checks_array=( "${clang_tidy_checks[@]}" )
+	local args
+	parse_build_type "$buildid" 'args'
+	for arg in "${args[@]:1}" ; do
+		eval "checks_array+=( \"\${clang_tidy_checks_${arg}[@]}\" )"
+	done
+	for check in "${checks_array[@]}" ; do
+		[ -z "$checks" ] || checks+=','
+		checks+="$check"
+	done
+	local options=''
+	for option in "${!clang_tidy_config[@]}" ; do
+		[ -z "$options" ] || options+=', '
+		options+="{ key: \"$option\" , value: ${clang_tidy_config[$option]} }"
+	done
+	printf "{ Checks: \"%s\", CheckOptions: [%s] }" "$checks" "$options"
+}
+
 scan_build="scan-build --use-cc=clang --use-c++=clang++"
 scan_build+=" --html-title=\"\$project_name: \$buildid build\""
 scan_build+=" -no-failure-reports"
@@ -188,6 +301,7 @@ make_command=(
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
 	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
 	[clang-analyzer]="$scan_build -o \"\$build/results\" make -k"
+	[clang-tidy]='$toolchains/run-clang-tidy.py -config="$(generate_clang_tidy_config)" "${clang_tidy_options[@]}"'
 )
 
 qt_gcc48="$deps/Qt-5.4-gcc48"
@@ -289,6 +403,7 @@ count_config_errors=(
 false_positives=(
 	'include-what-you-use'
 	'clang-analyzer*'
+	'clang-tidy*strict*'
 	'cppcheck*'
 	'flawfinder*'
 	'shellcheck*'
