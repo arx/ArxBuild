@@ -92,7 +92,6 @@ clang_tidy_checks_relaxed+=(
 	'-misc-misplaced-widening-cast'
 	'-misc-suspicious-enum-usage'
 	'-misc-unused-parameters'
-	'-modernize-use-bool-literals'
 	'-readability-braces-around-statements'
 	'-readability-else-after-return'
 	'-readability-function-size'
@@ -102,8 +101,6 @@ clang_tidy_checks_relaxed+=(
 	'-readability-redundant-declaration'
 	'-readability-redundant-member-init'
 	'-readability-redundant-smartptr-get'
-	'-readability-redundant-string-cstr'
-	'-readability-simplify-boolean-expr'
 	'-readability-static-accessed-through-instance'
 )
 clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
