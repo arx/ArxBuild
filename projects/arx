@@ -68,6 +68,7 @@ include_directories+=(
 # TODO temp workaround for clang + libc++ + unity build = OOM/crash
 cxx_compiler_options[libcxx]+=" -fPIE"
 
+# TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
 	"${clang_tidy_checks_nocxx11[@]}" # TODO Enable these once we move to C++11
 	'-hicpp-vararg' # Variadic function used for asserts
@@ -75,7 +76,6 @@ clang_tidy_checks+=(
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
 	'-bugprone-integer-division'
-	'-bugprone-undefined-memory-manipulation'
 	'-cert-err34-c'
 	'-cert-err58-cpp'
 	'-cppcoreguidelines-interfaces-global-init'
@@ -98,7 +98,6 @@ clang_tidy_checks_relaxed+=(
 	'-readability-misleading-indentation'
 	'-readability-non-const-parameter'
 	'-readability-redundant-declaration'
-	'-readability-redundant-member-init'
 	'-readability-redundant-smartptr-get'
 )
 clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
