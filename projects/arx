@@ -87,7 +87,6 @@ clang_tidy_checks_relaxed+=(
 	'-hicpp-member-init'
 	'-hicpp-no-malloc'
 	'-hicpp-special-member-functions'
-	'-llvm-namespace-comment'
 	'-misc-incorrect-roundings'
 	'-misc-misplaced-widening-cast'
 	'-misc-suspicious-enum-usage'
@@ -101,7 +100,6 @@ clang_tidy_checks_relaxed+=(
 	'-readability-redundant-declaration'
 	'-readability-redundant-member-init'
 	'-readability-redundant-smartptr-get'
-	'-readability-static-accessed-through-instance'
 )
 clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
 clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"u"'

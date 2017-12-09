@@ -32,7 +32,6 @@ clang_tidy_checks_relaxed+=(
 	'-hicpp-member-init'
 	'-hicpp-special-member-functions'
 	'-hicpp-vararg'
-	'-llvm-namespace-comment'
 	'-misc-suspicious-string-compare'
 	'-misc-throw-by-value-catch-by-reference'
 	'-performance-unnecessary-copy-initialization'
@@ -45,7 +44,6 @@ clang_tidy_checks_relaxed+=(
 	'-readability-non-const-parameter'
 	'-readability-redundant-member-init'
 	'-readability-simplify-boolean-expr'
-	'-readability-static-accessed-through-instance'
 	'-readability-static-definition-in-anonymous-namespace'
 )
 clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"boost::uint"'
