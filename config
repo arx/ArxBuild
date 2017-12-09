@@ -160,6 +160,13 @@ include_directories=(
 	-I "$repo/src"
 )
 
+# cppcheck options
+cppcheck_options=(
+	--quiet
+	--force
+	--enable='warning,style,performance,portability,unusedFunction'
+)
+
 # Clang Tidy optons
 clang_tidy_options=(
 	-quiet
@@ -296,8 +303,7 @@ make_command=(
 	[style]='make -k style'
 	[winstyle]='make -k style'
 	[doxygen]='make -k doc'
-	# TODO include  "${include_directories[@]}" for better coverage, bit it's slooooooow
-	[cppcheck]='cppcheck --quiet --force --enable=style,unusedFunction "${source_directories[@]}"'
+	[cppcheck]='cppcheck "${cppcheck_options[@]}" --cppcheck-build-dir="$PWD" "${source_directories[@]}"'
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
 	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
 	[clang-analyzer]="$scan_build -o \"\$build/results\" make -k"
