@@ -10,7 +10,6 @@ cmake_options[debugout]='-DDEBUG=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1'
 cmake_options[nolzma]='-DUSE_LZMA=0'
 cmake_options[style]="${cmake_options[debug]}"
-cmake_options[winstyle]="${cmake_options[debug]}"
 cmake_options[gcc-freebsd-9.1-i686]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 cmake_options[gcc-freebsd-9.1-x86-64]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 

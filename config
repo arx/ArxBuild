@@ -74,7 +74,6 @@ cmake_options=(
 	[clang-analyzer]="\"$set_cmake_toolchain/clang-analyzer-toolchain.cmake\""
 	[include-what-you-use]="\"$set_cmake_toolchain/include-what-you-use-toolchain.cmake\""
 	[mingw]="\"$set_cmake_toolchain/mingw-toolchain.cmake\""
-	[winstyle]="\"$set_cmake_toolchain/mingw-toolchain.cmake\""
 	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
 	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.37/\""
@@ -301,7 +300,6 @@ scan_build+=" \$([[ \"\$buildid\" == *unity* ]] && printf '%s' '-analyze-headers
 declare -A make_command
 make_command=(
 	[style]='make -k style'
-	[winstyle]='make -k style'
 	[doxygen]='make -k doc'
 	[cppcheck]='cppcheck "${cppcheck_options[@]}" --cppcheck-build-dir="$PWD" "${source_directories[@]}"'
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
@@ -350,7 +348,6 @@ count_warnings=(
 	[2]='\: note\: \#pragma message'
 	['icc*']='warning \#\d+\:'
 	['style*']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
-	['winstyle']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'
 	['msvc-*']='warning [A-Z]+\d+ *\:|\; restarting link with'
 	['cppcheck*']='\:\d+]\: \([a-z]'
