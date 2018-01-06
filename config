@@ -224,6 +224,8 @@ clang_tidy_checks=(
 	'-android-cloexec-fopen' # Suggests nonstandard flags
 	'-cppcoreguidelines-pro-type-static-cast-downcast' # Advocates using dynamic_cast
 	'-fuchsia-default-arguments' # Completely forbids default arguments
+	'-fuchsia-overloaded-operator' # Forbids overloaded operators
+	'-fuchsia-virtual-inheritance' # Forbids virtual inheritance
 	'-google-default-arguments' # Forbids default arguments on virtual member functions
 	'-google-readability-todo' # Wants usernames in TODOs
 	'-hicpp-signed-bitwise' # Warns even on positive integer constants
