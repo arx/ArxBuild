@@ -437,6 +437,10 @@ appveyor_project=''
 # Enable color output on newer GCC versions (4.9+)
 export GCC_COLORS=1
 
+# Required for FindQt4.cmake to work when both Qt4 and Qt5 are installed
+# FindQt5.cmake uses installed cmake config files instead of qmake and is not affected by this
+export QT_SELECT=4
+
 build_latest_tag=1
 
 default_jobs=1
