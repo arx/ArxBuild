@@ -254,6 +254,7 @@ build_types=(
 	'gcc-4.9_debug_boost-1.63_boostfs'
 	'gcc-4.9_debug_boost-1.64_boostfs'
 	'gcc-7_debug_boost-1.65_boostfs'
+	'gcc-7_debug_boost-1.66_boostfs'
 	
 	$old_compiler'_olddeps_unity'
 	$old_compiler'_olddeps_debug'
