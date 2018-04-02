@@ -195,6 +195,7 @@ clang_tidy_checks=(
 	'-google-readability-function-size'
 	'-google-readability-namespace-comments'
 	'-google-readability-redundant-smartptr-get'
+	'-hicpp-avoid-goto'
 	'-hicpp-braces-around-statements'
 	'-hicpp-deprecated-headers'
 	'-hicpp-explicit-conversions'
@@ -224,7 +225,9 @@ clang_tidy_checks=(
 	'-android-cloexec-fopen' # Suggests nonstandard flags
 	'-cppcoreguidelines-pro-type-static-cast-downcast' # Advocates using dynamic_cast
 	'-fuchsia-default-arguments' # Completely forbids default arguments
+	'-fuchsia-multiple-inheritance' # Forbids non-virtual multiple inheritance
 	'-fuchsia-overloaded-operator' # Forbids overloaded operators
+	'-fuchsia-statically-constructed-objects' # Forbids static objects
 	'-fuchsia-virtual-inheritance' # Forbids virtual inheritance
 	'-google-default-arguments' # Forbids default arguments on virtual member functions
 	'-google-readability-todo' # Wants usernames in TODOs
@@ -235,11 +238,12 @@ clang_tidy_checks=(
 	'-readability-implicit-bool-conversion' # These are just too useful
 )
 clang_tidy_checks_relaxed=(
+	'-bugprone-macro-parentheses' # Parentheses are not always correct
+	'-bugprone-misplaced-widening-cast' # False positives with enums
 	'-cppcoreguidelines-pro-type-const-cast' # Required sometimes to interact with C APIs
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # Required sometimes to interact with C APIs
 	'-google-explicit-constructor' # Already checkd by `make style` with the option to suppress the warning
 	'-llvm-namespace-comment' # Does not recognize the "} } // namespace a::b" syntax
-	'-misc-macro-parentheses' # Parentheses are not always correct
 	'-misc-misplaced-widening-cast' # Warns on cast to enum
 	'-misc-redundant-expression' # Does not consider that functions might have side effects
 	'-modernize-deprecated-headers' # Not always possible
