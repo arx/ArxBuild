@@ -19,6 +19,7 @@ cmake_options[gcc-freebsd-9.1-i686]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=
 cmake_options[gcc-armv6j-hf]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 cmake_options[gcc-bindist-x86-64]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 cmake_options[mingw]+=" -DBUILD_PROFILER=0"
+cmake_options[static]+=" -DEpoxy_USE_STATIC_LIBS=0" # TODO
 
 # Newer Qt versions require the CMake compile feature "cxx_decltype", but
 # CMake does not support compile feature detection for these compilers
