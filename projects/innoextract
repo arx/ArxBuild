@@ -73,9 +73,6 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	'clang-3.2_libcxx_debug'
-	'clang-3.2_libcxx'
-	
 	'clang-3.3_libcxx_debug'
 	'clang-3.3_libcxx'
 	
