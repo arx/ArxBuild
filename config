@@ -61,6 +61,7 @@ cmake_options=(
 	[clang-3.9]="\"$set_cmake_toolchain/clang-3.9-toolchain.cmake\""
 	[clang-4]="\"$set_cmake_toolchain/clang-4-toolchain.cmake\""
 	[clang-5]="\"$set_cmake_toolchain/clang-5-toolchain.cmake\""
+	[clang-6]="\"$set_cmake_toolchain/clang-6-toolchain.cmake\""
 	[clang-dev]="\"$set_cmake_toolchain/clang-toolchain.cmake\""
 	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
 	[msvc-9.0-32]="\"$set_cmake_toolchain/msvc-9.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
