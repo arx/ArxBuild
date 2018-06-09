@@ -45,6 +45,7 @@ cmake_options=(
 	[gcc-5]="\"$set_cmake_toolchain/gcc-5-toolchain.cmake\""
 	[gcc-6]="\"$set_cmake_toolchain/gcc-6-toolchain.cmake\""
 	[gcc-7]="\"$set_cmake_toolchain/gcc-7-toolchain.cmake\""
+	[gcc-8]="\"$set_cmake_toolchain/gcc-8-toolchain.cmake\""
 	[gcc-armv6j-hf]="\"$set_cmake_toolchain/armv6j-hardfloat-linux-gnueabi-toolchain.cmake\""
 	[gcc-freebsd-9.1-i686]="\"$set_cmake_toolchain/i686-gentoo-freebsd9.1-toolchain.cmake\""
 	[gcc-freebsd-9.1-x86-64]="\"$set_cmake_toolchain/x86_64-gentoo-freebsd9.1-toolchain.cmake\""
