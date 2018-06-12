@@ -26,24 +26,15 @@ clang_tidy_checks+=(
 	'-google-runtime-references'
 )
 clang_tidy_checks_relaxed+=(
+	'-hicpp-vararg' # ioctl
+	'-hicpp-special-member-functions' # warns with boost::noncopyable + non-default destructor
 	# TODO Consider fixing and enabling these
 	'-cert-err58-cpp'
-	'-google-readability-casting'
 	'-google-runtime-member-string-references'
-	'-hicpp-exception-baseclass'
 	'-hicpp-member-init'
-	'-hicpp-special-member-functions'
-	'-hicpp-vararg'
-	'-performance-unnecessary-copy-initialization'
-	'-performance-unnecessary-value-param'
-	'-readability-braces-around-statements'
 	'-readability-else-after-return'
-	'-readability-inconsistent-declaration-parameter-name'
-	'-readability-named-parameter'
 	'-readability-non-const-parameter'
-	'-readability-redundant-member-init'
 	'-readability-simplify-boolean-expr'
-	'-readability-static-definition-in-anonymous-namespace'
 )
 clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"boost::uint"'
 clang_tidy_config['google-runtime-int.SignedTypePrefix']='"boost::int"'
