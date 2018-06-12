@@ -387,7 +387,9 @@ count_errors=(
 
 # Declare patterns for warnings that should be ignored.
 declare -A ignore_warnings
-ignore_warnings=( )
+ignore_warnings=(
+	['mingw*']='\-fPIC ignored for target \(all code is position independent\)'
+)
 
 declare -A count_config_warnings
 count_config_warnings=(
