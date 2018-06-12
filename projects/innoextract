@@ -108,9 +108,6 @@ build_types=(
 	'gcc-4.1_debug'
 	'gcc-4.1'
 	
-	'gcc-4.3_debug'
-	'gcc-4.3'
-	
 	'gcc-4.4_debug'
 	'gcc-4.4'
 	
