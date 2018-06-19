@@ -119,6 +119,10 @@ merge_config gcc-4.3 glm-0.9.5.0
 merge_config gcc-4.4 glm-0.9.5.0
 merge_config gcc-4.5 glm-0.9.5.0
 
+# GLM 0.9.9.0 drops support for older compilers
+merge_config gcc-4.6 glm-0.9.8.5
+merge_config clang-3.3 glm-0.9.8.5
+
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
 # cmake_options, compiler_options and make_options.

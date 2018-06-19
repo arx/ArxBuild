@@ -332,6 +332,7 @@ prefix_paths=(
 	[libepoxy-1.2]="$deps/libepoxy-1.2"
 	[freetype-2.3.0]="$deps/freetype-2.3.0"
 	[glm-0.9.5.0]="$deps/glm-0.9.5.0"
+	[glm-0.9.8.5]="$deps/glm-0.9.8.5"
 	[icc]="$qt_gcc48"
 	[gcc-4.3]="$qt_gcc48;$cppunit_gcc48"
 	[gcc-4.4]="$qt_gcc48;$cppunit_gcc48"
