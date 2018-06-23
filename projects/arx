@@ -60,6 +60,9 @@ include_directories+=(
 # TODO temp workaround for clang + libc++ + unity build = OOM/crash
 cxx_compiler_options[libcxx]+=" -fPIE"
 
+clang_tidy_options+=(
+	-exclude='stb_image.cpp'
+)
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
 	"${clang_tidy_checks_nocxx11[@]}" # TODO Enable these once we move to C++11
@@ -67,7 +70,6 @@ clang_tidy_checks+=(
 )
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
-	'-bugprone-incorrect-roundings'
 	'-bugprone-integer-division'
 	'-cert-err34-c'
 	'-cert-err58-cpp'
@@ -82,17 +84,11 @@ clang_tidy_checks_relaxed+=(
 	'-hicpp-multiway-paths-covered'
 	'-hicpp-no-malloc'
 	'-hicpp-special-member-functions'
-	'-misc-incorrect-roundings'
-	'-misc-misplaced-widening-cast'
-	'-misc-suspicious-enum-usage'
-	'-misc-unused-parameters'
 	'-readability-braces-around-statements'
 	'-readability-else-after-return'
-	'-readability-function-size'
 	'-readability-inconsistent-declaration-parameter-name'
 	'-readability-misleading-indentation'
 	'-readability-non-const-parameter'
-	'-readability-redundant-declaration'
 	'-readability-redundant-smartptr-get'
 )
 clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
