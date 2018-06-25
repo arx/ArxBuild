@@ -66,7 +66,7 @@ clang_tidy_options+=(
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
 	"${clang_tidy_checks_nocxx11[@]}" # TODO Enable these once we move to C++11
-	'-hicpp-vararg' # Variadic function used for asserts
+	'-cppcoreguidelines-pro-type-vararg' # Variadic function used for asserts
 )
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
@@ -75,15 +75,15 @@ clang_tidy_checks_relaxed+=(
 	'-cert-err58-cpp'
 	'-cppcoreguidelines-avoid-goto'
 	'-cppcoreguidelines-interfaces-global-init'
+	'-cppcoreguidelines-no-malloc'
 	'-cppcoreguidelines-pro-type-cstyle-cast'
+	'-cppcoreguidelines-pro-type-member-init'
 	'-cppcoreguidelines-slicing'
+	'-cppcoreguidelines-special-member-functions'
 	'-google-readability-casting'
 	'-google-runtime-int'
 	'-google-runtime-references'
-	'-hicpp-member-init'
 	'-hicpp-multiway-paths-covered'
-	'-hicpp-no-malloc'
-	'-hicpp-special-member-functions'
 	'-readability-braces-around-statements'
 	'-readability-else-after-return'
 	'-readability-inconsistent-declaration-parameter-name'

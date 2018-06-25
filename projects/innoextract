@@ -26,12 +26,12 @@ clang_tidy_checks+=(
 	'-google-runtime-references'
 )
 clang_tidy_checks_relaxed+=(
-	'-hicpp-vararg' # ioctl
-	'-hicpp-special-member-functions' # warns with boost::noncopyable + non-default destructor
+	'-cppcoreguidelines-pro-type-vararg' # ioctl
+	'-cppcoreguidelines-special-member-functions' # warns with boost::noncopyable + non-default destructor
 	# TODO Consider fixing and enabling these
 	'-cert-err58-cpp'
 	'-google-runtime-member-string-references'
-	'-hicpp-member-init'
+	'-cppcoreguidelines-pro-type-member-init'
 	'-readability-else-after-return'
 	'-readability-non-const-parameter'
 	'-readability-simplify-boolean-expr'
