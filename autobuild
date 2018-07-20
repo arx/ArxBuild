@@ -116,6 +116,7 @@ do_build() {
 		_config_command+=" $options"
 	fi
 	echo "$_config_command" | process_paths > "$dst_options"
+	echo "$_make_command" | process_paths >> "$dst_options"
 	
 	eval "_config_cmd=(
 		$_config_command
