@@ -36,6 +36,7 @@ cmake_options[m32]+=" $arx_use_qt4"
 cmake_options[msvc-11.0-32]+=" $arx_use_qt5 $arx_no_tests"
 cmake_options[msvc-12.0-32]+=" $arx_use_qt5 $arx_no_tests"
 cmake_options[msvc-12.0-64]+=" $arx_use_qt5 $arx_no_tests"
+cmake_options[msvc-analyzer]+=" $arx_use_qt5 $arx_no_tests"
 
 # TODO <functional> is broken on ICC in C++17 mode
 cmake_options[icc]+=" -DCXX_STD_VERSION=2014"
@@ -127,6 +128,8 @@ build_types=(
 	
 	'clang-analyzer'
 	'clang-analyzer_unity'
+	
+	'msvc-analyzer_unity'
 	
 	'clang-tidy_strict'
 	'clang-tidy_relaxed'

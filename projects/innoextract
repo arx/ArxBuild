@@ -55,6 +55,8 @@ build_types=(
 	
 	'clang-analyzer'
 	
+	'msvc-analyzer'
+	
 	'clang-tidy_strict'
 	'clang-tidy_relaxed'
 	

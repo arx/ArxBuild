@@ -71,6 +71,7 @@ cmake_options=(
 	[msvc-11.0-64]="\"$set_cmake_toolchain/msvc-11.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-12.0-32]="\"$set_cmake_toolchain/msvc-12.0-32-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-12.0-64]="\"$set_cmake_toolchain/msvc-12.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
+	[msvc-analyzer]="\"$set_cmake_toolchain/msvc-12.0-64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[clang-analyzer]="\"$set_cmake_toolchain/clang-analyzer-toolchain.cmake\""
 	[include-what-you-use]="\"$set_cmake_toolchain/include-what-you-use-toolchain.cmake\""
 	[mingw]="\"$set_cmake_toolchain/mingw-toolchain.cmake\""
@@ -124,6 +125,7 @@ compiler_options=(
 	[gcc-bindist-x86-64]="-fno-lto"
 	[mingw]="-ffat-lto-objects -fno-lto"
 	[lto]='-static-libgcc -flto'
+	[msvc-analyzer]='/analyze /analyze:max_paths 1024'
 )
 
 
@@ -393,6 +395,7 @@ count_errors=(
 declare -A ignore_warnings
 ignore_warnings=(
 	['mingw*']='\-fPIC ignored for target \(all code is position independent\)'
+	['msvc-analyzer*']='^[cC]\:\\'
 )
 
 declare -A count_config_warnings
@@ -413,19 +416,20 @@ count_config_errors=(
 
 # Declare which build types have known false positive warnings/errors.
 false_positives=(
-	'include-what-you-use'
+	'*_xtra'
 	'clang-analyzer*'
 	'clang-tidy*strict*'
 	'cppcheck*'
 	'flawfinder*'
-	'shellcheck*'
-	'*_xtra'
 	'gcc-4.1'
 	'gcc-4.1_*'
 	'gcc-4.3'
 	'gcc-4.3_*'
 	'gcc-4.4'
 	'gcc-4.4_*'
+	'include-what-you-use'
+	'msvc-analyzer*'
+	'shellcheck*'
 )
 
 ignored_branches=()
