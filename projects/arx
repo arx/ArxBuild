@@ -24,19 +24,17 @@ cmake_options[static]+=" -DEpoxy_USE_STATIC_LIBS=0" # TODO
 # CMake does not support compile feature detection for these compilers
 cmake_options[clang-3.3]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 
-arx_use_qt4="-DUSE_QT5=0 -DWITH_QT=4"
-arx_use_qt5="-DUSE_QT4=0 -DWITH_QT=5"
 arx_no_tests="-DBUILD_TESTS=0"
 cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew"
 cmake_options[icc]+=" $arx_no_tests" # requires C++11?
 cmake_options[prebuilt-icons]="-DICON_TYPE=\"ico;icns;iconset;png\""
 cmake_options[prebuilt-icons]+=" -DDATA_FILES=\"$deps/arx-libertatis-data-git/\""
 cmake_options[build-icons]="-DICON_TYPE=all"
-cmake_options[m32]+=" $arx_use_qt4"
-cmake_options[msvc-11.0-32]+=" $arx_use_qt5 $arx_no_tests"
-cmake_options[msvc-12.0-32]+=" $arx_use_qt5 $arx_no_tests"
-cmake_options[msvc-12.0-64]+=" $arx_use_qt5 $arx_no_tests"
-cmake_options[msvc-analyzer]+=" $arx_use_qt5 $arx_no_tests"
+cmake_options[qt-4.8-32]+=" -DUSE_QT5=0 -DWITH_QT=4"
+cmake_options[msvc-11.0-32]+=" $arx_no_tests"
+cmake_options[msvc-12.0-32]+=" $arx_no_tests"
+cmake_options[msvc-12.0-64]+=" $arx_no_tests"
+cmake_options[msvc-analyzer]+=" $arx_no_tests"
 
 # TODO <functional> is broken on ICC in C++17 mode
 cmake_options[icc]+=" -DCXX_STD_VERSION=2014"
@@ -118,6 +116,8 @@ merge_config gcc-4.5 glm-0.9.5.0
 # GLM 0.9.9.0 drops support for older compilers
 merge_config gcc-4.6 glm-0.9.8.5
 merge_config clang-3.3 glm-0.9.8.5
+
+merge_config m32 qt-4.8-32
 
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
