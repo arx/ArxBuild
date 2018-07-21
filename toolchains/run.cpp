@@ -40,6 +40,7 @@ exit
 
 #include <cstdio>
 
+#include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
 #include <spawn.h>
@@ -112,6 +113,12 @@ int main(int argc, char ** argv) {
 		return 1;
 	}
 	
+	int dev_null = open("/dev/null", O_RDONLY);
+	if(dev_null < 0) {
+		error("Could not open /dev/null");
+		return 1;
+	}
+	
 	sigset_t mask;
 	if(sigemptyset(&mask) || sigaddset(&mask, SIGCHLD)) {
 		error("Could not construct signal set");
@@ -131,7 +138,7 @@ int main(int argc, char ** argv) {
 	
 	posix_spawn_file_actions_t file_actions;
 	r = posix_spawn_file_actions_init(&file_actions);
-	r = r || posix_spawn_file_actions_addclose(&file_actions, 0);
+	r = r || posix_spawn_file_actions_adddup2(&file_actions, dev_null, 0);
 	for(int i = 0; i < npipes; i++) {
 		if(pipes[i][0] >= 0) {
 			r = r || posix_spawn_file_actions_adddup2(&file_actions, pipes[i][1], fds[i]);
