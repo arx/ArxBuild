@@ -444,7 +444,7 @@ fi
 for f in `dir -d $repo/.git/logs/refs/remotes/origin/* 2> /dev/null` ; do
 	branch="${f##*/}"
 	
-	if in_array "$branch" "${ignored_branches[@]}" ; then
+	if ! in_array "$branch" "${allowed_branches[@]}" ; then
 		# Ignore this branch
 		continue
 	fi

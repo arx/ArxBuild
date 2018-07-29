@@ -434,7 +434,7 @@ false_positives=(
 	'shellcheck*'
 )
 
-ignored_branches=()
+allowed_branches=( 'master' )
 
 declare -A favicons
 favicons=()

@@ -207,8 +207,6 @@ rmbuilddir() {
 
 is_valid_branch() {
 	
-	in_array "$branch" "${ignored_branches[@]}" && return $false
-	
 	for remote in "${branches[@]}"; do
 		[[ "$branch" == "${remote##*/}" ]] && return $true
 	done
