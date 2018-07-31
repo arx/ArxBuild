@@ -106,6 +106,10 @@ do_build() {
 	
 	cd "$work"
 	
+	export CFLAGS="$cflags"
+	export CXXFLAGS="$cxxflags"
+	export LDFLAGS="$ldflags"
+	
 	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
 	
 	echo "${esc}[32m[$buildid]${esc}[0m Configuring..."
@@ -296,18 +300,6 @@ build() {
 	done
 	
 	[ -z "$config" ] && config='cmake'
-	
-	if [ "$cflags" != "" ] ; then
-		options="$options -DCMAKE_C_FLAGS=\"$cflags\""
-	fi
-	
-	if [ "$cxxflags" != "" ] ; then
-		options="$options -DCMAKE_CXX_FLAGS=\"$cxxflags\""
-	fi
-	
-	if [ "$ldflags" != "" ] ; then
-		options="$options -DCMAKE_EXE_LINKER_FLAGS=\"$ldflags\" -DCMAKE_SHARED_LINKER_FLAGS=\"$ldflags\" -DCMAKE_MODULE_LINKER_FLAGS=\"$ldflags\""
-	fi
 	
 	if [ "$prefixes" != "" ] ; then
 		options="$options \"-DCMAKE_PREFIX_PATH=$prefixes\""
