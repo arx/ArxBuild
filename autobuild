@@ -43,7 +43,7 @@ process_paths() {
 }
 
 escape() {
-	printf '%s' "$1" | sed "s:[^a-zA-Z0-9/_.=+-]:\\\\&:g"
+	printf '%s' "$1" | sed "s:[^a-zA-Z0-9/_.,=+\\-]:\\\\&:g"
 }
 
 escape_args() {
