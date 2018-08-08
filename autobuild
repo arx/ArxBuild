@@ -119,7 +119,11 @@ do_build() {
 	if [ ! "${config##*#}" = '' ] ; then
 		_config_command+=" $options"
 	fi
-	echo "$_config_command" | process_paths > "$dst_options"
+	rm -f "$dst_options"
+	[ -z "$cflags" ] || echo "export CFLAGS=\"$(eval escape_args $cflags)\"" >> "$dst_options"
+	[ -z "$cxxflags" ] || echo "export CXXFLAGS=\"$(eval escape_args $cxxflags)\"" >> "$dst_options"
+	[ -z "$ldflags" ] || echo "export LDFLAGS=\"$(eval escape_args $ldflags)\"" >> "$dst_options"
+	echo "$_config_command" | process_paths >> "$dst_options"
 	echo "$_make_command" | process_paths >> "$dst_options"
 	
 	eval "_config_cmd=(
