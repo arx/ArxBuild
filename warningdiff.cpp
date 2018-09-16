@@ -197,6 +197,7 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 		}
 		if(file_end != std::string::npos && file_end != file_start) {
 			file = line.substr(file_start, file_end - file_start);
+			std::replace(file.begin(), file.end(), '\\', '/');
 			w.message = line.substr(file_end);
 			std::size_t line_start = file_end + 1;
 			std::size_t line_end = line.find_first_not_of("0123456789", line_start);
