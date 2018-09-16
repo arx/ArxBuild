@@ -45,6 +45,8 @@ exit
 #include <iostream>
 #include <cstdio>
 #include <sstream>
+#include <unordered_set>
+#include <unordered_map>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
@@ -95,13 +97,34 @@ std::string escape(const std::string & str) {
 	return str; // TODO
 }
 
+std::unordered_set<std::string> git_get_files(const std::string & repo, const std::string & commit) {
+	
+	std::unordered_set<std::string> result;
+	
+	std::string contents = exec("git --git-dir=" + escape(repo) + " ls-tree --full-tree --name-only -r "
+	                            + escape(commit)
+	                            + " 2>/dev/null");
+	
+	if(!contents.empty()) {
+		std::istringstream iss(contents);
+		std::string line;
+		while(std::getline(iss, line)) {
+			boost::trim(line);
+			result.insert(line);
+		}
+	}
+	
+	return result;
+}
+
 std::vector<std::string> git_get_file(const std::string & repo, const std::string & filename,
                                       const std::string & commit) {
 	
 	std::vector<std::string> result;
 	
 	std::string contents = exec("git --git-dir=" + escape(repo) + " show "
-	                            + escape(commit) + ":" + escape(filename));
+	                            + escape(commit) + ":" + escape(filename)
+	                            + " 2>/dev/null");
 	
 	if(!contents.empty()) {
 		std::istringstream iss(contents);
@@ -115,11 +138,12 @@ std::vector<std::string> git_get_file(const std::string & repo, const std::strin
 	return result;
 }
 
-std::string git_get_old_filename(const std::string & repo, std::string & filename,
+std::string git_get_old_filename(const std::string & repo, const std::string & filename,
                                  const std::string & old_commit, const std::string & commit) {
 	
 	std::string result = exec("git --git-dir=" + escape(repo) + " log --oneline --name-only --follow "
-	                          + escape(old_commit) + ".." + escape(commit) + " -- " + escape(filename));
+	                          + escape(old_commit) + ".." + escape(commit) + " -- " + escape(filename)
+	                           + " 2>/dev/null");
 	if(result.size() <= 1) {
 		return std::string();
 	}
@@ -169,6 +193,13 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 		std::terminate();
 	}
 	
+	std::unordered_set<std::string> files = git_get_files(repo, commit);
+	std::unordered_map<std::string, std::string> ifiles;
+	ifiles.reserve(files.size());
+	for(const std::string & file : files) {
+		ifiles.insert({ boost::to_lower_copy(file), file });
+	}
+	
 	// Parse warning lines and group them by file
 	std::string line;
 	while(std::getline(ifs, line)) {
@@ -197,7 +228,6 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 		}
 		if(file_end != std::string::npos && file_end != file_start) {
 			file = line.substr(file_start, file_end - file_start);
-			std::replace(file.begin(), file.end(), '\\', '/');
 			w.message = line.substr(file_end);
 			std::size_t line_start = file_end + 1;
 			std::size_t line_end = line.find_first_not_of("0123456789", line_start);
@@ -221,6 +251,22 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 			w.message.resize(message_end);
 		}
 		
+		std::replace(file.begin(), file.end(), '\\', '/');
+		if(!file.empty() && file[0] != '/') {
+			bool prefixed = boost::starts_with(file, prefix);
+			if(prefixed) {
+				file = file.substr(prefix.length());
+			}
+			if(files.find(file) == files.end()) {
+				auto it = ifiles.find(boost::to_lower_copy(file));
+				if(it != ifiles.end()) {
+					file = it->second;
+				} else if(prefixed) {
+					std::cerr << "Could not find file \"" << file << "\" at commit " << commit << "\n";
+				}
+			}
+		}
+		
 		result[file].push_back(w);
 	}
 	
@@ -228,13 +274,7 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 		
 		// Get the corresponding code line for each warning as well as some context
 		std::vector<std::string> code;
-		if(boost::starts_with(file.first, prefix)) {
-			std::string filename = file.first.substr(prefix.length());
-			code = git_get_file(repo, filename, commit);
-			if(code.empty()) {
-				std::cerr << "could not find file \"" << filename << "\" at commit " << commit << "\n";
-			}
-		} else {
+		if(!file.first.empty() && file.first[0] != '/') {
 			code = git_get_file(repo, file.first, commit);
 		}
 		if(!code.empty()) {
@@ -260,7 +300,7 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 	return result;
 }
 
-matched_warnings match_files(const std::string prefix, const std::string & repo,
+matched_warnings match_files(const std::string & repo,
                              const parsed_warnings & a, const std::string commit_a,
                              const parsed_warnings & b, const std::string commit_b) {
 	
@@ -270,11 +310,10 @@ matched_warnings match_files(const std::string prefix, const std::string & repo,
 		
 		std::string filename;
 		parsed_warnings::const_iterator i = a.end();
-		if(boost::starts_with(filename, prefix)) {
-			std::string new_filename = filename.substr(prefix.length());
-			std::string old_filename = prefix + git_get_old_filename(repo, filename, commit_a, commit_b);
-			if(b.find(old_filename) == b.end()) {
-				filename = old_filename;
+		if(!file.first.empty() && file.first[0] != '/') {
+			std::string old_file = git_get_old_filename(repo, file.first, commit_a, commit_b);
+			if(b.find(old_file) == b.end()) {
+				filename = old_file;
 				i = a.find(filename);
 			}
 		}
@@ -385,7 +424,7 @@ int main(int argc, const char * argv[]) {
 	parsed_warnings a = parse(prefix, repo, list_a, commit_a);
 	parsed_warnings b = parse(prefix, repo, list_b, commit_b);
 	
-	matched_warnings files = match_files(prefix, repo, a, commit_a, b, commit_b);
+	matched_warnings files = match_files(repo, a, commit_a, b, commit_b);
 	
 	for(const matched_warnings::value_type & file : files) {
 		match_lines(file.second.first, file.second.second);
