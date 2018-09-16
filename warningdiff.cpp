@@ -250,6 +250,20 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 		if(message_end != std::string::npos) {
 			w.message.resize(message_end);
 		}
+		while(true) {
+			size_t pos = w.message.find(" line ");
+			if(pos == std::string::npos) {
+				break;
+			}
+			size_t end = pos + 6;
+			if(end < w.message.length() && w.message[end] == '\'') {
+				end++;
+			}
+			while(end < w.message.length() && std::isdigit(w.message[end])) {
+				end++;
+			}
+			w.message.erase(pos, end - pos);
+		}
 		
 		std::replace(file.begin(), file.end(), '\\', '/');
 		if(!file.empty() && file[0] != '/') {
