@@ -384,7 +384,38 @@ size_t edit_cost(const warning & a, const warning & b) {
 	return cost;
 }
 
-void match_lines(const warnings & a, const warnings & b) {
+typedef std::vector<std::pair<char, const warning *>> change_list;
+typedef std::unordered_multimap<std::string, size_t> change_remove_index;
+
+void match_warnings(change_list & changes, change_remove_index & old_warnings, bool require_code = false) {
+	
+	for(change_list::value_type & entry : changes) {
+		if(entry.first != '+' || entry.second->message.empty()) {
+			continue;
+		}
+		if((require_code || entry.second->pos == std::size_t(-1)) && entry.second->code.length() < 10) {
+			continue;
+		}
+		auto it = old_warnings.find(entry.second->message);
+		std::unordered_multimap<std::string, size_t>::iterator best = old_warnings.end();
+		std::size_t min_cost = std::numeric_limits<std::ptrdiff_t>::max();
+		for(; it != old_warnings.end() && it->first == entry.second->message; it++) {
+			std::size_t cost = edit_cost(*changes[it->second].second, *entry.second);
+			if(cost < edit_impossible && cost < min_cost) {
+				best = it;
+				min_cost = cost;
+			}
+		}
+		if(best != old_warnings.end()) {
+			entry.first = '=';
+			changes[best->second].first = '=';
+			old_warnings.erase(best);
+		}
+	}
+	
+}
+
+change_list match_lines(const warnings & a, const warnings & b) {
 	
 	// Calculate edit costs
 	boost::multi_array<size_t, 2> m(boost::extents[a.size() + 1][b.size() + 1]);
@@ -403,22 +434,30 @@ void match_lines(const warnings & a, const warnings & b) {
 		}
 	}
 	
-	// Backtrace path for cheapest edit
+	change_list changes;
+	change_remove_index old_warnings;
+	
+	// Find the insert/remove(/replace) sequence with the cheapest edit cost by backtracing the path
 	// Warnings were sorted in reverse so we get the correct order here
 	std::size_t i = a.size(), j = b.size();
 	while(i != 0 || j != 0) {
 		if(i != 0 && m[i][j] == m[i - 1][j] + insert_cost) {
 			i--;
-			std::cout << "-" << a[i].text << "\n";
+			old_warnings.insert({ a[i].message, changes.size() });
+			changes.push_back({ '-', &a[i] });
 		} else if(j != 0 && m[i][j] == m[i][j - 1] + insert_cost) {
 			j--;
-			std::cout << "+" << b[j].text << "\n";
+			changes.push_back({ '+', &b[j] });
 		} else {
 			i--;
 			j--;
 		}
 	}
 	
+	// Greedily match remaining insertions to the closest matching removed warning in the same file
+	match_warnings(changes, old_warnings);
+	
+	return changes;
 }
 
 int main(int argc, const char * argv[]) {
@@ -440,8 +479,28 @@ int main(int argc, const char * argv[]) {
 	
 	matched_warnings files = match_files(repo, a, commit_a, b, commit_b);
 	
+	change_list changes;
+	change_remove_index old_warnings;
+	
 	for(const matched_warnings::value_type & file : files) {
-		match_lines(file.second.first, file.second.second);
+		change_list file_changes = match_lines(file.second.first, file.second.second);
+		for(change_list::value_type & entry : file_changes) {
+			if(entry.first == '-') {
+				old_warnings.insert({ entry.second->message, changes.size() });
+			}
+			if(entry.first != '=') {
+				changes.push_back(entry);
+			}
+		}
+	}
+	
+	// Greedily match remaining insertions to the closest matching removed warning in any file
+	match_warnings(changes, old_warnings, /* require_code = */ true);
+	
+	for(const change_list::value_type & entry : changes) {
+		if(entry.first != '=') {
+			std::cout << entry.first << entry.second->text << '\n';
+		}
 	}
 	
 	return 0;
