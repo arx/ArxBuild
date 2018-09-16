@@ -23,13 +23,13 @@ files.sort()
 
 i = 0
 
-clang_tidy_commang = [ 'clang-tidy', '-p=' + os.getcwd() ]
+command = [ 'clang-tidy', '-p=' + os.getcwd() ]
 excludes = [ ]
 for arg in sys.argv[1:]:
 	if arg.startswith('-exclude='):
 		excludes += [ arg[9:] ]
 	else:
-		clang_tidy_commang += [ arg ]
+		command += [ arg ]
 
 for file in files:
 	
@@ -43,7 +43,7 @@ for file in files:
 	printout('Checking ' + file, GREEN)
 	sys.stdout.write('\n')
 	
-	invocation = clang_tidy_commang + [ file ]
+	invocation = command + [ file ]
 	
 	subprocess.call(invocation)
 	
