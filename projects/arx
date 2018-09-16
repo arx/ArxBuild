@@ -59,7 +59,13 @@ include_directories+=(
 cxx_compiler_options[libcxx]+=" -fPIE"
 
 clang_tidy_options+=(
+	-exclude='moc_ArxProfiler.cpp'
+	-exclude='moc_ErrorReportDialog.cpp'
+	-exclude='moc_QHexEdit.cpp'
+	-exclude='moc_QHexEditPrivate.cpp'
+	-exclude='qrc_CrashReporter.cpp'
 	-exclude='stb_image.cpp'
+	-exclude='ui_ErrorReportDialog.h'
 )
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
