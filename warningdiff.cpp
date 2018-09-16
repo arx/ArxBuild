@@ -215,6 +215,10 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 				} catch(...) { }
 			}
 		}
+		std::size_t message_end = w.message.find(": Lines: ");
+		if(message_end != std::string::npos) {
+			w.message.resize(message_end);
+		}
 		
 		result[file].push_back(w);
 	}
