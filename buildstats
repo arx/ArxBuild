@@ -328,6 +328,11 @@ $(html_footer)"
 		html+="
 	<td align=center>$changes</td>"
 		
+	elif [ ! $has_false_positives = 0 ] ; then
+	
+		html+="
+	<td></td>"
+		
 	fi
 	
 	html+='
