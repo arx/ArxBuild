@@ -167,7 +167,7 @@ include_directories=(
 cppcheck_options=(
 	--quiet
 	--force
-	--enable='warning,style,performance,portability,unusedFunction'
+	--enable='warning,style,performance,portability'
 )
 
 # Clang Tidy optons
