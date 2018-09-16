@@ -66,6 +66,7 @@ struct warning {
 	std::string prev;
 	std::string code;
 	std::string next;
+	std::string indentation;
 	
 	bool operator==(const warning & other) const {
 		return text == other.text;
@@ -298,6 +299,20 @@ parsed_warnings parse(const std::string prefix, const std::string & repo,
 						w.prev = code[w.line - 2];
 					}
 					w.code = code[w.line - 1];
+					if(!w.code.empty()) {
+						std::size_t start = 0;
+						std::size_t end = w.code.length();
+						while(start < w.code.length() && std::isspace(w.code[start])) {
+							start++;
+						}
+						while(end > start && std::isspace(w.code[end - 1])) {
+							end++;
+						}
+						if(start < end) {
+							w.indentation = w.code.substr(0, start);
+							w.code = w.code.substr(start, end - start);
+						}
+					}
 					if(w.line + 1 <= code.size()) {
 						w.next = code[w.line];
 					}
@@ -371,7 +386,7 @@ size_t edit_cost(const warning & a, const warning & b) {
 	}
 	
 	// Prefer warnings with closer line positions
-	size_t cost = std::min(size_t(std::labs(a.line - b.line)), insert_cost / 4 - 1);
+	size_t cost = std::min(size_t(std::labs(long(a.line) - long(b.line))), insert_cost / 4 - 1);
 	
 	// Prefer lines with similar context
 	if(a.prev != b.prev) {
@@ -379,6 +394,11 @@ size_t edit_cost(const warning & a, const warning & b) {
 	}
 	if(a.next != b.next) {
 		cost += insert_cost / 4;
+	}
+	if(a.indentation != b.indentation) {
+		cost += std::max(std::min(size_t(std::labs(long(a.indentation.length()) - long(b.indentation.length()))),
+		                          insert_cost / 4 / 32),
+		                 size_t(1)) * 32;
 	}
 	
 	return cost;
