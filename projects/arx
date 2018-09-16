@@ -95,8 +95,6 @@ clang_tidy_config['cppcoreguidelines-no-malloc.Deallocations']='""'
 clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"u"'
 clang_tidy_config['google-runtime-int.SignedTypePrefix']='"s"'
 clang_tidy_config['google-runtime-int.TypeSuffix']='""'
-# TODO Qt moc / ui files won't be generated before clang-tidy is run, resulting in errors
-cmake_options[clang-tidy]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 
 merge_config olddeps cmake-2.8.3
 merge_config olddeps curl-7.20.0

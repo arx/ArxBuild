@@ -112,7 +112,9 @@ cmake_options=(
 )
 
 cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
-cmake_options[clang-tidy]="${cmake_options[clang-dev]} ${cmake_options[libcxx]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+
+clang_compilation_database="${cmake_options[clang-dev]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+cmake_options[clang-tidy]="$clang_compilation_database"
 
 # Declare possible build options (passed to the compiler).
 declare -A compiler_options

@@ -144,6 +144,11 @@ do_build() {
 		
 		echo "${esc}[32m[$buildid]${esc}[0m Building..."
 		
+		if [ -f "compile_commands.json" ] && [[ ! $_make_command == 'make '* ]] ; then
+			# TODO find a way to generate files but don't run compile commands
+			make -k &> /dev/null
+		fi
+		
 		{
 			time "$toolchains/run.cpp" --tty sh -c "exec $_make_command" \
 				| process_paths > "$dst_raw"
