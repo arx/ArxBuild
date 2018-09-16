@@ -403,6 +403,7 @@ declare -A ignore_warnings
 ignore_warnings=(
 	['mingw*']='\-fPIC ignored for target \(all code is position independent\)'
 	['msvc-analyzer*']='^[cC]\:\\'
+	['cppcheck*']='has a constructor with 1 argument that is not explicit' # better handled by other tools
 )
 
 declare -A count_config_warnings

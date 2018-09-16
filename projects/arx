@@ -99,7 +99,7 @@ cppcheck_options+=(
 )
 
 # TODO Enable thse once we move to C++11
-ignore_warnings['cppcheck*']='overrides a function in a base class but is not marked'
+ignore_warnings['cppcheck*']+='|overrides a function in a base class but is not marked'
 
 merge_config olddeps cmake-2.8.3
 merge_config olddeps curl-7.20.0
