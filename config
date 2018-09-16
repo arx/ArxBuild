@@ -130,7 +130,6 @@ compiler_options=(
 	[msvc-analyzer]='/analyze /analyze:max_paths 1024'
 )
 
-
 declare -A c_compiler_options
 c_compiler_options=( )
 
@@ -141,6 +140,9 @@ cxx_compiler_options=(
 	[clang-analyzer]='-stdlib=libc++'
 	[lto]='-static-libstdc++'
 )
+
+# TODO <functional> is broken on ICC in C++17 mode
+cxx_compiler_options[icc]+=" -gcc-name=g++-6.4.0"
 
 # Declare possible build options (passed to the linker).
 declare -A linker_options
