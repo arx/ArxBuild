@@ -437,6 +437,18 @@ false_positives=(
 	'shellcheck*'
 )
 
+declare -A group_warnings
+group_warnings=(
+	[0]='(?<=\[)[^\[\]\d][^\[\]]*?(?=\]( \[\d+\])?$)'
+	['msvc*']='(?<=\: warning )[A-Z][0-9]+(?=\:)'
+	['oclint*']='(?<=\d\: )[^\[\]]*(?= \[([^\]|*]*\|)?P\d+\])'
+	['cppcheck*']='\(error\) Memory leak|(?<=\]\: )\(.*$'
+)
+declare -A group_filter
+group_filter=(
+	['cppcheck*']="s: '[^']*'::g;s: at line [0-9][0-9]*::g;s: at index [0-9][0-9]*: at index:g"
+)
+
 allowed_branches=( 'master' )
 
 declare -A favicons

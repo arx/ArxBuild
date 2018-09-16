@@ -31,6 +31,39 @@ build_query() {
 	echo "$query"
 }
 
+build_filter() {
+	
+	local name="$1"
+	local type="$2"
+	
+	local query=''
+	
+	local args
+	eval "args=( \"\${!${type}[@]}\" )"
+	
+	for i in "${args[@]}" ; do
+		if [[ "$i" =~ ^[0-9]+$ ]] || [[ "$name" == $i ]] ; then
+			
+			local value
+			eval "value=\"\${${type}['$i']}\""
+			
+			if [ "$query" == '' ]
+				then query="$value"
+				else query="$query;$value"
+			fi
+		fi
+	done
+	
+	echo "$query"
+}
+
+warning_group_file() {
+	if [ "$1" = '(ungrouped warnings)' ]
+		then echo 'other'
+		else printf '%s' "$1" | sed 's:[^a-zA-Z0-9_]:-:g;s:--*:-:g;s:^-*::;s:-*$::'
+	fi
+}
+
 filter_log() {
 	
 	local file="$1"
@@ -203,47 +236,48 @@ handle_build() {
 		local warnings_index="$warnings_dir/index.html"
 		if ! is_cache_valid "$warnings_dir" "$warnings_file" ; then
 			mkdir -p "$warnings_dir"
-			local groups=(
-				$(
-					grep -oP '\[.*?\]( \[\d+\])?$' < "$warnings_file" | sed 's:^\[::;s:\].*$::' \
-						| sort | uniq -c | sort -h | sed 's:^[ 0-9]*::'
-				)
-				$(
-					grep -oP '\: warning [A-Z][0-9]+\:' < "$warnings_file" | sed 's:^\: warning ::;s:\:$::' \
-						| sort | uniq -c | sort -h | sed 's:^[ 0-9]*::'
-				)
-			)
-			local ungrouped_warnings="$(
-				grep -Pv '(\[.*?\]( \[\d+\])?$|\: warning [A-Z][0-9]+\:)' < "$warnings_file"
-			)"
-			if [ ${#groups[@]} -gt 1 ] || ( [ ${#groups[@]} = 1 ] && [ ! -z "$ungrouped_warnings" ] ) ; then
+			rm -f "$warnings_dir"/*
+			
+			local query="$(build_query "$name" 'group_warnings')"
+			local filter="$(build_filter "$name" 'group_filter')"
+			declare -A groups
+			while IFS='' read -r line || [[ -n "$line" ]] ; do
+				local group="$(
+					printf '%s' "$line" | grep -Pom1 "$query" | sed "$filter;s:^ *::;s: *$::" | head -n1
+				)"
+				[ -z "$group" ] && group='(ungrouped warnings)'
+				groups["$group"]+="$line"$'\n'
+			done < "$warnings_file"
+			for group in "${!groups[@]}" ; do
+				local group_file="$warnings_dir/$(warning_group_file "$group").txt"
+				printf '%s' "${groups[$group]}" >> "$group_file";
+				printf '%s\n' "$group"
+			done | sort -u > "$warnings_dir/index.txt"
+			
+			if [ $(wc -l < "$warnings_dir/index.txt") -gt 1 ] ; then
 				local warnings_title="$name warnings for $project_name in $type $context"
-				local warnings_html="$(html_header "$warnings_title" "../../..")
-	
-	<h1>$warnings_title</h1>
-	
-	<ul>
-"
-				for group in "${groups[@]}" ; do
-					local group_regexp="$( printf '%s' "$group" | sed 's:[^0-9a-zA-Z]:\\\0:g' )"
-					local group_filename="$( printf '%s' "$group" | sed 's:[^0-9a-zA-Z_\-]:-:g;s:^-*::;s:-*$::' ).txt"
-					local group_file="$warnings_dir/$group_filename"
-					grep -P "(\\[$group_regexp\\]( \\[\\d+\\])?$|\\: warning $group_regexp\\:)" \
-						< "$warnings_file" > "$group_file"
+				printf '%s\n<h1>%s</h1>\n<ul>\n' \
+					"$(html_header "$warnings_title" "../../..")" \
+					"$warnings_title" \
+					> "$warnings_index"
+				while IFS='' read -r group || [[ -n "$group" ]] ; do
+					[ -z "$group" ] && continue
+					local group_file="$warnings_dir/$(warning_group_file "$group").txt"
 					local group_size="$(wc -l < "$group_file")"
-					warnings_html+="		<li><a href=\"$group_filename\">$group</a> ($group_size)
-"
+					printf "%d %s\n" "$group_size" "$group"
+				done < "$warnings_dir/index.txt" \
+					| sort -h | sed 's:^[0-9]* *::' | \
+				while IFS='' read -r group || [[ -n "$group" ]] ; do
+					[ -z "$group" ] && continue
+					local group_file="$warnings_dir/$(warning_group_file "$group").txt"
+					local group_size="$(wc -l < "$group_file")"
+					printf '<li><a href="%s">%s</a> (%d)\n' \
+						"$(warning_group_file "$group" | sed 's: :%20:g').txt" \
+						"$group" \
+						"$group_size" \
+						>> "$warnings_index"
 				done
-				if [ ! -z "$ungrouped_warnings" ] ; then
-					printf '%s\n' "$ungrouped_warnings" > "$warnings_dir/other.txt"
-					local ungrouped_size="$(printf '%s\n' "$ungrouped_warnings" | wc -l)"
-					warnings_html+="		<li><a href=\"other.txt\">(ungrouped warnings)</a> ($ungrouped_size)
-"
-				fi
-				warnings_html+="	</ul>
-	
-$(html_footer)"
-				printf '%s\n' "$warnings_html" > "$warnings_index"
+				printf '</ul>\n%s\n' "$(html_footer)" >> "$warnings_index"
 			else
 				rm -f "$warnings_index"
 			fi
