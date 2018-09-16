@@ -94,6 +94,13 @@ clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"u"'
 clang_tidy_config['google-runtime-int.SignedTypePrefix']='"s"'
 clang_tidy_config['google-runtime-int.TypeSuffix']='""'
 
+cppcheck_options+=(
+	-i 'stb_image.cpp'
+)
+
+# TODO Enable thse once we move to C++11
+ignore_warnings['cppcheck*']='overrides a function in a base class but is not marked'
+
 merge_config olddeps cmake-2.8.3
 merge_config olddeps curl-7.20.0
 merge_config olddeps boost-1.48

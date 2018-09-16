@@ -306,7 +306,7 @@ config_command=(
 	[cmake-2.8.0]="\"$deps/cmake-2.8.0/bin/cmake\""
 	[cmake-2.8.3]="\"$deps/cmake-2.8.3/bin/cmake\""
 	[clang-analyzer]="$scan_build -o \"\$build/config-results\" cmake"
-	[cppcheck]="cppcheck --version #"
+	[cppcheck]='cppcheck --version #'
 	[flawfinder]="printf 'Flawfinder ' ; flawfinder --version #"
 	[shellcheck]="shellcheck --version #"
 )
@@ -317,7 +317,7 @@ declare -A make_command
 make_command=(
 	[style]='make -k style'
 	[doxygen]='make -k doc'
-	[cppcheck]='cppcheck "${cppcheck_options[@]}" --cppcheck-build-dir="$PWD" "${source_directories[@]}"'
+	[cppcheck]='cppcheck "${cppcheck_options[@]}" --cppcheck-build-dir="$PWD" "${include_directories[@]}" "${source_directories[@]}"'
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
 	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
 	[clang-analyzer]="$scan_build -o \"\$build/results\" make -k"
