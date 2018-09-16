@@ -113,3 +113,5 @@ pre {
 .stats .disabled .okay { color: #a6bb7b; }
 .stats .disabled .poor { color: #e0ba66; }
 .stats .disabled .bad  { color: #d66666; }
+
+.grouped, .details { float: right; }

@@ -443,6 +443,7 @@ group_warnings=(
 	['msvc*']='(?<=\: warning )[A-Z][0-9]+(?=\:)'
 	['oclint*']='(?<=\d\: )[^\[\]]*(?= \[([^\]|*]*\|)?P\d+\])'
 	['cppcheck*']='\(error\) Memory leak|(?<=\]\: )\(.*$'
+	['flawfinder*']='(?<=\:  \[[0-9]\] )\([^\)]*\) [^\:]*\:'
 )
 declare -A group_filter
 group_filter=(

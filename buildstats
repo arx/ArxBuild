@@ -229,62 +229,102 @@ handle_build() {
 	
 	local details=''
 	if [ -d "$prefix-results/" ] ; then
-		details+=" [<a href=\"$wprefix-results/\">details</a>]"
+		details+=" <span class=\"details\">[<a href=\"$wprefix-results/\">details</a>]</span>"
 	fi
 	if [ ! $has_false_positives = 0 ] && [ $warnings -gt 19 ] ; then
 		local warnings_dir="$prefix-warnings"
-		local warnings_index="$warnings_dir/index.html"
-		if ! is_cache_valid "$warnings_dir" "$warnings_file" ; then
-			mkdir -p "$warnings_dir"
-			rm -f "$warnings_dir"/*
+		local old_warnings_dir="$old_prefix-warnings"
+		local warnings_index="$warnings_dir/index.txt"
+		local old_warnings_index="$old_warnings_dir/index.txt"
+		local windex_dir="$path-warnings"
+		local windex="$windex_dir/index.html"
+		if ! is_cache_valid "$windex_dir" "$warnings_file" ; then
+			mkdir -p "$windex_dir"
+			rm -f "$windex_dir"/*
 			
-			local query="$(build_query "$name" 'group_warnings')"
-			local filter="$(build_filter "$name" 'group_filter')"
-			declare -A groups
-			while IFS='' read -r line || [[ -n "$line" ]] ; do
-				local group="$(
-					printf '%s' "$line" | grep -Pom1 "$query" | sed "$filter;s:^ *::;s: *$::" | head -n1
-				)"
-				[ -z "$group" ] && group='(ungrouped warnings)'
-				groups["$group"]+="$line"$'\n'
-			done < "$warnings_file"
-			for group in "${!groups[@]}" ; do
-				local group_file="$warnings_dir/$(warning_group_file "$group").txt"
-				printf '%s' "${groups[$group]}" >> "$group_file";
-				printf '%s\n' "$group"
-			done | sort -u > "$warnings_dir/index.txt"
+			# Split warnings into groups
+			if [ "$windex_dir" = "$warnings_dir" ] ; then
+				local query="$(build_query "$name" 'group_warnings')"
+				local filter="$(build_filter "$name" 'group_filter')"
+				declare -A groups
+				while IFS='' read -r line || [[ -n "$line" ]] ; do
+					local group="$(
+						printf '%s' "$line" | grep -Pom1 "$query" | sed "$filter;s:^ *::;s: *$::" | head -n1
+					)"
+					[ -z "$group" ] && group='(ungrouped warnings)'
+					groups["$group"]+="$line"$'\n'
+				done < "$warnings_file"
+				for group in "${!groups[@]}" ; do
+					local group_file="$warnings_dir/$(warning_group_file "$group").txt"
+					printf '%s' "${groups[$group]}" >> "$group_file";
+					printf '%s\n' "$group"
+				done | sort -u > "$warnings_index"
+			fi
 			
-			if [ $(wc -l < "$warnings_dir/index.txt") -gt 1 ] ; then
+			local warning_indices=( "$warnings_index" )
+			[ -f "$old_warnings_index" ] && warning_indices+=( "$old_warnings_index" )
+			
+			# Create index page for groups
+			if [ $(cat "${warning_indices[@]}" | sort -u | wc -l) -gt 1 ] ; then
 				local warnings_title="$name warnings for $project_name in $type $context"
 				printf '%s\n<h1>%s</h1>\n<ul>\n' \
 					"$(html_header "$warnings_title" "../../..")" \
 					"$warnings_title" \
-					> "$warnings_index"
+					> "$windex"
+				cat "${warning_indices[@]}" | sort -u | \
 				while IFS='' read -r group || [[ -n "$group" ]] ; do
 					[ -z "$group" ] && continue
 					local group_file="$warnings_dir/$(warning_group_file "$group").txt"
-					local group_size="$(wc -l < "$group_file")"
+					local group_size="0"
+					[ -f "$group_file" ] && group_size="$(wc -l < "$group_file")"
 					printf "%d %s\n" "$group_size" "$group"
-				done < "$warnings_dir/index.txt" \
+				done \
 					| sort -h | sed 's:^[0-9]* *::' | \
 				while IFS='' read -r group || [[ -n "$group" ]] ; do
 					[ -z "$group" ] && continue
 					local group_file="$warnings_dir/$(warning_group_file "$group").txt"
-					local group_size="$(wc -l < "$group_file")"
-					printf '<li><a href="%s">%s</a> (%d)\n' \
-						"$(warning_group_file "$group" | sed 's: :%20:g').txt" \
-						"$group" \
+					local group_size="0"
+					[ -f "$group_file" ] && group_size="$(wc -l < "$group_file")"
+					local link="<s>$group</s>"
+					local wgroup_file="$(relative_path "$windex_dir" "$group_file" | sed 's: :%20:g')"
+					[ -f "$group_file" ] && link="<a href=\"$wgroup_file\">$group</a>"
+					local changes=''
+					if [ ! -z "$old_prefix" ] ; then
+						local old_group_file="$old_warnings_dir/$(warning_group_file "$group").txt"
+						[ -f "$group_file" ]  || group_file='/dev/null'
+						[ -f "$old_group_file" ] || old_group_file='/dev/null'
+						local change_file="$windex_dir/$(warning_group_file "$group")-change.txt"
+						if ! is_cache_valid "$change_file" "$here/warningdiff.cpp" \
+							|| [ "$warnings_file" -nt "$change_file" ] || [ "$old_warnings_file" -nt "$change_file" ]
+						then
+							"$here/warningdiff.cpp" "$project_name/" "$repo/.git" \
+								"$old_commit" "$old_group_file" "$commit" "$group_file" \
+								> "$change_file"
+						fi
+						local broken="$(cat "$change_file" | grep -P '^\+' | wc -l)"
+						local fixed="$(cat "$change_file" | grep -P '^\-' | wc -l)"
+						[ $broken = 0 ] || changes+="<span class=\"bad\">+$broken</span>"
+						[ ! $broken = 0 ] && [ ! $fixed = 0 ] && changes+=' '
+						[ $fixed = 0 ] || changes+="<span class=\"good\">-$fixed</span>"
+						local wchange_file="$(relative_path "$windex_dir" "$change_file" | sed 's: :%20:g')"
+						if [ -z "$changes" ]
+							then changes=' | ='
+							else changes=" | <a href=\"$wchange_file\"><b>$changes</b></a>"
+						fi
+					fi
+					printf '<li>%s (%d%s)\n' \
+						"$link" \
 						"$group_size" \
-						>> "$warnings_index"
+						"$changes" \
+						>> "$windex"
 				done
-				printf '</ul>\n%s\n' "$(html_footer)" >> "$warnings_index"
-			else
-				rm -f "$warnings_index"
+				printf '</ul>\n%s\n' "$(html_footer)" >> "$windex"
 			fi
+			
 			touch "$warnings_dir"
 		fi
-		if [ -f "$warnings_index" ] ; then
-			details+=" [<a href=\"$wprefix-warnings/\">grouped</a>]"
+		if [ -f "$windex" ] ; then
+			details+=" <span class=\"grouped\">[<a href=\"$name-warnings/\">grouped</a>]</span>"
 		fi
 	fi
 	
@@ -357,7 +397,7 @@ handle_build() {
 		local wchange_file="$(relative_path "$dir" "$change_file")"
 		if [ -z "$changes" ]
 			then changes='='
-			else changes="<a href="$wchange_file"><b>$changes</b></a>"
+			else changes="<a href=\"$wchange_file\"><b>$changes</b></a>"
 		fi
 		html+="
 	<td align=center>$changes</td>"
