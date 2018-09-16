@@ -190,6 +190,7 @@ clang_tidy_checks=(
 	'-cert-fio38-c'
 	'-cert-msc30-c'
 	'-cert-oop11-cpp'
+	'-cppcoreguidelines-avoid-magic-numbers'
 	'-cppcoreguidelines-c-copy-assignment-signature'
 	'-cppcoreguidelines-narrowing-conversions'
 	'-google-readability-braces-around-statements'
