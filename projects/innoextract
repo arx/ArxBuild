@@ -17,7 +17,7 @@ cmake_options[gcc-freebsd-9.1-x86-64]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 cmake_options[icc]+=" -DCXX_STD_VERSION=2014"
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-7'
+default_compiler='gcc-8'
 old_compiler='gcc-4.5'
 
 clang_tidy_checks+=(
