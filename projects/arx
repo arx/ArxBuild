@@ -65,12 +65,13 @@ clang_tidy_options+=(
 	-exclude='moc_QHexEditPrivate.cpp'
 	-exclude='qrc_CrashReporter.cpp'
 	-exclude='stb_image.cpp'
-	-exclude='ui_ErrorReportDialog.h'
+	-line-filter='[{"name":"ui_ArxProfiler.h"},{"name":"ui_ErrorReportDialog.h"}]'
 )
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
 	"${clang_tidy_checks_nocxx11[@]}" # TODO Enable these once we move to C++11
 	'-cppcoreguidelines-pro-type-vararg' # Variadic function used for asserts
+	'-readability-magic-numbers' # Too noisy and not very useful
 )
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
