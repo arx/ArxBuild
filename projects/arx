@@ -63,7 +63,6 @@ clang_tidy_options+=(
 	-exclude='moc_QHexEditPrivate.cpp'
 	-exclude='qrc_CrashReporter.cpp'
 	-exclude='stb_image.cpp'
-	-line-filter='[{"name":"ui_ArxProfiler.h"},{"name":"ui_ErrorReportDialog.h"}]'
 )
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
@@ -77,6 +76,7 @@ clang_tidy_checks_relaxed+=(
 	'-cert-err34-c'
 	'-cert-err58-cpp'
 	'-cppcoreguidelines-interfaces-global-init'
+	'-cppcoreguidelines-pro-type-cstyle-cast' # enable once we can use lambdas for BOOST_SCOPE_EXIT
 	'-cppcoreguidelines-pro-type-member-init'
 	'-cppcoreguidelines-special-member-functions'
 	'-google-readability-casting'
@@ -90,9 +90,10 @@ clang_tidy_checks_relaxed+=(
 )
 clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
 clang_tidy_config['cppcoreguidelines-no-malloc.Deallocations']='""'
-clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"u"'
 clang_tidy_config['google-runtime-int.SignedTypePrefix']='"s"'
 clang_tidy_config['google-runtime-int.TypeSuffix']='""'
+clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"u"'
+clang_tidy_config['llvm-namespace-comment.ShortNamespaceLines']='10'
 
 cppcheck_options+=(
 	-i 'stb_image.cpp'

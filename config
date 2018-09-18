@@ -242,6 +242,7 @@ clang_tidy_checks=(
 	'-fuchsia-virtual-inheritance' # Forbids virtual inheritance
 	'-google-default-arguments' # Forbids default arguments on virtual member functions
 	'-google-readability-todo' # Wants usernames in TODOs
+	'-google-runtime-references' # Providing information that something is not NULL is useful
 	'-hicpp-signed-bitwise' # Warns even on positive integer constants
 	'-llvm-header-guard' # Very specific to LLVM
 	'-llvm-include-order' # Wants to sort "a/b.hpp" before "b.hpp"
