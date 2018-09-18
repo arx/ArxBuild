@@ -266,6 +266,7 @@ handle_build() {
 			
 			# Create index page for groups
 			if [ $(cat "${warning_indices[@]}" | sort -u | wc -l) -gt 1 ] ; then
+				local documentation="$(build_filter "$name" 'group_documentation')"
 				local warnings_title="$name warnings for $project_name in $type $context"
 				printf '%s\n<h1>%s</h1>\n<ul>\n' \
 					"$(html_header "$warnings_title" "../../..")" \
@@ -312,8 +313,16 @@ handle_build() {
 							else changes=" | <a href=\"$wchange_file\"><b>$changes</b></a>"
 						fi
 					fi
-					printf '<li>%s (%d%s)\n' \
+					local docs=''
+					if [ ! -z "$documentation" ] ; then
+						local docs_url="$(printf '%s' "$group" | sed -e "$documentation")"
+						if [ ! -z "$docs_url" ] && [ ! "$docs_url" = "$group" ] ; then
+							docs=" [<a href="$docs_url">docs</a>]"
+						fi
+					fi
+					printf '<li>%s%s (%d%s)\n' \
 						"$link" \
+						"$docs" \
 						"$group_size" \
 						"$changes" \
 						>> "$windex"
