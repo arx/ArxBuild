@@ -137,6 +137,9 @@ build_types=(
 	'gcc-8_debug'
 	'gcc-8'
 	
+	'gcc-dev_debug'
+	'gcc-dev'
+	
 	'mingw_debug'
 	'mingw_lto'
 	
@@ -148,7 +151,7 @@ build_types=(
 	
 	# Test different build types
 	
-	$default_compiler'_xtra'
+	'gcc-dev_xtra'
 	'clang-dev_libcxx_xtra'
 	
 	$default_compiler'_static'

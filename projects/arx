@@ -224,6 +224,9 @@ build_types=(
 	'gcc-8_debug'
 	'gcc-8_unity'
 	
+	'gcc-dev_debug'
+	'gcc-dev_unity'
+	
 	'mingw_debug'
 	'mingw_unity_lto'
 	
@@ -236,8 +239,8 @@ build_types=(
 	$default_compiler
 	$default_compiler'_unity_debug'
 	$default_compiler'_unity_static'
-	$default_compiler'_unity_xtra'
 	$default_compiler'_static_lto'
+	'gcc-dev_unity_xtra'
 	'clang-dev_libcxx_unity_xtra'
 	'msvc-12.0-64_unity_xtra'
 	
