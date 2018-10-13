@@ -416,6 +416,8 @@ declare -A count_config_warnings
 count_config_warnings=(
 	[0]='CMake Warning'
 	[1]='Could NOT find'
+	['gcc-*']='\-Wall \- unsupported'
+	['clang-*']='\-Wall \- unsupported'
 )
 
 declare -A ignore_config_warnings
