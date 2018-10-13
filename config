@@ -399,6 +399,7 @@ count_errors=(
 	[10]='Aborted'
 	[11]='Segmentation fault'
 	[12]='Bus error'
+	[13]='internal compiler error'
 	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
 )
