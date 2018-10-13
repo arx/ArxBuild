@@ -22,6 +22,57 @@ export PATH="$basedir/bin:$PATH"
 export LD_LIBRARY_PATH="$basedir/lib/llvm/$ver/lib:$basedir/lib/llvm/$ver/lib64:$basedir/lib/llvm/$ver/lib32:$LD_LIBRARY_PATH"
 export PATH="$basedir/lib/llvm/$ver/bin:$PATH"
 
+libcxx="$(readlink -m "$here/../deps/libcxx-$ver/")"
+if [ -d "$libcxx" ] ; then
+	
+	args=( )
+	compile=0
+	link=1
+	uselibcxx=0
+	m32=0
+	
+	for arg in "$@" ; do
+		case "$arg" in
+			-c)
+				compile=1
+				link=0
+				args+=( "$arg" )
+			;;
+			*.cpp|*.c)
+				compile=1
+				args+=( "$arg" )
+			;;
+			-stdlib=libc++)
+				uselibcxx=1
+			;;
+			-m32)
+				m32=1
+				args+=( "$arg" )
+			;;
+			*)
+				args+=( "$arg" )
+			;;
+		esac
+	done
+	
+	if [ $uselibcxx = 1 ] ; then
+		nargs=( )
+		if [ $compile = 1 ] ; then
+			nargs+=( -nostdinc++ )
+			[ -d "$libcxx/include/libcxxabi" ] && nargs+=( -isystem "$libcxx/include/libcxxabi" )
+			[ -d "$libcxx/include/libcxxrt" ] && nargs+=( -isystem "$libcxx/include/libcxxrt" )
+			nargs+=( -isystem "$libcxx/include/c++/v1/" )
+		fi
+		if [ $link = 1 ] ; then
+			nargs+=( -stdlib=libc++ )
+			[ $m32 = 0 ] && nargs+=( -L "$libcxx/lib64/" )
+			[ $m32 = 1 ] && nargs+=( -L "$libcxx/lib32/" )
+		fi
+		set -- "${nargs[@]}" "${args[@]}"
+	fi
+	
+fi
+
 if [ -t 1 ] && [ -t 2 ] && [ ! "${TERM:-dumb}" = 'dumb' ] ; then
 	set -- -fcolor-diagnostics "$@"
 fi
