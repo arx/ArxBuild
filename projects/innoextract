@@ -41,6 +41,8 @@ merge_config olddeps boost-1.37
 merge_config olddeps libiconv-1.7
 merge_config olddeps liblzma-5.0.0
 
+merge_config newdeps cmake-dev
+
 merge_config libiconv libiconv-1.14
 
 # Finally, define the used build types.
@@ -208,6 +210,7 @@ build_types=(
 	
 	$default_compiler'_libiconv'
 	$old_compiler'_olddeps'
+	$default_compiler'_newdeps'
 	
 	# TODO 'include-what-you-use'
 	

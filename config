@@ -309,6 +309,7 @@ declare -A config_command
 config_command=(
 	[cmake-2.8.0]="\"$deps/cmake-2.8.0/bin/cmake\""
 	[cmake-2.8.3]="\"$deps/cmake-2.8.3/bin/cmake\""
+	[cmake-dev]='/opt/cmake-dev/bin/cmake'
 	[clang-analyzer]="$scan_build -o \"\$build/config-results\" cmake"
 	[cppcheck]='cppcheck --version #'
 	[flawfinder]="printf 'Flawfinder ' ; flawfinder --version #"

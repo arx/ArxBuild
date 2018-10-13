@@ -113,6 +113,7 @@ merge_config olddeps glm-0.9.5.0
 merge_config olddeps prebuilt-icons
 count_warnings["*olddeps*"]='(Rendering|Generating|Scaling) .*\.(svg|png|ico)'
 
+merge_config newdeps cmake-dev
 merge_config newdeps boost-git
 merge_config newdeps glm-git
 merge_config newdeps build-icons
