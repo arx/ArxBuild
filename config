@@ -190,6 +190,7 @@ clang_tidy_checks=(
 	'-clang-analyzer-*' # Already covered by clang-analyzer builds
 	# Disable aliases - use the direct name
 	'-cert-dcl03-c'
+	'-cert-dcl16-c'
 	'-cert-dcl54-cpp'
 	'-cert-dcl59-cpp'
 	'-cert-err09-cpp'
@@ -200,6 +201,7 @@ clang_tidy_checks=(
 	'-cppcoreguidelines-avoid-magic-numbers'
 	'-cppcoreguidelines-c-copy-assignment-signature'
 	'-cppcoreguidelines-narrowing-conversions'
+	'-cppcoreguidelines-non-private-member-variables-in-classes'
 	'-google-readability-braces-around-statements'
 	'-google-readability-function-size'
 	'-google-readability-namespace-comments'
@@ -214,12 +216,13 @@ clang_tidy_checks=(
 	'-hicpp-move-const-arg'
 	'-hicpp-named-parameter'
 	'-hicpp-new-delete-operators'
-	'-hicpp-no-malloc'
 	'-hicpp-no-array-decay'
+	'-hicpp-no-malloc'
 	'-hicpp-noexcept-move'
 	'-hicpp-special-member-functions'
 	'-hicpp-static-assert'
 	'-hicpp-undelegated-constructor'
+	'-hicpp-uppercase-literal-suffix'
 	'-hicpp-use-auto'
 	'-hicpp-use-emplace'
 	'-hicpp-use-equals-default'
@@ -269,16 +272,19 @@ clang_tidy_checks_nocxx11=(
 	'modernize-redundant-void-arg'
 	'modernize-use-bool-literals'
 	'-boost-use-to-string' # std::to_string is C++11-only
+	'-cppcoreguidelines-macro-usage' # suggest to use constexpr constants instead
 )
 declare -A clang_tidy_config
 clang_tidy_config=(
 	['bugprone-argument-comment.StrictMode']=1
 	['cppcoreguidelines-pro-type-member-init.IgnoreArrays']=1
 	['cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions']=1
-	['google-runtime-int.UnsignedTypePrefix']='"std::uint"'
 	['google-runtime-int.SignedTypePrefix']='"std::int"'
 	['google-runtime-int.TypeSuffix']='"_t"'
+	['google-runtime-int.UnsignedTypePrefix']='"std::uint"'
+	['misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic']=1
 	['readability-implicit-bool-conversion.AllowPointerConditions']=1
+	['readability-uppercase-literal-suffix.NewSuffixes']='u;l;ul;ll;ull;f'
 )
 generate_clang_tidy_config() {
 	local checks=''
