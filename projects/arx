@@ -36,6 +36,8 @@ cmake_options[msvc-12.0-32]+=" $arx_no_tests"
 cmake_options[msvc-12.0-64]+=" $arx_no_tests"
 cmake_options[msvc-analyzer]+=" $arx_no_tests"
 
+cmake_options[gcc-4.7]+=' -DUSE_LTO=0'
+
 # TODO Boost type_index is broken on ICC in C++14 mode
 cxx_compiler_options[icc]+=" -DBOOST_NO_CXX14_CONSTEXPR"
 # TODO Non-lambda BOOST_SCOPE_EXIT implementatin is broken on newer ICC
