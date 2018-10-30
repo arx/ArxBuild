@@ -31,6 +31,7 @@ dir="${dir##*/msvc-}"
 
 msvcver="${dir%%-*}"
 msvcarch="${dir#*-}"
+export Platform="$msvcarch"
 
 if [ ! -e "$WINEPREFIX" ] ; then
 	echo "Please install MSVC into a WINEPREFIX at $WINEPREFIX"
@@ -79,13 +80,7 @@ for arg in "$@" ;  do
 	
 done
 
-[ "$msvcarch" = '64' ] && msvcarch='x86_amd64'
+vcvars="C:\\vcvars-${msvcver}-${msvcarch}.bat"
+[ ! -f "$(winepath -u "$vcvars")" ] && vcvars="C:\\vcvars-${msvcver}.bat"
 
-msvcarchdir="$msvcarch\\"
-[ "$msvcarch" = '32' ] && msvcarchdir=''
-
-msvcinstalldir="C:\\Program Files\\Microsoft Visual Studio ${msvcver}"
-
-envfile="${msvcinstalldir}\\VC\\bin\\${msvcarchdir}vcvars${msvcarch}.bat"
-
-exec "$here/run.cpp" wine cmd /C call "$envfile" \> nul \& "$exe" "${args[@]}"
+exec "$here/run.cpp" wine cmd /C call "$vcvars" \> nul \& "$exe" "${args[@]}"

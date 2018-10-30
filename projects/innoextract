@@ -148,11 +148,16 @@ build_types=(
 	'mingw_debug'
 	'mingw_lto'
 	
-	'msvc-9.0-32'
-	'msvc-10.0-32'
-	'msvc-11.0-32'
-	'msvc-12.0-32'
-	'msvc-12.0-64_debugout' # for _debug we would need proper debug versions of all libs
+	'msvc-9.0-x86_debugout' # for _debug we would need proper debug versions of all libs
+	'msvc-9.0-x86'
+	
+	'msvc-10.0-x86'
+	
+	'msvc-11.0-x86'
+	
+	'msvc-12.0-x86'
+	'msvc-12.0-x64'
+	'msvc-12.0-x64_debugout' # for _debug we would need proper debug versions of all libs
 	
 	# Test different build types
 	
