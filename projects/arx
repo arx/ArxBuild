@@ -22,7 +22,8 @@ cmake_options[static]+=" -DEpoxy_USE_STATIC_LIBS=0" # TODO
 
 # Newer Qt versions require the CMake compile feature "cxx_decltype", but
 # CMake does not support compile feature detection for these compilers
-cmake_options[clang-3.3]+=" -DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+arx_no_qt="-DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
+cmake_options[clang-3.3]+=" $arx_no_qt"
 
 arx_no_tests="-DBUILD_TESTS=0"
 cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew"
@@ -34,9 +35,22 @@ cmake_options[qt-4.8-32]+=" -DUSE_QT5=0 -DWITH_QT=4"
 cmake_options[msvc-11.0-x86]+=" $arx_no_tests"
 cmake_options[msvc-12.0-x86]+=" $arx_no_tests"
 cmake_options[msvc-12.0-x64]+=" $arx_no_tests"
-cmake_options[msvc-analyzer]+=" $arx_no_tests"
+cmake_options[msvc-14.0-x86]+=" $arx_no_tests $arx_no_qt" # TODO add Qt dependencies
+cmake_options[msvc-14.0-x64]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.11-x86]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.11-x64]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.12-x86]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.12-x64]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.13-x86]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.13-x64]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.14-x86]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.14-x64]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.15-x86]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-14.15-x64]+=" $arx_no_tests $arx_no_qt"
+cmake_options[msvc-analyzer]+=" $arx_no_tests $arx_no_qt"
 
-cmake_options[gcc-4.7]+=' -DUSE_LTO=0'
+cmake_options[gcc-4.7]+=' -DUSE_LTO=0' # Fails to link
+cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
 # TODO Boost type_index is broken on ICC in C++14 mode
 cxx_compiler_options[icc]+=" -DBOOST_NO_CXX14_CONSTEXPR"
@@ -242,6 +256,21 @@ build_types=(
 	'msvc-12.0-x86_debug'
 	'msvc-12.0-x64_unity'
 	
+	'msvc-14.0-x86_debug'
+	'msvc-14.0-x64_unity'
+	
+	'msvc-14.11-x64_unity'
+	
+	'msvc-14.12-x64_unity'
+	
+	'msvc-14.13-x64_unity'
+	
+	'msvc-14.14-x64_unity'
+	
+	'msvc-14.15-x86_unity'
+	'msvc-14.15-x64_unity'
+	'msvc-14.15-x64_debug'
+	
 	# Test different build types
 	
 	$default_compiler
@@ -250,7 +279,7 @@ build_types=(
 	$default_compiler'_static_lto'
 	'gcc-dev_unity_xtra'
 	'clang-dev_libcxx_unity_xtra'
-	'msvc-12.0-64_unity_xtra'
+	'msvc-14.15-x64_unity_xtra'
 	
 	# Test different architectures
 	
