@@ -89,6 +89,7 @@ clang_tidy_checks+=(
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
 	'-bugprone-integer-division'
+	'-bugprone-too-small-loop-variable'
 	'-cert-err34-c'
 	'-cert-err58-cpp'
 	'-cppcoreguidelines-interfaces-global-init'
@@ -100,6 +101,7 @@ clang_tidy_checks_relaxed+=(
 	'-misc-non-private-member-variables-in-classes'
 	'-readability-braces-around-statements'
 	'-readability-else-after-return'
+	'-readability-isolate-declaration'
 	'-readability-misleading-indentation'
 	'-readability-uppercase-literal-suffix'
 )

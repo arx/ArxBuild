@@ -30,6 +30,7 @@ clang_tidy_checks_relaxed+=(
 	'-google-runtime-member-string-references'
 	'-cppcoreguidelines-pro-type-member-init'
 	'-readability-else-after-return'
+	'-readability-magic-numbers'
 	'-readability-non-const-parameter'
 	'-readability-simplify-boolean-expr'
 )
