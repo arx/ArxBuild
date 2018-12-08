@@ -302,6 +302,7 @@ clang_tidy_checks_nocxx11=(
 declare -A clang_tidy_config
 clang_tidy_config=(
 	['bugprone-argument-comment.StrictMode']=1
+	['bugprone-narrowing-conversions.PedanticMode']=1
 	['cppcoreguidelines-pro-type-member-init.IgnoreArrays']=1
 	['cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions']=1
 	['google-runtime-int.SignedTypePrefix']='"std::int"'
