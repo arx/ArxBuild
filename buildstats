@@ -330,7 +330,7 @@ handle_build() {
 				printf '</ul>\n%s\n' "$(html_footer)" >> "$windex"
 			fi
 			
-			touch "$warnings_dir"
+			touch "$windex_dir"
 		fi
 		if [ -f "$windex" ] ; then
 			details+=" <span class=\"grouped\">[<a href=\"$name-warnings/\">grouped</a>]</span>"
