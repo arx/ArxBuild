@@ -47,6 +47,8 @@ cmake_options[msvc-14.14-x86]+=" $arx_no_tests"
 cmake_options[msvc-14.14-x64]+=" $arx_no_tests"
 cmake_options[msvc-14.15-x86]+=" $arx_no_tests"
 cmake_options[msvc-14.15-x64]+=" $arx_no_tests"
+cmake_options[msvc-14.16-x86]+=" $arx_no_tests"
+cmake_options[msvc-14.16-x64]+=" $arx_no_tests"
 cmake_options[msvc-analyzer]+=" $arx_no_tests"
 
 cmake_options[gcc-4.7]+=' -DUSE_LTO=0' # Fails to link
@@ -268,9 +270,11 @@ build_types=(
 	
 	'msvc-14.14-x64_unity'
 	
-	'msvc-14.15-x86_unity'
 	'msvc-14.15-x64_unity'
-	'msvc-14.15-x64_debug'
+	
+	'msvc-14.16-x86_unity'
+	'msvc-14.16-x64_unity'
+	'msvc-14.16-x64_debug'
 	
 	# Test different build types
 	
@@ -280,7 +284,7 @@ build_types=(
 	$default_compiler'_static_lto'
 	'gcc-dev_unity_xtra'
 	'clang-dev_libcxx_unity_xtra'
-	'msvc-14.15-x64_unity_xtra'
+	'msvc-14.16-x64_unity_xtra'
 	
 	# Test different architectures
 	

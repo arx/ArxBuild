@@ -170,9 +170,11 @@ build_types=(
 	
 	'msvc-14.14-x64'
 	
-	'msvc-14.15-x86'
 	'msvc-14.15-x64'
-	'msvc-14.15-x64_debugout'
+	
+	'msvc-14.16-x86'
+	'msvc-14.16-x64'
+	'msvc-14.16-x64_debugout'
 	
 	# Test different build types
 	
