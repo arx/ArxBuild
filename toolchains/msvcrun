@@ -83,4 +83,7 @@ done
 vcvars="C:\\vcvars-${msvcver}-${msvcarch}.bat"
 [ ! -f "$(winepath -u "$vcvars")" ] && vcvars="C:\\vcvars-${msvcver}.bat"
 
-exec "$here/run.cpp" wine cmd /C call "$vcvars" \> nul \& "$exe" "${args[@]}"
+if [ "$exe" = 'cmd' ]
+	then exec wineconsole cmd /K call "$vcvars" \> nul \& prompt "\$p \$lMSVC-${msvcver}-${msvcarch}\$g " "${args[@]}"
+	else exec "$here/run.cpp" wine cmd /C call "$vcvars" \> nul \& "$exe" "${args[@]}"
+fi
