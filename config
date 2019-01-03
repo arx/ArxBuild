@@ -287,7 +287,6 @@ clang_tidy_checks=(
 )
 clang_tidy_checks_relaxed=(
 	'-bugprone-macro-parentheses' # Parentheses are not always correct
-	'-bugprone-misplaced-widening-cast' # False positives with enums
 	'-cppcoreguidelines-pro-type-const-cast' # Required sometimes to interact with C APIs
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # Required sometimes to interact with C APIs
 	'-google-explicit-constructor' # Already checkd by `make style` with the option to suppress the warning

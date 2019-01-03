@@ -106,7 +106,6 @@ clang_tidy_checks_relaxed+=(
 	'-readability-else-after-return'
 	'-readability-isolate-declaration'
 	'-readability-misleading-indentation'
-	'-readability-uppercase-literal-suffix'
 )
 clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
 clang_tidy_config['cppcoreguidelines-no-malloc.Deallocations']='""'
