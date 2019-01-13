@@ -45,6 +45,7 @@ endforeach()
 
 # Set where the target environment is located
 set(_cross_root "/usr/${_cross_target}")
+set(CMAKE_SYSROOT "${_cross_root}")
 set(CMAKE_FIND_ROOT_PATH "${_cross_root}")
 # Also tell pkg-config because CMake doesn't
 set(_cross_pkgconfig "${_cross_root}/usr/lib/pkgconfig")
