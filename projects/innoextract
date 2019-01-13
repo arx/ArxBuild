@@ -190,10 +190,10 @@ build_types=(
 	$default_compiler'_m32_debug'
 	$default_compiler'_m32'
 	
-	'gcc-armv6j-hf_debug'
+	'gcc-armv6j-hf_lto_debug'
 	'gcc-armv6j-hf_lto'
 	
-	'gcc-bindist-i686_debug'
+	'gcc-bindist-i686_lto'
 	'gcc-bindist-x86-64_lto'
 	
 	'gcc-freebsd-9.1-i686_debug'

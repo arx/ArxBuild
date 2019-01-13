@@ -146,16 +146,19 @@ cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
 
 clang_compilation_database="${cmake_options[clang-dev]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 cmake_options[clang-tidy]="$clang_compilation_database"
+cmake_options[include-what-you-use]="$clang_compilation_database"
+cmake_options[oclint]="$clang_compilation_database"
+cmake_options[infer]="$clang_compilation_database"
 
 # Declare possible build options (passed to the compiler).
 declare -A compiler_options
 compiler_options=(
 	[m32]='-m32'
-	[gcc-armv6j-hf]="-fno-lto"
+	[gcc-armv6j-hf]='-Wno-odr'
+	[gcc-bindist-i686]='-Wno-odr'
+	[gcc-bindist-x86-64]='-Wno-odr'
 	[gcc-freebsd-9.1-i686]="-fno-lto"
 	[gcc-freebsd-9.1-x86-64]="-fno-lto"
-	[gcc-bindist-i686]="-fno-lto"
-	[gcc-bindist-x86-64]="-fno-lto"
 	[mingw]="-ffat-lto-objects -fno-lto"
 	[lto]='-static-libgcc -flto'
 	[msvc-analyzer]='/analyze /analyze:max_paths 1024'
@@ -179,11 +182,8 @@ cxx_compiler_options[icc]+=" -gcc-name=g++-6.4.0"
 declare -A linker_options
 linker_options=(
 	[m32]='-Wl,--no-warn-search-mismatch'
-	[gcc-armv6j-hf]="-fno-lto"
 	[gcc-freebsd-9.1-i686]="-fno-lto"
 	[gcc-freebsd-9.1-x86-64]="-fno-lto"
-	[gcc-bindist-i686]="-fno-lto"
-	[gcc-bindist-x86-64]="-fno-lto"
 	[mingw]="-ffat-lto-objects -fno-lto"
 	[lto]='-static-libgcc -static-libstdc++ -flto -fuse-linker-plugin'
 )
@@ -408,6 +408,8 @@ count_warnings=(
 	[0]='\: warning\:'
 	[1]='\: Warning\:'
 	[2]='\: note\: \#pragma message'
+	# [3]='\: note\: type .* should match type .*'
+	# [4]='\: note\: type .* violates the C\+\+ One Definition Rule'
 	['icc*']='warning \#\d+\:'
 	['style*']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'

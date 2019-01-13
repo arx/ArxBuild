@@ -295,6 +295,7 @@ build_types=(
 	
 	'gcc-armv6j-hf_unity_lto'
 	
+	'gcc-bindist-i686_unity_lto'
 	'gcc-bindist-x86-64_unity_lto'
 	
 	# Test different library versions
