@@ -99,7 +99,6 @@ clang_tidy_checks_relaxed+=(
 	'-cppcoreguidelines-pro-type-cstyle-cast' # enable once we can use lambdas for BOOST_SCOPE_EXIT
 	'-cppcoreguidelines-pro-type-member-init'
 	'-cppcoreguidelines-special-member-functions'
-	'-google-readability-casting'
 	'-google-runtime-int'
 	'-misc-non-private-member-variables-in-classes'
 	'-readability-braces-around-statements'
