@@ -176,7 +176,7 @@ cxx_compiler_options=(
 )
 
 # TODO <functional> is broken on ICC in C++17 mode
-cxx_compiler_options[icc]+=" -gcc-name=g++-6.4.0"
+cxx_compiler_options[icc]+=" -gcc-name=g++-6.5.0"
 
 # Declare possible build options (passed to the linker).
 declare -A linker_options
