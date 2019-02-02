@@ -22,6 +22,9 @@ deps="$here/deps"
 # What part of the checked-out repo to build (location of the CMakeLists.txt)
 path=''
 
+export WINEPREFIX="$deps/msvc/"
+export WINEDEBUG='-all'
+
 boost_no_autodetect='-DBoost_NO_SYSTEM_PATHS=1 -DBoost_NO_BOOST_CMAKE=1'
 boost_gcc41="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.52-gcc41/\""
 boost_gcc43="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.52-gcc43/\""
