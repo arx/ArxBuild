@@ -442,6 +442,7 @@ count_errors=(
 	[12]='Bus error'
 	[13]='internal compiler error'
 	[14]='\. +Stop\.'
+	[15]='not remade because of errors'
 	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
 )
@@ -452,6 +453,12 @@ ignore_warnings=(
 	['mingw*']='\-fPIC ignored for target \(all code is position independent\)'
 	['msvc-analyzer*']='^[cC]\:\\'
 	['cppcheck*']='has a constructor with 1 argument that is not explicit' # better handled by other tools
+)
+
+# Declare patterns for errors that should be ignored.
+declare -A ignore_errors
+ignore_errors=(
+	['style*']='not remade because of errors'
 )
 
 declare -A count_config_warnings
