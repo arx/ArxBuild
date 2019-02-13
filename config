@@ -444,6 +444,7 @@ count_errors=(
 	[14]='\. +Stop\.'
 	[15]='not remade because of errors'
 	[16]='\:\d+ Assertion'
+	[17]='ERROR\:'
 	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
 )
