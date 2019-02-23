@@ -469,6 +469,7 @@ count_config_warnings=(
 	[1]='Could NOT find'
 	['gcc-*']='\-Wall \- unsupported'
 	['clang-*']='\-Wall \- unsupported'
+	['*xtra*']='\-fsanitize=.* \- unsupported \(warning\)'
 )
 
 declare -A ignore_config_warnings
