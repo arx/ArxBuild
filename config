@@ -232,6 +232,7 @@ clang_tidy_checks=(
 	'-cppcoreguidelines-avoid-c-arrays'
 	'-cppcoreguidelines-avoid-magic-numbers'
 	'-cppcoreguidelines-c-copy-assignment-signature'
+	'-cppcoreguidelines-explicit-virtual-functions'
 	'-cppcoreguidelines-narrowing-conversions'
 	'-cppcoreguidelines-non-private-member-variables-in-classes'
 	'-google-readability-braces-around-statements'
