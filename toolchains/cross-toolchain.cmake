@@ -13,31 +13,35 @@ endif()
 string(REGEX REPLACE "[^0-9]" "_" _cross_id "${_cross_target}")
 
 # Set the name of the target operating system
-if("${_cross_target}" MATCHES "linux")
+if(_cross_target MATCHES "linux")
 	set(CMAKE_SYSTEM_NAME "Linux")
-elseif("${_cross_target}" MATCHES "freebsd")
+elseif(_cross_target MATCHES "freebsd")
 	set(CMAKE_SYSTEM_NAME "FreeBSD")
+elseif(_cross_target MATCHES "mingw")
+	set(CMAKE_SYSTEM_NAME "Windows"  )
 else()
 	message(FATAL_ERROR "unsupported os for target ${_cross_target}")
 endif()
 
 # Set the compiler binaries to use
-foreach(lang IN ITEMS C CXX)
+foreach(lang IN ITEMS C CXX RC)
 	
 	if(lang STREQUAL C)
 		set(_cross_command "${_cross_target}-gcc")
-	else()
+	elseif(lang STREQUAL CXX)
 		set(_cross_command "${_cross_target}-g++")
+	elseif(lang STREQUAL RC)
+		set(_cross_command "${_cross_target}-windres")
 	endif()
 	
 	find_program(${_cross_id}_${lang}_COMPILER "${_cross_command}")
 	mark_as_advanced(${_cross_id}_${lang}_COMPILER)
 	
-	if(NOT ${_cross_id}_${lang}_COMPILER)
+	if(${_cross_id}_${lang}_COMPILER)
+		set(CMAKE_${lang}_COMPILER "${${_cross_id}_${lang}_COMPILER}")
+	elseif(NOT lang STREQUAL RC)
 		message(FATAL_ERROR "${_cross_command} not found")
 	endif()
-	
-	set(CMAKE_${lang}_COMPILER "${${_cross_id}_${lang}_COMPILER}")
 	
 	unset(_cross_command)
 	
@@ -61,8 +65,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
 # Set the FPU type for ARM
-if("${_cross_target}" MATCHES "^arm.*-hardfloat-")
+if(_cross_target MATCHES "^arm.*-hardfloat-")
 	add_definitions(-mfpu=vfp -mfloat-abi=hard)
+elseif(_cross_target MATCHES "mingw")
+	include_directories(SYSTEM "${CMAKE_CURRENT_LIST_DIR}/dxerr/")
 endif()
 
 unset(_cross_target)

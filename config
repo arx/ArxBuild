@@ -106,7 +106,7 @@ cmake_options=(
 	[msvc-analyzer]="\"$set_cmake_toolchain/msvc-14.16-x64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[clang-analyzer]="\"$set_cmake_toolchain/clang-analyzer-toolchain.cmake\""
 	[include-what-you-use]="\"$set_cmake_toolchain/include-what-you-use-toolchain.cmake\""
-	[mingw]="\"$set_cmake_toolchain/mingw-toolchain.cmake\""
+	[mingw]="\"$set_cmake_toolchain/i686-w64-mingw32-toolchain.cmake\""
 	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
 	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.37/\""
@@ -157,12 +157,12 @@ cmake_options[infer]="$clang_compilation_database"
 declare -A compiler_options
 compiler_options=(
 	[m32]='-m32'
+	[mingw]='-Wno-odr'
 	[gcc-armv6j-hf]='-Wno-odr'
 	[gcc-bindist-i686]='-Wno-odr'
 	[gcc-bindist-x86-64]='-Wno-odr'
 	[gcc-freebsd-9.1-i686]="-fno-lto"
 	[gcc-freebsd-9.1-x86-64]="-fno-lto"
-	[mingw]="-ffat-lto-objects -fno-lto"
 	[lto]='-static-libgcc -flto'
 	[msvc-analyzer]='/analyze /analyze:max_paths 1024'
 )
@@ -187,7 +187,6 @@ linker_options=(
 	[m32]='-Wl,--no-warn-search-mismatch'
 	[gcc-freebsd-9.1-i686]="-fno-lto"
 	[gcc-freebsd-9.1-x86-64]="-fno-lto"
-	[mingw]="-ffat-lto-objects -fno-lto"
 	[lto]='-static-libgcc -static-libstdc++ -flto -fuse-linker-plugin'
 )
 

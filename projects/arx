@@ -257,7 +257,7 @@ build_types=(
 	'gcc-dev_debug'
 	'gcc-dev_unity'
 	
-	'mingw_debug'
+	'mingw_debug_lto'
 	'mingw_unity_lto'
 	
 	'msvc-11.0-x86_unity'

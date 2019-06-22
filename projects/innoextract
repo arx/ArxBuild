@@ -146,7 +146,7 @@ build_types=(
 	'gcc-dev_debug'
 	'gcc-dev'
 	
-	'mingw_debug'
+	'mingw_lto_debug'
 	'mingw_lto'
 	
 	'msvc-9.0-x86_debugout' # for _debug we would need proper debug versions of all libs
