@@ -17,7 +17,7 @@ set(_msvc_ver_major "${_msvc_ver_major_noarch}-${_msvc_arch}")
 set(CMAKE_C_COMPILER "${_msvc_dir}/cl")
 set(CMAKE_CXX_COMPILER "${_msvc_dir}/cl")
 set(CMAKE_RC_COMPILER "${_msvc_dir}/rc")
-set(CMAKE_MT_COMPILER "${_msvc_dir}/mt")
+set(CMAKE_MT "${_msvc_dir}/mt")
 # CMake uses 'link' to link static and dynamic libraries - make sure it can be found
 set(ENV{PATH} "${_msvc_dir}/:$ENV{PATH}")
 # TODO A better solution should be to set CMAKE_LINKER,
