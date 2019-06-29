@@ -282,6 +282,8 @@ clang_tidy_checks=(
 	'-android-cloexec-fopen' # Suggests nonstandard flags
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # reinterpret_cast is needed
 	'-cppcoreguidelines-pro-type-static-cast-downcast' # Advocates using dynamic_cast
+	'-fuchsia-default-arguments-calls' # Completely forbids calling functions with default arguments
+	'-fuchsia-default-arguments-declarations' # Completely forbids default arguments
 	'-fuchsia-default-arguments' # Completely forbids default arguments
 	'-fuchsia-multiple-inheritance' # Forbids non-virtual multiple inheritance
 	'-fuchsia-overloaded-operator' # Forbids overloaded operators
