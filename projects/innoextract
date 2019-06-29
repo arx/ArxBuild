@@ -151,7 +151,7 @@ build_types=(
 	'gcc-dev_debug'
 	'gcc-dev'
 	
-	'mingw_lto_debug'
+	'mingw_lto_debugout'
 	'mingw_lto'
 	
 	'msvc-9.0-x86_debugout' # for _debug we would need proper debug versions of all libs
@@ -199,7 +199,6 @@ build_types=(
 	$default_compiler'_m32_debug'
 	$default_compiler'_m32'
 	
-	'gcc-armv6j-hf_lto_debug'
 	'gcc-armv6j-hf_lto'
 	
 	'gcc-bindist-i686_lto'

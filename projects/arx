@@ -11,6 +11,7 @@ default_cmake_options+=' -DICON_TYPE=none'
 default_cmake_options+=' -DRUN_TESTS=1'
 
 # Some additional arx-specific build options
+cmake_options[debugout]='-DDEBUG=1'
 cmake_options[unity]='-DUNITY_BUILD=1'
 cmake_options[xtra]='-DDEBUG_EXTRA=1 -DSET_NOISY_WARNING_FLAGS=1'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
@@ -259,7 +260,7 @@ build_types=(
 	'gcc-dev_debug'
 	'gcc-dev_unity'
 	
-	'mingw_debug_lto'
+	'mingw_debugout_lto'
 	'mingw_unity_lto'
 	
 	'msvc-11.0-x86_unity'
