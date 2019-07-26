@@ -113,6 +113,7 @@ clang_tidy_checks_relaxed+=(
 	'-google-runtime-int'
 	'-misc-non-private-member-variables-in-classes'
 	'-readability-braces-around-statements'
+	'-readability-convert-member-functions-to-static'
 	'-readability-else-after-return'
 	'-readability-isolate-declaration'
 	'-readability-misleading-indentation'
