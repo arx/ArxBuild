@@ -242,6 +242,7 @@ build_types=(
 	'gcc-9_debug_boost-1.68'
 	'gcc-9_debug_boost-1.69'
 	'gcc-9_debug_boost-1.70'
+	'gcc-9_debug_boost-1.71'
 	
 	$default_compiler'_libiconv'
 	$old_compiler'_olddeps'
