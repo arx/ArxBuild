@@ -23,6 +23,7 @@ export LD_LIBRARY_PATH="$basedir/lib/llvm/$ver/lib:$basedir/lib/llvm/$ver/lib64:
 export PATH="$basedir/lib/llvm/$ver/bin:$PATH"
 
 libcxx="$(readlink -m "$here/../deps/libcxx-$ver/")"
+[ ! -d "$libcxx" ] && libcxx="$(readlink -m "$here/../deps/libcxx-3.9/")"
 if [ -d "$libcxx" ] ; then
 	
 	args=( )
