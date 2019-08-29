@@ -192,6 +192,7 @@ build_types=(
 	
 	'gcc-dev_xtra'
 	'clang-dev_libcxx_xtra'
+	'msvc-14.21-x64_xtra'
 	
 	$default_compiler'_static'
 	
