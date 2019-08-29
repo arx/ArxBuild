@@ -15,7 +15,7 @@ cmake_options[gcc-freebsd-9.1-x86-64]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-8'
-old_compiler='gcc-4.5'
+old_compiler='gcc-4.6'
 
 clang_tidy_checks+=(
 	# innoextract should stay compatible with older compilers, disable C++11-specific checks
