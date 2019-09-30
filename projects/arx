@@ -3,7 +3,7 @@
 # What is the project called
 project_name='Arx'
 
-project_buildlogs_url='http://arx-libertatis.org/buildlogs/arx/'
+project_buildlogs_url='https://arx-libertatis.org/buildlogs/arx/'
 
 default_cmake_options+=' -DUNITY_BUILD=0'
 default_cmake_options+=' -DBUILD_ALL=1'

@@ -3,7 +3,7 @@
 # What is the project called
 project_name='innoextract'
 
-project_buildlogs_url='http://constexpr.org/innoextract/buildlogs/'
+project_buildlogs_url='https://constexpr.org/innoextract/buildlogs/'
 
 # Some additional innoextract-specific build options
 cmake_options[debugout]='-DDEBUG=1'
