@@ -33,7 +33,6 @@ cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew"
 cmake_options[prebuilt-icons]="-DICON_TYPE=\"ico;icns;iconset;png\""
 cmake_options[prebuilt-icons]+=" -DDATA_FILES=\"$deps/arx-libertatis-data-git/\""
 cmake_options[build-icons]="-DICON_TYPE=all"
-cmake_options[qt-4.8-32]+=" -DUSE_QT5=0 -DWITH_QT=4"
 cmake_options[msvc-11.0-x86]+=" $arx_no_tests"
 cmake_options[msvc-12.0-x86]+=" $arx_no_tests"
 cmake_options[msvc-12.0-x64]+=" $arx_no_tests"
@@ -170,7 +169,7 @@ merge_config gcc-4.5 openal-soft-1.0.38
 merge_config gcc-4.6 openal-soft-1.0.38
 merge_config gcc-4.7 openal-soft-1.0.38
 
-merge_config m32 qt-4.8-32
+merge_config m32 qt-5.1-32
 
 # Finally, define the used build types.
 # Each build type is an underscore-seperated list of tokens defined in
