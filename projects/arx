@@ -55,6 +55,12 @@ cmake_options[msvc-14.20-x86]+=" $arx_no_tests"
 cmake_options[msvc-14.20-x64]+=" $arx_no_tests"
 cmake_options[msvc-14.21-x86]+=" $arx_no_tests"
 cmake_options[msvc-14.21-x64]+=" $arx_no_tests"
+cmake_options[msvc-14.22-x86]+=" $arx_no_tests"
+cmake_options[msvc-14.22-x64]+=" $arx_no_tests"
+cmake_options[msvc-14.23-x86]+=" $arx_no_tests"
+cmake_options[msvc-14.23-x64]+=" $arx_no_tests"
+cmake_options[msvc-14.24-x86]+=" $arx_no_tests"
+cmake_options[msvc-14.24-x64]+=" $arx_no_tests"
 cmake_options[msvc-analyzer]+=" $arx_no_tests"
 
 cmake_options[gcc-armv6j-hf]+=" -DRUN_TARGET='qemu-arm;-L;/usr/armv6j-hardfloat-linux-gnueabi/'"
@@ -187,6 +193,16 @@ build_types=(
 	
 	'shellcheck'
 	
+	# Test different build types
+	
+	$default_compiler
+	$default_compiler'_unity_debug'
+	$default_compiler'_unity_static'
+	$default_compiler'_static_lto'
+	'gcc-dev_unity_xtra'
+	'clang-dev_libcxx_unity_xtra'
+	'msvc-14.24-x64_unity_xtra'
+	
 	# Test different compilers/stdlibs and versions
 	
 	'clang-3.3_libcxx_debug'
@@ -297,19 +313,15 @@ build_types=(
 	
 	'msvc-14.20-x64_unity'
 	
-	'msvc-14.21-x86_unity'
 	'msvc-14.21-x64_unity'
-	'msvc-14.21-x64_debug'
 	
-	# Test different build types
+	'msvc-14.22-x64_unity'
 	
-	$default_compiler
-	$default_compiler'_unity_debug'
-	$default_compiler'_unity_static'
-	$default_compiler'_static_lto'
-	'gcc-dev_unity_xtra'
-	'clang-dev_libcxx_unity_xtra'
-	'msvc-14.21-x64_unity_xtra'
+	'msvc-14.23-x64_unity'
+	
+	'msvc-14.24-x86_unity'
+	'msvc-14.24-x64_unity'
+	'msvc-14.24-x64_debug'
 	
 	# Test different architectures
 	

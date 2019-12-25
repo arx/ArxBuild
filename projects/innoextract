@@ -69,6 +69,16 @@ build_types=(
 	
 	'flawfinder'
 	
+	# Test different build types
+	
+	'gcc-dev_xtra'
+	'clang-dev_libcxx_xtra'
+	'msvc-14.24-x64_xtra'
+	
+	$default_compiler'_static'
+	
+	$default_compiler'_debug_nolzma'
+	
 	# Test different compilers/stdlibs and versions
 	
 	'clang-3.3_libcxx_debug'
@@ -187,19 +197,15 @@ build_types=(
 	
 	'msvc-14.20-x64'
 	
-	'msvc-14.21-x86'
 	'msvc-14.21-x64'
-	'msvc-14.21-x64_debugout'
 	
-	# Test different build types
+	'msvc-14.22-x64'
 	
-	'gcc-dev_xtra'
-	'clang-dev_libcxx_xtra'
-	'msvc-14.21-x64_xtra'
+	'msvc-14.23-x64'
 	
-	$default_compiler'_static'
-	
-	$default_compiler'_debug_nolzma'
+	'msvc-14.24-x86'
+	'msvc-14.24-x64'
+	'msvc-14.24-x64_debugout'
 	
 	# Test different architectures
 	
