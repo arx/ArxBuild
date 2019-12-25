@@ -133,6 +133,10 @@ public:
 	
 	virtual void reset() = 0;
 	
+	virtual void begin_link(const char * url, std::size_t n) = 0;
+	
+	virtual void end_link() = 0;
+	
 };
 
 template <typename K, typename V1, typename V2, typename Compare>
@@ -184,7 +188,7 @@ class html_format : public output {
 		defaults[40] = 49; // Default background color
 		defaults[52] = 54; // Not framed, not encircled
 		defaults[53] = 55; // Not overlined
-		return std::move(defaults);
+		return defaults;
 	}();
 	
 	const tags_t tags = []() {
@@ -194,7 +198,7 @@ class html_format : public output {
 		tags[4] = "u";
 		tags[5] = "blink";
 		tags[9] = "strike";
-		return std::move(tags);
+		return tags;
 	}();
 	
 	typedef std::pair<commands_t, commands_t> frame_t;
@@ -249,7 +253,7 @@ public:
 	
 	void color(commands_t && cmds) {
 		
-		while(!stack.empty() && is_subset(stack.top().first, cmds)) {
+		while(!stack.empty() && !stack.top().first.empty() && is_subset(stack.top().first, cmds)) {
 			// Completely overwrites stack frame, can close now
 			close();
 		}
@@ -311,9 +315,73 @@ public:
 	
 	void reset() {
 		
-		while(!stack.empty()) {
+		while(!stack.empty() && !stack.top().first.empty()) {
 			close();
 		}
+		
+		if(!stack.empty()) {
+			color(commands_t{defaults});
+		}
+		
+	}
+	
+	void begin_link(const char * url, std::size_t n) {
+		
+		commands_t current;
+		if(stack.empty()) {
+			current = defaults;
+		} else {
+			current = stack.top().second;
+		}
+		
+		std::cout << "<a href=\"";
+		
+		const char * end = url + n;
+		
+		while(true) {
+			
+			const char * c = std::find_if(url, end, [](char c) {
+				return c == '"' || c == '\\';
+			});
+			if(c == end) {
+				std::cout.write(url, n);
+				break;
+			} else {
+				std::cout.write(url, c - url);
+				url = c + 1;
+				n = end - url;
+			}
+			
+			std::cout << '\\' << *c;
+			
+		}
+		
+		std::cout << "\">";
+		
+		stack.emplace(commands_t{}, current);
+		
+	}
+	
+	void end_link() {
+		
+		if(stack.empty()) {
+			return;
+		}
+		
+		commands_t cmds;
+		
+		while(!stack.empty() && !stack.top().first.empty()) {
+			cmds.insert(stack.top().first.begin(), stack.top().first.end());
+			close();
+		}
+		
+		if(!stack.empty()) {
+			std::cout << "</a>";
+			stack.pop();
+		}
+		
+		// Restore current color
+		color(std::move(cmds));
 		
 	}
 	
@@ -334,6 +402,15 @@ public:
 	
 	void reset() {
 		// Nothing to reset
+	}
+	
+	void begin_link(const char * url, std::size_t n) {
+		(void)url, (void)n;
+		// Links not supported
+	}
+	
+	void end_link() {
+		// Links not supported
 	}
 	
 };
@@ -366,6 +443,8 @@ int main(int argc,  char * argv[]) {
 	commands_t cmds;
 	bool close = false;
 	std::size_t newlines = 0;
+	std::string link;
+	bool in_link = false;
 	
 	while(!std::cin.eof()) {
 		
@@ -397,6 +476,10 @@ int main(int argc,  char * argv[]) {
 					out->color(std::move(cmds));
 					cmds.clear();
 				}
+				if(!link.empty()) {
+					out->begin_link(link.data(), link.length());
+					in_link = true;
+				}
 				// Print plain text
 				out->text(buf.data() + p, end - p);
 			}
@@ -411,11 +494,12 @@ int main(int argc,  char * argv[]) {
 				break;
 			}
 			
-			if(buf[p] == '=') {
+			char start = buf[p];
+			if(start == '=') {
 				// msvc/wine generates this
 				p++;
 				continue;
-			} else if(buf[p] != '[') {
+			} else if(start != '[' && start != ']') {
 				std::cerr << line << ':' << i << ": invalid escape code start: \"\\e";
 				print_escaped(buf[p]);
 				std::cerr << "\"\n";
@@ -427,12 +511,12 @@ int main(int argc,  char * argv[]) {
 			while(e < buf.length()) {
 				char c = buf[e];
 				e++;
-				if(is_end_char(c)) {
+				if(start == ']' ? c == '\a' : is_end_char(c)) {
 					break;
 				}
 			}
 			
-			if(p < e && buf[e - 1] == 'm') {
+			if(start != ']' && p < e && buf[e - 1] == 'm') {
 				
 				// Color command
 				
@@ -470,9 +554,9 @@ int main(int argc,  char * argv[]) {
 					
 				}
 				
-			} else if(e - p == 3 && buf[p] == '?' && buf[p + 1] == '1' && buf[p + 2] == 'h') {
+			} else if(start != ']' && e - p == 3 && buf[p] == '?' && buf[p + 1] == '1' && buf[p + 2] == 'h') {
 				// msvc/wine generates this
-			} else if(e - p == 1 && buf[p] == 'K') {
+			} else if(start != ']' && e - p == 1 && buf[p] == 'K') {
 				/*
 				 * gcc 4.10 generates this
 				 * This is meant to clear the background of wrapped lines as some terminals
@@ -480,6 +564,13 @@ int main(int argc,  char * argv[]) {
 				 * Unfortunately they emit this even if they never changed the background color!
 				 * As we don't wrap lines it can be safely ignored.
 				 */
+			} else if(start == ']' && e - p >= 4 && buf[p] == '8' && buf[p + 1] == ';' && buf[p + 2] == ';'
+			          && buf[e - 1] == '\a') {
+				if(in_link) {
+					out->end_link();
+					in_link = false;
+				}
+				link = buf.substr(p + 3, e - p - 4);
 			} else {
 				
 				// Other command
@@ -496,6 +587,10 @@ int main(int argc,  char * argv[]) {
 		
 		newlines++;
 		line++;
+	}
+	
+	if(in_link) {
+		out->end_link();
 	}
 	
 	out->reset();

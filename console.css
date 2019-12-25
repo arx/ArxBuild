@@ -27,6 +27,14 @@ a:hover {
 	text-decoration: underline;
 }
 
+.c30 a, .c31 a, .c32 a, .c33 a, .c34 a, .c35 a, .c36 a, .c37 a {
+	color: inherit;
+}
+
+u a {
+	text-decoration: inherit;
+}
+
 table {
 	background: #fafafc;
 	min-height: 64px;
