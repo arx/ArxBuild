@@ -317,6 +317,7 @@ clang_tidy_checks=(
 )
 clang_tidy_checks_relaxed=(
 	'-bugprone-macro-parentheses' # Parentheses are not always correct
+	'-cppcoreguidelines-init-variables' # Sometimes a valid perfomance optimization
 	'-cppcoreguidelines-pro-type-const-cast' # Required sometimes to interact with C APIs
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # Required sometimes to interact with C APIs
 	'-google-explicit-constructor' # Already checkd by `make style` with the option to suppress the warning
@@ -324,6 +325,7 @@ clang_tidy_checks_relaxed=(
 	'-misc-misplaced-widening-cast' # Warns on cast to enum
 	'-misc-redundant-expression' # Does not consider that functions might have side effects
 	'-modernize-deprecated-headers' # Not always possible
+	'-readability-make-member-function-const' # Sometimes functions should semantically not be const
 	'-readability-static-accessed-through-instance' # This is actually more readable in many cases
 )
 clang_tidy_checks_nocxx11=(
