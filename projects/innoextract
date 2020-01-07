@@ -286,3 +286,6 @@ covertiy_scan_project='585'
 travis_ci_project='dscharrer/innoextract'
 
 commit_url=https://github.com/dscharrer/innoextract/commits/
+
+ignore_warnings['gcc-4.1*']='warning\: dereferencing type\-punned pointer will break strict\-aliasing rules|warning\: format not a string literal\, argument types not checked'
+ignore_warnings['gcc-4.4*']='warning\: array subscript is above array bounds'
