@@ -401,7 +401,8 @@ make_command=(
 
 qt_gcc48="$deps/Qt-5.4-gcc48"
 cppunit_gcc48="$deps/cppunit-1.13.2-gcc48"
-cppunit_libcxx="$deps/cppunit-1.13.2-libcxx"
+cppunit_oldlibcxx="$deps/cppunit-1.13.2-libcxx"
+cppunit_libcxx="$deps/cppunit-1.14.0-libcxx"
 
 declare -A prefix_paths
 prefix_paths=(
