@@ -385,16 +385,17 @@ config_command=(
 	[shellcheck]="shellcheck --version #"
 )
 
-# Declare how to build the projects (default is `make -k`).
+# Declare how to build the projects (default is `make $makeopts`).
+makeopts="--keep-going --no-print-directory"
 scan_build+=" \$([[ \"\$buildid\" == *unity* ]] && printf '%s' '-analyze-headers')"
 declare -A make_command
 make_command=(
-	[style]='make -k style'
-	[doxygen]='make -k doc'
+	[style]="make $makeopts style"
+	[doxygen]="make $makeopts doc"
 	[cppcheck]='cppcheck "${cppcheck_options[@]}" --cppcheck-build-dir="$PWD" "${include_directories[@]}" "${source_directories[@]}"'
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
 	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
-	[clang-analyzer]="$scan_build -o \"\$build/results\" make -k"
+	[clang-analyzer]="$scan_build -o \"\$build/results\" make $makeopts"
 	[clang-tidy]='$toolchains/run-clang-tidy.py -config="$(generate_clang_tidy_config)" "${clang_tidy_options[@]}"'
 )
 

@@ -110,7 +110,7 @@ do_build() {
 	export CXXFLAGS="$cxxflags"
 	export LDFLAGS="$ldflags"
 	
-	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make -k"}")"
+	local _make_command="$(eval escape_args "${make_command[$compiler]:-"make $makeopts"}")"
 	
 	echo "${esc}[32m[$buildid]${esc}[0m Configuring..."
 	local _config_command="$config --no-warn-unused-cli $(escape "$repo/$path")"
@@ -146,7 +146,7 @@ do_build() {
 		
 		if [ -f "compile_commands.json" ] && [[ ! $_make_command == 'make '* ]] ; then
 			# TODO find a way to generate files but don't run compile commands
-			make -k &> /dev/null
+			eval "make $makeopts &> /dev/null"
 		fi
 		
 		{
@@ -170,7 +170,14 @@ do_build() {
 	fi
 	
 	local results="$build/results"
-	[ -d "$results"/* ] && mv "$results"/* "$stage/$buildid-results"
+	if [ -d "$results" ] ; then
+		result_dirs=( "$results"/* )
+		if [ ${#result_dirs[@]} = 1 ] && [ -d "${result_dirs[0]}" ] ; then
+			mv "${result_dirs[0]}" "$stage/$buildid-results"
+		elif [ ${#result_dirs[@]} -gt 0 ] ; then
+			mv "$results" "$stage/$buildid-results"
+		fi
+	fi
 	if [ -f "$stage/$buildid-results/index.html" ] ; then
 		sed -i 's!^.*<th>\(User\|Working Directory\):</th>.*$!!' \
 			"$stage/$buildid-results/index.html"
