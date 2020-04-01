@@ -254,6 +254,8 @@ clang_tidy_checks=(
 	# Disable aliases - use the direct name
 	'-cert-dcl03-c'
 	'-cert-dcl16-c'
+	'-cert-dcl37-c'
+	'-cert-dcl51-cpp'
 	'-cert-dcl54-cpp'
 	'-cert-dcl59-cpp'
 	'-cert-err09-cpp'
@@ -321,10 +323,13 @@ clang_tidy_checks=(
 	'-llvm-header-guard' # Very specific to LLVM
 	'-llvm-include-order' # Wants to sort "a/b.hpp" before "b.hpp"
 	'-llvm-twine-local' # Very specific to LLVM
+	'-llvmlibc-restrict-system-libc-headers' # Only makes sense for libc
+	'-misc-no-recursion' # Recursion is fine
 	'-readability-implicit-bool-conversion' # These are just too useful
 )
 clang_tidy_checks_relaxed=(
 	'-bugprone-macro-parentheses' # Parentheses are not always correct
+	'-cppcoreguidelines-avoid-non-const-global-variables' # Some may be reasonable
 	'-cppcoreguidelines-init-variables' # Sometimes a valid perfomance optimization
 	'-cppcoreguidelines-pro-type-const-cast' # Required sometimes to interact with C APIs
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # Required sometimes to interact with C APIs
