@@ -120,6 +120,9 @@ build_types=(
 	'clang-9_libcxx_debug'
 	'clang-9_libcxx'
 	
+	'clang-10_libcxx_debug'
+	'clang-10_libcxx'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx'
 	
