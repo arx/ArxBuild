@@ -133,6 +133,7 @@ cmake_options=(
 	[msvc-14.25-arm64]="\"$set_cmake_toolchain/msvc-14.25-arm64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-analyzer]="\"$set_cmake_toolchain/msvc-14.25-x64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[clang-analyzer]="\"$set_cmake_toolchain/clang-analyzer-toolchain.cmake\""
+	[gcc-analyzer]="\"$set_cmake_toolchain/gcc-dev-toolchain.cmake\""
 	[include-what-you-use]="\"$set_cmake_toolchain/include-what-you-use-toolchain.cmake\""
 	[mingw]="\"$set_cmake_toolchain/i686-w64-mingw32-toolchain.cmake\""
 	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
@@ -207,6 +208,7 @@ cxx_compiler_options=(
 	[libcxx]='-stdlib=libc++'
 	[clang-analyzer]='-stdlib=libc++'
 	[lto]='-static-libstdc++'
+	[gcc-analyzer]='-fanalyzer'
 )
 
 # TODO <functional> is broken on ICC in C++17 mode
@@ -523,6 +525,7 @@ count_config_errors=(
 false_positives=(
 	'*_xtra'
 	'clang-analyzer*'
+	'gcc-analyzer*'
 	'clang-tidy*strict*'
 	'cppcheck*'
 	'flawfinder*'

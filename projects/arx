@@ -191,6 +191,9 @@ build_types=(
 	'clang-analyzer'
 	'clang-analyzer_unity'
 	
+	'gcc-analyzer'
+	'gcc-analyzer_unity'
+	
 	'msvc-analyzer_unity'
 	
 	'clang-tidy_strict'

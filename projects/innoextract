@@ -60,6 +60,8 @@ build_types=(
 	
 	'clang-analyzer'
 	
+	'gcc-analyzer'
+	
 	'msvc-analyzer'
 	
 	'clang-tidy_strict'
