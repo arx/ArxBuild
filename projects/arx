@@ -418,6 +418,7 @@ count_config_warnings['gcc-freebsd*']="$boostfs|$nocrashhandler|Looking for (sys
 count_config_warnings['mingw*']="$boostfs"
 count_config_warnings['msvc*']="$boostfs|$nocrashhandler"
 
+ignore_warnings['clang*xtra*']='padding .* to alignment boundary'
 ignore_warnings["gcc-9*m32*"]="\-Wnoexcept"
 ignore_warnings['gcc-4.9*debug*']='unistd.*\: read(link)? called with bigger length than size of( the)? destination buffer'
 ignore_warnings['gcc-8*debug*']='\-Warray\-bounds'
