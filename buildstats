@@ -117,6 +117,36 @@ is_cache_valid() {
 		&& true
 }
 
+get_config_change() {
+	local prefix="$1"
+	local old="$2"
+	local new="$3"
+	
+	declare -A oldlines
+	while IFS='' read -r line || [[ -n "$line" ]] ; do
+		[ -z "$line" ] && continue
+		oldlines["$line"]=1
+	done < "$old"
+	
+	while IFS='' read -r line || [[ -n "$line" ]] ; do\
+		[ -z "$line" ] && continue
+		
+		[ "${oldlines["$line"]:-0}" = 1 ] && continue
+		
+		local feature=''
+		for suffix in "${config_unavailable[@]}" ; do
+			if [[ "$line" == *"$suffix" ]] ; then
+				feature="${line%"$suffix"}"
+			fi
+		done
+		[ -z "$feature" ] && continue
+		
+		[ "${oldlines["$feature"]:-0}" = 1 ] && printf "%s%s\n" "$prefix" "${line#--}"
+		
+	done < "$new"
+	
+}
+
 handle_build() {
 	
 	local file="$1"
@@ -379,6 +409,27 @@ handle_build() {
 	<td$config_class><a href=\"$wprefix-config.txt\">[cfg]</a>"
 	[ $config_warnings -gt 0 ] && html+="<a href=\"$wprefix-config-warnings.txt\">[w]</a>"
 	[ $config_errors -gt 0 ] && html+="<a href=\"$wprefix-config-errors.txt\">[e]</a>"
+	if [ ! -z "$old_prefix" ] ; then
+		local config_change_file="$path-config-change.txt"
+		local config_file="$prefix-config.txt"
+		local old_config_file="$old_prefix-config.txt"
+		if ! is_cache_valid "$config_change_file" "$config_file" \
+			|| [ "$old_config_file" -nt "$config_change_file" ] ; then
+			local change="$(
+				get_config_change '+' "$old_config_file" "$config_file"
+				get_config_change '-' "$config_file" "$old_config_file"
+			)"
+			printf '%s\n' "$change" > "$config_change_file"
+		fi
+		local changes=''
+		local broken="$(cat "$config_change_file" | grep -P '^\+' | wc -l)"
+		local fixed="$(cat "$config_change_file" | grep -P '^\-' | wc -l)"
+		[ $broken = 0 ] || changes+="<span class=\"bad\">+$broken</span>"
+		[ ! $broken = 0 ] && [ ! $fixed = 0 ] && changes+=' '
+		[ $fixed = 0 ] || changes+="<span class=\"good\">-$fixed</span>"
+		local wconfig_change_file="$(relative_path "$dir" "$config_change_file")"
+		[ -z "$changes" ] || html+=" <a href=\"$wconfig_change_file\"><b>$changes</b></a>"
+	fi
 	html+="</td>"
 	
 	if [ ! $has_false_positives = 0 ] && [ ! -z "$old_prefix" ] ; then

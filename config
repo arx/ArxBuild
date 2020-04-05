@@ -526,6 +526,12 @@ count_config_errors=(
 	[1]='CMake Error'
 )
 
+config_unavailable=(
+	' - unsupported (warning)'
+	' - unsupported'
+	' - not found'
+)
+
 # Declare which build types have known false positive warnings/errors.
 false_positives=(
 	'*_xtra'
