@@ -470,8 +470,8 @@ count_warnings=(
 # Declare patterns that count as an error.
 declare -A count_errors
 count_errors=(
-	[0]='\:\d+\: error\:'
-	[1]='\:\d+\: fatal error\:'
+	[0]='\: error\:'
+	[1]='\: fatal error\:'
 	[2]='\: undefined reference to '
 	[3]='ld\: cannot find'
 	[3]='could not read symbols\: File in wrong format'
@@ -489,6 +489,7 @@ count_errors=(
 	[15]='not remade because of errors'
 	[16]='\:\d+ Assertion'
 	[17]='ERROR\:'
+	[18]='\d+\) test\: .* \([FE]\) line\: \d+'
 	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
 )
