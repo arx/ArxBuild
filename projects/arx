@@ -75,7 +75,8 @@ cmake_options[clang-3.7]+=" -DRUN_TESTS=0"
 cmake_options[clang-3.8]+=" -DRUN_TESTS=0"
 cmake_options[clang-3.9]+=" -DRUN_TESTS=0"
 cmake_options[mingw]+=" -DRUN_TARGET='$toolchains/run.cpp;wine'"
-cmake_options[gcc-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:$LD_LIBRARY_PATH'"
+cmake_options[boost-1.69]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.69/lib:\$LD_LIBRARY_PATH'"
+cmake_options[gcc-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
 
 cmake_options[gcc-4.7]+=' -DUSE_LTO=0' # Fails to link
