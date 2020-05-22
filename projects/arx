@@ -86,7 +86,7 @@ cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 cxx_compiler_options[icc]+=" -DBOOST_SCOPE_EXIT_CONFIG_USE_LAMBDAS"
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-9'
+default_compiler='gcc-10'
 old_compiler='gcc-4.9'
 
 # Declare directories containing source code (for cppcheck and flawfinder)
@@ -303,6 +303,9 @@ build_types=(
 	'gcc-9_debug'
 	'gcc-9_unity'
 	
+	'gcc-10_debug'
+	'gcc-10_unity'
+	
 	'gcc-dev_debug'
 	'gcc-dev_unity'
 	
@@ -375,14 +378,14 @@ build_types=(
 	'gcc-4.9_debug_boost-1.62_boostfs'
 	'gcc-4.9_debug_boost-1.63_boostfs'
 	'gcc-4.9_debug_boost-1.64_boostfs'
-	'gcc-9_debug_boost-1.65_boostfs'
-	'gcc-9_debug_boost-1.66_boostfs'
-	'gcc-9_debug_boost-1.67_boostfs'
-	'gcc-9_debug_boost-1.68_boostfs'
-	'gcc-9_debug_boost-1.69_boostfs'
-	'gcc-9_debug_boost-1.70_boostfs'
-	'gcc-9_debug_boost-1.71_boostfs'
-	'gcc-9_debug_boost-1.72_boostfs'
+	'gcc-10_debug_boost-1.65_boostfs'
+	'gcc-10_debug_boost-1.66_boostfs'
+	'gcc-10_debug_boost-1.67_boostfs'
+	'gcc-10_debug_boost-1.68_boostfs'
+	'gcc-10_debug_boost-1.69_boostfs'
+	'gcc-10_debug_boost-1.70_boostfs'
+	'gcc-10_debug_boost-1.71_boostfs'
+	'gcc-10_debug_boost-1.72_boostfs'
 	
 	$old_compiler'_olddeps_unity'
 	$old_compiler'_olddeps_debug'

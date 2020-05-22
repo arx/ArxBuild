@@ -14,7 +14,7 @@ cmake_options[gcc-freebsd-9.1-i686]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 cmake_options[gcc-freebsd-9.1-x86-64]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-9'
+default_compiler='gcc-10'
 old_compiler='gcc-4.6'
 
 clang_tidy_checks+=(
@@ -172,6 +172,9 @@ build_types=(
 	'gcc-9_debug'
 	'gcc-9'
 	
+	'gcc-10_debug'
+	'gcc-10'
+	
 	'gcc-dev_debug'
 	'gcc-dev'
 	
@@ -256,14 +259,14 @@ build_types=(
 	'gcc-4.9_debug_boost-1.62'
 	'gcc-4.9_debug_boost-1.63'
 	'gcc-4.9_debug_boost-1.64'
-	'gcc-9_debug_boost-1.65'
-	'gcc-9_debug_boost-1.66'
-	'gcc-9_debug_boost-1.67'
-	'gcc-9_debug_boost-1.68'
-	'gcc-9_debug_boost-1.69'
-	'gcc-9_debug_boost-1.70'
-	'gcc-9_debug_boost-1.71'
-	'gcc-9_debug_boost-1.72'
+	'gcc-10_debug_boost-1.65'
+	'gcc-10_debug_boost-1.66'
+	'gcc-10_debug_boost-1.67'
+	'gcc-10_debug_boost-1.68'
+	'gcc-10_debug_boost-1.69'
+	'gcc-10_debug_boost-1.70'
+	'gcc-10_debug_boost-1.71'
+	'gcc-10_debug_boost-1.72'
 	
 	$default_compiler'_libiconv'
 	$old_compiler'_olddeps'
