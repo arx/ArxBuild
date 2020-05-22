@@ -386,6 +386,7 @@ build_types=(
 	'gcc-10_debug_boost-1.70_boostfs'
 	'gcc-10_debug_boost-1.71_boostfs'
 	'gcc-10_debug_boost-1.72_boostfs'
+	'gcc-10_debug_boost-1.73_boostfs'
 	
 	$old_compiler'_olddeps_unity'
 	$old_compiler'_olddeps_debug'
