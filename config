@@ -265,6 +265,7 @@ clang_tidy_checks=(
 	'-cert-fio38-c'
 	'-cert-msc30-c'
 	'-cert-oop11-cpp'
+	'-cert-str34-c'
 	'-cppcoreguidelines-avoid-c-arrays'
 	'-cppcoreguidelines-avoid-magic-numbers'
 	'-cppcoreguidelines-c-copy-assignment-signature'
@@ -308,6 +309,7 @@ clang_tidy_checks=(
 	'-cppcoreguidelines-pro-bounds-pointer-arithmetic'
 	'-cppcoreguidelines-pro-type-union-access'
 	# Disable warnings we never want
+	'-llvmlibc-*' # Only makes sense for libc
 	'-android-cloexec-fopen' # Suggests nonstandard flags
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # reinterpret_cast is needed
 	'-cppcoreguidelines-pro-type-static-cast-downcast' # Advocates using dynamic_cast
@@ -325,7 +327,6 @@ clang_tidy_checks=(
 	'-llvm-header-guard' # Very specific to LLVM
 	'-llvm-include-order' # Wants to sort "a/b.hpp" before "b.hpp"
 	'-llvm-twine-local' # Very specific to LLVM
-	'-llvmlibc-restrict-system-libc-headers' # Only makes sense for libc
 	'-misc-no-recursion' # Recursion is fine
 	'-readability-implicit-bool-conversion' # These are just too useful
 )
