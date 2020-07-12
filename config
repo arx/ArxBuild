@@ -304,6 +304,7 @@ clang_tidy_checks=(
 	'-hicpp-use-nullptr'
 	'-hicpp-use-override'
 	'-hicpp-vararg'
+	'-llvm-else-after-return'
 	# Disable warnings that advertise using the GSL support library
 	'-cppcoreguidelines-owning-memory'
 	'-cppcoreguidelines-pro-bounds-array-to-pointer-decay'
@@ -341,7 +342,6 @@ clang_tidy_checks_relaxed=(
 	'-google-explicit-constructor' # Already checkd by `make style` with the option to suppress the warning
 	'-llvm-namespace-comment' # Does not recognize the "} } // namespace a::b" syntax
 	'-misc-misplaced-widening-cast' # Warns on cast to enum
-	'-misc-redundant-expression' # Does not consider that functions might have side effects
 	'-modernize-deprecated-headers' # Not always possible
 	'-readability-make-member-function-const' # Sometimes functions should semantically not be const
 	'-readability-static-accessed-through-instance' # This is actually more readable in many cases
