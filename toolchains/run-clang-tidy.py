@@ -23,9 +23,9 @@ files.sort()
 
 i = 0
 
-command = [ 'clang-tidy', '-p=' + os.getcwd() ]
+command = [ sys.argv[1], '-p=' + os.getcwd() ]
 excludes = [ ]
-for arg in sys.argv[1:]:
+for arg in sys.argv[2:]:
 	if arg.startswith('-exclude='):
 		excludes += [ arg[9:] ]
 	else:

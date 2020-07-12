@@ -34,6 +34,8 @@ set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
 
 default_cmake_options=''
 
+llvm_dev="/opt/llvm-dev/bin"
+
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
 cmake_options=(
@@ -72,7 +74,7 @@ cmake_options=(
 	[clang-8]="\"$set_cmake_toolchain/clang-8-toolchain.cmake\""
 	[clang-9]="\"$set_cmake_toolchain/clang-9-toolchain.cmake\""
 	[clang-10]="\"$set_cmake_toolchain/clang-10-toolchain.cmake\""
-	[clang-dev]="\"$set_cmake_toolchain/clang-toolchain.cmake\""
+	[clang-dev]="\"$set_cmake_toolchain/clang-dev-toolchain.cmake\""
 	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
 	[msvc-9.0-x86]="\"$set_cmake_toolchain/msvc-9.0-x86-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-9.0-x64]="\"$set_cmake_toolchain/msvc-9.0-x64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
@@ -206,7 +208,7 @@ c_compiler_options=( )
 
 declare -A cxx_compiler_options
 cxx_compiler_options=(
-	[libstdcxx]='' # use default
+	[libstdcxx]='-stdlib=libstdc++'
 	[libcxx]='-stdlib=libc++'
 	[clang-analyzer]='-stdlib=libc++'
 	[lto]='-static-libstdc++'
@@ -384,7 +386,7 @@ generate_clang_tidy_config() {
 	printf "{ Checks: \"%s\", CheckOptions: [%s] }" "$checks" "$options"
 }
 
-scan_build="scan-build --use-cc=clang --use-c++=clang++"
+scan_build="$llvm_dev/scan-build --use-cc=$llvm_dev/clang --use-c++=$llvm_dev/clang++"
 scan_build+=" --html-title=\"\$project_name: \$buildid build\""
 scan_build+=" -no-failure-reports"
 
@@ -411,7 +413,7 @@ make_command=(
 	[flawfinder]='flawfinder --quiet --minlevel=3 "${source_directories[@]}"'
 	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
 	[clang-analyzer]="$scan_build -o \"\$build/results\" make $makeopts"
-	[clang-tidy]='$toolchains/run-clang-tidy.py -config="$(generate_clang_tidy_config)" "${clang_tidy_options[@]}"'
+	[clang-tidy]='$toolchains/run-clang-tidy.py "$llvm_dev/clang-tidy" -config="$(generate_clang_tidy_config)" "${clang_tidy_options[@]}"'
 )
 
 qt_gcc48="$deps/Qt-5.4-gcc48"
