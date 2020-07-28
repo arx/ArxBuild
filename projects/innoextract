@@ -274,6 +274,7 @@ build_types=(
 	$default_compiler'_newdeps'
 	
 	# TODO 'include-what-you-use'
+	'oclint'
 	
 	'style'
 	
