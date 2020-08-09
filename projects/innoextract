@@ -7,7 +7,7 @@ project_buildlogs_url='https://constexpr.org/innoextract/buildlogs/'
 
 # Some additional innoextract-specific build options
 cmake_options[debugout]='-DDEBUG=1'
-cmake_options[xtra]='-DDEBUG_EXTRA=1 -DSET_NOISY_WARNING_FLAGS=1'
+cmake_options[xtra]='-DDEBUG_EXTRA=1 -DSET_NOISY_WARNING_FLAGS=1 -DDUSE_LDGOLD=0'
 cmake_options[nolzma]='-DUSE_LZMA=0'
 cmake_options[style]="${cmake_options[debug]}"
 cmake_options[gcc-freebsd-9.1-i686]+=" -DUSE_DYNAMIC_UTIMENSAT=1"
