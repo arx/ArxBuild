@@ -335,6 +335,7 @@ clang_tidy_checks=(
 	'-readability-implicit-bool-conversion' # These are just too useful
 )
 clang_tidy_checks_relaxed=(
+	'-altera-struct-pack-align' # Some structs have to be packed
 	'-bugprone-macro-parentheses' # Parentheses are not always correct
 	'-cppcoreguidelines-avoid-non-const-global-variables' # Some may be reasonable
 	'-cppcoreguidelines-init-variables' # Sometimes a valid perfomance optimization
@@ -344,6 +345,7 @@ clang_tidy_checks_relaxed=(
 	'-llvm-namespace-comment' # Does not recognize the "} } // namespace a::b" syntax
 	'-misc-misplaced-widening-cast' # Warns on cast to enum
 	'-modernize-deprecated-headers' # Not always possible
+	'-readability-function-cognitive-complexity' # Arbitrary metric
 	'-readability-make-member-function-const' # Sometimes functions should semantically not be const
 	'-readability-static-accessed-through-instance' # This is actually more readable in many cases
 )
@@ -358,6 +360,7 @@ declare -A clang_tidy_config
 clang_tidy_config=(
 	['bugprone-argument-comment.StrictMode']=1
 	['bugprone-narrowing-conversions.PedanticMode']=1
+	['cppcoreguidelines-prefer-member-initializer.UseAssignment']=1
 	['cppcoreguidelines-pro-type-member-init.IgnoreArrays']=1
 	['cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions']=1
 	['google-runtime-int.SignedTypePrefix']='"std::int"'

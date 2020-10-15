@@ -122,6 +122,7 @@ clang_tidy_checks_relaxed+=(
 	'-cert-err34-c'
 	'-cert-err58-cpp'
 	'-cppcoreguidelines-interfaces-global-init'
+	'-cppcoreguidelines-prefer-member-initializer'
 	'-cppcoreguidelines-pro-type-cstyle-cast' # enable once we can use lambdas for BOOST_SCOPE_EXIT
 	'-cppcoreguidelines-pro-type-member-init'
 	'-cppcoreguidelines-special-member-functions'
