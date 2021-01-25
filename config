@@ -302,7 +302,8 @@ clang_tidy_checks=(
 	'-hicpp-use-override'
 	'-hicpp-vararg'
 	'-llvm-else-after-return'
-	# Disable warnings that advertise using the GSL support library
+	# Disable warnings that advertise using non-standard libraries
+	'-abseil-string-find-str-contains'
 	'-cppcoreguidelines-owning-memory'
 	'-cppcoreguidelines-pro-bounds-array-to-pointer-decay'
 	'-cppcoreguidelines-pro-bounds-constant-array-index'
@@ -351,6 +352,7 @@ clang_tidy_checks_nocxx11=(
 	'modernize-use-bool-literals'
 	'-boost-use-to-string' # std::to_string is C++11-only
 	'-cppcoreguidelines-macro-usage' # suggest to use constexpr constants instead
+	'-performance-no-int-to-ptr' # consflicts with using pointer to private to emulate explicit operator bool
 )
 declare -A clang_tidy_config
 clang_tidy_config=(
