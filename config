@@ -75,7 +75,6 @@ cmake_options=(
 	[clang-9]="\"$set_cmake_toolchain/clang-9-toolchain.cmake\""
 	[clang-10]="\"$set_cmake_toolchain/clang-10-toolchain.cmake\""
 	[clang-dev]="\"$set_cmake_toolchain/clang-dev-toolchain.cmake\""
-	[icc]="\"$set_cmake_toolchain/icc-toolchain.cmake\""
 	[msvc-9.0-x86]="\"$set_cmake_toolchain/msvc-9.0-x86-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-9.0-x64]="\"$set_cmake_toolchain/msvc-9.0-x64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-10.0-x86]="\"$set_cmake_toolchain/msvc-10.0-x86-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
@@ -215,9 +214,6 @@ cxx_compiler_options=(
 	[lto]='-static-libstdc++'
 	[gcc-analyzer]='-fanalyzer'
 )
-
-# TODO <functional> is broken on ICC in C++17 mode
-cxx_compiler_options[icc]+=" -gcc-name=g++-8.4.0"
 
 # Declare possible build options (passed to the linker).
 declare -A linker_options
@@ -464,7 +460,6 @@ prefix_paths=(
 	[gcc-bindist-x86-64]="$deps/Qt-5.1-64"
 	[qt-5.1-32]="$deps/Qt-5.1-32"
 	[qt-5.1-64]="$deps/Qt-5.1-64"
-	[icc]="$qt_gcc48"
 	[gcc-4.3]="$qt_gcc48;$cppunit_gcc48"
 	[gcc-4.4]="$qt_gcc48;$cppunit_gcc48"
 	[gcc-4.5]="$qt_gcc48;$cppunit_gcc48"
@@ -488,7 +483,6 @@ count_warnings=(
 	[2]='\: note\: \#pragma message'
 	# [3]='\: note\: type .* should match type .*'
 	# [4]='\: note\: type .* violates the C\+\+ One Definition Rule'
-	['icc*']='warning \#\d+\:'
 	['style*']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['include-what-you-use']='The full include-list for .*\:'
 	['oclint']='\:\d+\:\d+\: '
@@ -522,7 +516,6 @@ count_errors=(
 	[16]='\:\d+ Assertion'
 	[17]='ERROR\:'
 	[18]='\d+\) test\: .* \([FE]\) line\: \d+'
-	['icc*']='\: error\:'
 	['msvc-*']='error [A-Z]+\d+ *\:'
 )
 

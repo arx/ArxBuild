@@ -82,9 +82,6 @@ cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
 cmake_options[gcc-4.7]+=' -DUSE_LTO=0' # Fails to link
 cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
-# TODO Non-lambda BOOST_SCOPE_EXIT implementatin is broken on newer ICC
-cxx_compiler_options[icc]+=" -DBOOST_SCOPE_EXIT_CONFIG_USE_LAMBDAS"
-
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-10'
 old_compiler='gcc-4.9'
@@ -271,9 +268,6 @@ build_types=(
 	
 	'clang-dev_libstdcxx_debug'
 	'clang-dev_libstdcxx_unity'
-	
-	'icc_debug'
-	'icc_unity'
 	
 	'gcc-4.4_debug'
 	'gcc-4.4_unity'

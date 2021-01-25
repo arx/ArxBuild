@@ -133,9 +133,6 @@ build_types=(
 	'clang-dev_libstdcxx_debug'
 	'clang-dev_libstdcxx'
 	
-	'icc_debug'
-	'icc'
-	
 	'gcc-4.1_debug'
 	'gcc-4.1'
 	
