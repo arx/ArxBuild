@@ -136,7 +136,6 @@ cmake_options=(
 	[msvc-analyzer]="\"$set_cmake_toolchain/msvc-14.25-x64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[clang-analyzer]="\"$set_cmake_toolchain/clang-analyzer-toolchain.cmake\""
 	[gcc-analyzer]="\"$set_cmake_toolchain/gcc-dev-toolchain.cmake\""
-	[include-what-you-use]="\"$set_cmake_toolchain/include-what-you-use-toolchain.cmake\""
 	[mingw]="\"$set_cmake_toolchain/i686-w64-mingw32-toolchain.cmake\""
 	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
@@ -388,6 +387,11 @@ generate_clang_tidy_config() {
 	printf "{ Checks: \"%s\", CheckOptions: [%s] }" "$checks" "$options"
 }
 
+include_what_you_use_options=(
+	-Xiwyu --mapping_file="$toolchains/include-what-you-use.imp"
+	-Xiwyu --max_line_length=999
+)
+
 oclint_jcd_options=( )
 
 oclint_options=(
@@ -437,6 +441,7 @@ make_command=(
 	[shellcheck]='"$toolchains/shell-analyzer" -f gcc "$repo"'
 	[clang-analyzer]="$scan_build -o \"\$build/results\" make $makeopts"
 	[clang-tidy]='$toolchains/run-clang-tidy.py "$llvm_dev/clang-tidy" -config="$(generate_clang_tidy_config)" "${clang_tidy_options[@]}"'
+	[include-what-you-use]='$toolchains/include-what-you-use "${include_what_you_use_options[@]}"'
 	[oclint]='$deps/oclint-0.13.1/bin/oclint-json-compilation-database "${oclint_jcd_options[@]}" -- "${oclint_options[@]}"'
 )
 
@@ -486,7 +491,6 @@ count_warnings=(
 	# [3]='\: note\: type .* should match type .*'
 	# [4]='\: note\: type .* violates the C\+\+ One Definition Rule'
 	['style*']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
-	['include-what-you-use']='The full include-list for .*\:'
 	['oclint']='\:\d+\:\d+\: '
 	['msvc-*']='warning [A-Z]+\d+ *\:|\; restarting link with'
 	['cppcheck*']='\:\d+]\: \([a-z]'
@@ -568,7 +572,7 @@ false_positives=(
 	'clang-tidy*strict*'
 	'cppcheck*'
 	'flawfinder*'
-	'include-what-you-use'
+	'include-what-you-use*'
 	'oclint*'
 	'msvc-analyzer*'
 	'shellcheck*'

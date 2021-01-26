@@ -141,6 +141,10 @@ clang_tidy_config['google-runtime-int.TypeSuffix']='""'
 clang_tidy_config['google-runtime-int.UnsignedTypePrefix']='"u"'
 clang_tidy_config['llvm-namespace-comment.ShortNamespaceLines']='10'
 
+include_what_you_use_options+=(
+	# TODO --exclude='stb_image.cpp'
+)
+
 oclint_jcd_options+=(
 	--exclude='stb_image.cpp'
 )
@@ -397,7 +401,7 @@ build_types=(
 	$default_compiler'_newdeps_unity_m32'
 	'clang-dev_libcxx_newdeps_unity'
 	
-	# TODO 'include-what-you-use'
+	'include-what-you-use'
 	'oclint'
 	
 	'style'

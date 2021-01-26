@@ -1,0 +1,9 @@
+#!/bin/bash
+
+iwyu_tool.py -o clang -p "$PWD" -- "$@" 2>&1 \
+	| perl -pe "s/error: (add|remove) the following line\\n/warning: \\1 /" \
+	| sed "s: *//::" \
+	| sed "s/warning: add #.*\$/\\0 [missing-include]/" \
+	| sed "s/warning: remove #.*\$/\\0 [unneeded-include]/" \
+	| sed "s/warning: add [^#].*\$/\\0 [missing-fwd-decl]/" \
+	| sed "s/warning: remove [^#].*\$/\\0 [unneeded-fwd-decl]/"
