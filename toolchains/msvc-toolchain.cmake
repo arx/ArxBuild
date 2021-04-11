@@ -45,6 +45,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
+# MSVC generates Windows paths, which CMake will dump directly into the Host makefile
+# This won't work when cross-compiling so fall back to the old built-in dependency generator
+set(CMAKE_DEPENDS_USE_COMPILER FALSE)
+
 file(GLOB _msvc_depdirs RELATIVE ${_msvc_wineroot} "${_msvc_wineroot}/Code/*")
 list(SORT _msvc_depdirs)
 foreach(_msvc_depdir IN LISTS _msvc_depdirs)
