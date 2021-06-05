@@ -267,6 +267,9 @@ build_types=(
 	'clang-10_libcxx_debug'
 	'clang-10_libcxx_unity'
 	
+	'clang-11_libcxx_debug'
+	'clang-11_libcxx_unity'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx_unity'
 	
