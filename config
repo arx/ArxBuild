@@ -308,6 +308,7 @@ clang_tidy_checks=(
 	'-llvm-else-after-return'
 	# Disable warnings that advertise using non-standard libraries
 	'-abseil-string-find-str-contains'
+	'-altera-unroll-loops'
 	'-cppcoreguidelines-owning-memory'
 	'-cppcoreguidelines-pro-bounds-array-to-pointer-decay'
 	'-cppcoreguidelines-pro-bounds-constant-array-index'
@@ -315,6 +316,7 @@ clang_tidy_checks=(
 	'-cppcoreguidelines-pro-type-union-access'
 	# Disable warnings we never want
 	'-llvmlibc-*' # Only makes sense for libc
+	'-altera-id-dependent-backward-branch' # Not useful outside GPGPU
 	'-android-cloexec-fopen' # Suggests nonstandard flags
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # reinterpret_cast is needed
 	'-cppcoreguidelines-pro-type-static-cast-downcast' # Advocates using dynamic_cast
