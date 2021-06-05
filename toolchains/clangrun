@@ -67,7 +67,8 @@ if [ -d "$libcxx" ] ; then
 		if [ $link = 1 ] ; then
 			nargs+=( -stdlib=libc++ )
 			[ $m32 = 0 ] && nargs+=( -L "$libcxx/lib64/" )
-			[ $m32 = 1 ] && nargs+=( -L "$libcxx/lib32/" )
+			[ $m32 = 1 ] && [ -d "$libcxx/lib32/" ] && nargs+=( -L "$libcxx/lib32/" )
+			[ $m32 = 1 ] && [ ! -d "$libcxx/lib32/" ] && nargs+=( -L "$libcxx/lib/" )
 		fi
 		set -- "${nargs[@]}" "${args[@]}"
 	fi

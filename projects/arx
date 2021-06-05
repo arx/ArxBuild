@@ -270,6 +270,9 @@ build_types=(
 	'clang-11_libcxx_debug'
 	'clang-11_libcxx_unity'
 	
+	'clang-12_libcxx_debug'
+	'clang-12_libcxx_unity'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx_unity'
 	
