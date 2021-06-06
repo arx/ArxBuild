@@ -139,7 +139,7 @@ cmake_options=(
 	[msvc-analyzer]="\"$set_cmake_toolchain/msvc-14.25-x64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[clang-analyzer]="\"$set_cmake_toolchain/clang-analyzer-toolchain.cmake\""
 	[gcc-analyzer]="\"$set_cmake_toolchain/gcc-dev-toolchain.cmake\""
-	[mingw]="\"$set_cmake_toolchain/i686-w64-mingw32-toolchain.cmake\""
+	[mingw]="\"$set_cmake_toolchain/i686-w64-mingw32-toolchain.cmake\" -DBoost_NO_BOOST_CMAKE=1"
 	[winelib]="\"$set_cmake_toolchain/wine-toolchain.cmake\""
 	[debug]='-DCMAKE_BUILD_TYPE=Debug'
 	[boost-1.37]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.37/\""

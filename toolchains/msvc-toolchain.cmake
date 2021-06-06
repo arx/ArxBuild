@@ -44,6 +44,7 @@ set(ENV{PKG_CONFIG_LIBDIR} "/dev/null")
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 # MSVC generates Windows paths, which CMake will dump directly into the Host makefile
 # This won't work when cross-compiling so fall back to the old built-in dependency generator
