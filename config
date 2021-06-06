@@ -500,7 +500,7 @@ count_warnings=(
 	['style*']='.*\.(cpp|h|hpp)\:\d+\:|Can'"'"'t open for reading'
 	['oclint']='\:\d+\:\d+\: '
 	['msvc-*']='warning [A-Z]+\d+ *\:|\; restarting link with'
-	['cppcheck*']='\:\d+]\: \([a-z]'
+	['cppcheck*']='\:\d+]\: \([a-z]|\: [a-z]+\:.*\[.*\]'
 	['flawfinder*']='\:\d+\: +\[\d+\] \([a-z]'
 	['shellcheck*']='\: note\:'
 	['doxygen*']='Warning\:'
@@ -545,6 +545,7 @@ ignore_warnings=(
 declare -A ignore_errors
 ignore_errors=(
 	['style*']='not remade because of errors'
+	['cppcheck*']='\: error\:.*\[.*\]' # not really errors, just "severe" warnings
 )
 
 declare -A count_config_warnings
