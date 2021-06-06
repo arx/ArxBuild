@@ -75,7 +75,7 @@ build_types=(
 	
 	'gcc-dev_xtra'
 	'clang-dev_libcxx_xtra'
-	'msvc-14.25-x64_xtra'
+	'msvc-14.29-x64_xtra'
 	
 	$default_compiler'_static'
 	
@@ -222,15 +222,17 @@ build_types=(
 	
 	'msvc-14.24-x64'
 	
-	'msvc-14.25-x86'
 	'msvc-14.25-x64'
-	'msvc-14.25-x64_debugout'
 	
 	'msvc-14.26-x64'
 	
 	'msvc-14.27-x64'
 	
 	'msvc-14.28-x64'
+	
+	'msvc-14.29-x86'
+	'msvc-14.29-x64'
+	'msvc-14.29-x64_debugout'
 	
 	# Test different architectures
 	
