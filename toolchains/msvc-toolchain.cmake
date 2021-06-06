@@ -11,7 +11,9 @@ string(REGEX REPLACE "^.*/" "" _msvc_ver "${_msvc_dir}")
 string(REGEX REPLACE "^.*\\-" "" _msvc_arch "${_msvc_ver}")
 string(REGEX REPLACE "\\-[^\\-]+$" "" _msvc_ver_noarch "${_msvc_ver}")
 string(REGEX REPLACE "\\.[0-9]+$" "" _msvc_ver_major_noarch "${_msvc_ver_noarch}")
+string(REGEX REPLACE "[0-9]$" "x" _msvc_series_noarch "${_msvc_ver_noarch}")
 set(_msvc_ver_major "${_msvc_ver_major_noarch}-${_msvc_arch}")
+set(_msvc_series "${_msvc_series_noarch}-${_msvc_arch}")
 
 # Which compilers to use for C and C++
 set(CMAKE_C_COMPILER "${_msvc_dir}/cl")
@@ -52,8 +54,13 @@ set(CMAKE_DEPENDS_USE_COMPILER FALSE)
 
 file(GLOB _msvc_depdirs RELATIVE ${_msvc_wineroot} "${_msvc_wineroot}/Code/*")
 list(SORT _msvc_depdirs)
+set(_msvc_subdirs
+	${_msvc_ver} ${_msvc_ver_noarch}
+	${_msvc_series} ${_msvc_series_noarch}
+	${_msvc_ver_major} ${_msvc_ver_major_noarch}
+)
 foreach(_msvc_depdir IN LISTS _msvc_depdirs)
-	foreach(_ver IN ITEMS ${_msvc_ver} ${_msvc_ver_noarch} ${_msvc_ver_major} ${_msvc_ver_major_noarch})
+	foreach(_ver IN LISTS _msvc_subdirs)
 		if(EXISTS ${_msvc_wineroot}/${_msvc_depdir}/${_ver})
 			list(APPEND CMAKE_SYSTEM_PREFIX_PATH /${_msvc_depdir}/${_ver})
 		endif()
@@ -65,7 +72,7 @@ foreach(_msvc_depdir IN LISTS _msvc_depdirs)
 	endif()
 endforeach()
 
-foreach(_ver IN ITEMS ${_msvc_ver} ${_msvc_ver_noarch} ${_msvc_ver_major} ${_msvc_ver_major_noarch})
+foreach(_ver IN LISTS _msvc_subdirs)
 	set(_msvc_paths "${CMAKE_CURRENT_LIST_DIR}/../deps/msvc/${_ver}-paths.cmake")
 	if(EXISTS ${_msvc_paths})
 		get_filename_component(_msvc_paths ${_msvc_paths} REALPATH)
