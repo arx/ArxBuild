@@ -115,6 +115,7 @@ clang_tidy_checks+=(
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
 	'-bugprone-branch-clone'
+	'-bugprone-implicit-widening-of-multiplication-result'
 	'-bugprone-integer-division'
 	'-bugprone-narrowing-conversions'
 	'-cert-err34-c'
