@@ -66,6 +66,8 @@ cmake_options[msvc-14.26-x86]+=" $arx_no_tests"
 cmake_options[msvc-14.26-x64]+=" $arx_no_tests"
 cmake_options[msvc-14.27-x86]+=" $arx_no_tests"
 cmake_options[msvc-14.27-x64]+=" $arx_no_tests"
+cmake_options[msvc-14.28-x86]+=" $arx_no_tests"
+cmake_options[msvc-14.28-x64]+=" $arx_no_tests"
 cmake_options[msvc-analyzer]+=" $arx_no_tests"
 
 cmake_options[gcc-armv6j-hf]+=" -DRUN_TARGET='qemu-arm;-L;/usr/armv6j-hardfloat-linux-gnueabi/'"
@@ -368,6 +370,8 @@ build_types=(
 	'msvc-14.26-x64_unity'
 	
 	'msvc-14.27-x64_unity'
+	
+	'msvc-14.28-x64_unity'
 	
 	# Test different architectures
 	

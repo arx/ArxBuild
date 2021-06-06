@@ -230,6 +230,8 @@ build_types=(
 	
 	'msvc-14.27-x64'
 	
+	'msvc-14.28-x64'
+	
 	# Test different architectures
 	
 	$default_compiler'_m32_debug'
