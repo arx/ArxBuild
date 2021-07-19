@@ -103,12 +103,31 @@ clang_tidy_options+=(
 )
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
-	"${clang_tidy_checks_nocxx11[@]}" # TODO Enable these once we move to C++11
 	'-cppcoreguidelines-pro-type-vararg' # Variadic function used for asserts
 	'-readability-magic-numbers' # Too noisy and not very useful
 )
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
+	'-modernize-avoid-bind'
+	'-modernize-avoid-c-arrays'
+	'-modernize-concat-nested-namespaces'
+	'-modernize-deprecated-headers'
+	'-modernize-loop-convert'
+	'-modernize-pass-by-value'
+	'-modernize-raw-string-literal'
+	'-modernize-return-braced-init-list'
+	'-modernize-unary-static-assert'
+	'-modernize-use-auto'
+	'-modernize-use-default-member-init'
+	'-modernize-use-emplace'
+	'-modernize-use-equals-default'
+	'-modernize-use-equals-delete'
+	'-modernize-use-nodiscard'
+	'-modernize-use-nullptr'
+	'-modernize-use-override'
+	'-modernize-use-using'
+	'-boost-use-to-string'
+	'-cppcoreguidelines-macro-usage'
 	'-bugprone-branch-clone'
 	'-bugprone-implicit-widening-of-multiplication-result'
 	'-bugprone-integer-division'
@@ -129,6 +148,7 @@ clang_tidy_checks_relaxed+=(
 	'-readability-isolate-declaration'
 	'-readability-misleading-indentation'
 	'-readability-redundant-access-specifiers' # conflicts with Qt signal and slot sections
+	'-readability-use-anyofallof'
 )
 clang_tidy_config['bugprone-assert-side-effect.AssertMacros']='"arx_assert,arx_assert_msg"'
 clang_tidy_config['cppcoreguidelines-no-malloc.Deallocations']='""'
@@ -148,9 +168,6 @@ oclint_jcd_options+=(
 cppcheck_options+=(
 	-i 'stb_image.cpp'
 )
-
-# TODO Enable thse once we move to C++11
-ignore_warnings['cppcheck*']+='|overrides a function in a base class but is not marked'
 
 prefix_paths['olddeps']="$qt_gcc48"
 merge_config olddeps cmake-2.8.3
