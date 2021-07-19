@@ -351,6 +351,7 @@ clang_tidy_checks=(
 	'-llvm-include-order' # Wants to sort "a/b.hpp" before "b.hpp"
 	'-llvm-twine-local' # Very specific to LLVM
 	'-misc-no-recursion' # Recursion is fine
+	'-modernize-use-trailing-return-type' # A bit excessive...
 	'-readability-implicit-bool-conversion' # These are just too useful
 )
 clang_tidy_checks_relaxed=(
@@ -361,7 +362,6 @@ clang_tidy_checks_relaxed=(
 	'-cppcoreguidelines-pro-type-const-cast' # Required sometimes to interact with C APIs
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # Required sometimes to interact with C APIs
 	'-google-explicit-constructor' # Already checkd by `make style` with the option to suppress the warning
-	'-llvm-namespace-comment' # Does not recognize the "} } // namespace a::b" syntax
 	'-misc-misplaced-widening-cast' # Warns on cast to enum
 	'-modernize-deprecated-headers' # Not always possible
 	'-readability-function-cognitive-complexity' # Arbitrary metric
@@ -375,6 +375,7 @@ clang_tidy_checks_nocxx11=(
 	'-boost-use-to-string' # std::to_string is C++11-only
 	'-cppcoreguidelines-macro-usage' # suggest to use constexpr constants instead
 	'-performance-no-int-to-ptr' # consflicts with using pointer to private to emulate explicit operator bool
+	'-llvm-namespace-comment' # Does not recognize the "} } // namespace a::b" syntax
 )
 declare -A clang_tidy_config
 clang_tidy_config=(
