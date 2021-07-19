@@ -26,18 +26,12 @@ cmake_options[static]+=" -DEpoxy_USE_STATIC_LIBS=0" # TODO
 # Newer Qt versions require the CMake compile feature "cxx_decltype", but
 # CMake does not support compile feature detection for these compilers
 arx_no_qt="-DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
-cmake_options[clang-3.3]+=" $arx_no_qt"
 
 arx_no_tests="-DBUILD_TESTS=0"
 cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew"
 cmake_options[prebuilt-icons]="-DICON_TYPE=\"ico;icns;iconset;png\""
 cmake_options[prebuilt-icons]+=" -DDATA_FILES=\"$deps/arx-libertatis-data-git/\""
 cmake_options[build-icons]="-DICON_TYPE=all"
-cmake_options[msvc-11.0-x86]+=" $arx_no_tests"
-cmake_options[msvc-12.0-x86]+=" $arx_no_tests"
-cmake_options[msvc-12.0-x64]+=" $arx_no_tests"
-cmake_options[msvc-14.0-x86]+=" $arx_no_tests $arx_no_qt"
-cmake_options[msvc-14.0-x64]+=" $arx_no_tests $arx_no_qt"
 cmake_options[msvc-14.11-x86]+=" $arx_no_tests $arx_no_qt"
 cmake_options[msvc-14.11-x64]+=" $arx_no_tests $arx_no_qt"
 cmake_options[msvc-14.12-x86]+=" $arx_no_tests"
@@ -75,13 +69,6 @@ cmake_options[msvc-analyzer]+=" $arx_no_tests"
 cmake_options[gcc-armv6j-hf]+=" -DRUN_TARGET='qemu-arm;-L;/usr/armv6j-hardfloat-linux-gnueabi/'"
 cmake_options[gcc-freebsd-9.1-i686]+=" -DRUN_TESTS=0"
 cmake_options[gcc-freebsd-9.1-x86-64]+=" -DRUN_TESTS=0"
-cmake_options[clang-3.3]+=" -DRUN_TESTS=0"
-cmake_options[clang-3.4]+=" -DRUN_TESTS=0"
-cmake_options[clang-3.5]+=" -DRUN_TESTS=0"
-cmake_options[clang-3.6]+=" -DRUN_TESTS=0"
-cmake_options[clang-3.7]+=" -DRUN_TESTS=0"
-cmake_options[clang-3.8]+=" -DRUN_TESTS=0"
-cmake_options[clang-3.9]+=" -DRUN_TESTS=0"
 cmake_options[mingw]+=" -DRUN_TARGET='$toolchains/run.cpp;wine'"
 cmake_options[boost-1.69]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.69/lib:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
@@ -93,7 +80,7 @@ cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-11'
-old_compiler='gcc-4.9'
+old_compiler='gcc-7'
 
 # Declare directories containing source code (for cppcheck and flawfinder)
 source_directories+=(
@@ -165,6 +152,7 @@ cppcheck_options+=(
 # TODO Enable thse once we move to C++11
 ignore_warnings['cppcheck*']+='|overrides a function in a base class but is not marked'
 
+prefix_paths['olddeps']="$qt_gcc48"
 merge_config olddeps cmake-2.8.3
 merge_config olddeps curl-7.20.0
 merge_config olddeps boost-1.48
@@ -234,30 +222,6 @@ build_types=(
 	
 	# Test different compilers/stdlibs and versions
 	
-	'clang-3.3_libcxx_debug'
-	'clang-3.3_libcxx_unity'
-	
-	'clang-3.4_libcxx_debug'
-	'clang-3.4_libcxx_unity'
-	
-	'clang-3.5_libcxx_debug'
-	'clang-3.5_libcxx_unity'
-	
-	'clang-3.6_libcxx_debug'
-	'clang-3.6_libcxx_unity'
-	
-	'clang-3.7_libcxx_debug'
-	'clang-3.7_libcxx_unity'
-	
-	'clang-3.8_libcxx_debug'
-	'clang-3.8_libcxx_unity'
-	
-	'clang-3.9_libcxx_debug'
-	'clang-3.9_libcxx_unity'
-	
-	'clang-4_libcxx_debug'
-	'clang-4_libcxx_unity'
-	
 	'clang-5_libcxx_debug'
 	'clang-5_libcxx_unity'
 	
@@ -290,30 +254,6 @@ build_types=(
 	'clang-dev_libstdcxx_debug'
 	'clang-dev_libstdcxx_unity'
 	
-	'gcc-4.4_debug'
-	'gcc-4.4_unity'
-	
-	'gcc-4.5_debug'
-	'gcc-4.5_unity'
-	
-	'gcc-4.6_debug'
-	'gcc-4.6_unity'
-	
-	'gcc-4.7_debug'
-	'gcc-4.7_unity'
-	
-	'gcc-4.8_debug'
-	'gcc-4.8_unity'
-	
-	'gcc-4.9_debug'
-	'gcc-4.9_unity'
-	
-	'gcc-5_debug'
-	'gcc-5_unity'
-	
-	'gcc-6_debug'
-	'gcc-6_unity'
-	
 	'gcc-7_debug'
 	'gcc-7_unity'
 	
@@ -335,14 +275,7 @@ build_types=(
 	'mingw_debugout_lto'
 	'mingw_unity_lto'
 	
-	'msvc-11.0-x86_unity'
-	
-	'msvc-12.0-x86_debug'
-	'msvc-12.0-x64_unity'
-	
-	'msvc-14.0-x86_debug'
-	'msvc-14.0-x64_unity'
-	
+	'msvc-14.11-x86_debug'
 	'msvc-14.11-x64_unity'
 	
 	'msvc-14.12-x64_unity'
@@ -382,9 +315,6 @@ build_types=(
 	$default_compiler'_m32_debug'
 	$default_compiler'_m32'
 	
-	'gcc-freebsd-9.1-i686_unity_lto'
-	'gcc-freebsd-9.1-x86-64_unity_lto'
-	
 	'gcc-armv6j-hf_unity_lto'
 	
 	'gcc-bindist-i686_unity_lto'
@@ -392,23 +322,23 @@ build_types=(
 	
 	# Test different library versions
 	
-	'gcc-4.9_debug_boost-1.48_boostfs'
-	'gcc-4.9_debug_boost-1.49_boostfs'
-	'gcc-4.9_debug_boost-1.50_boostfs'
-	'gcc-4.9_debug_boost-1.51_boostfs'
-	'gcc-4.9_debug_boost-1.52_boostfs'
-	'gcc-4.9_debug_boost-1.53_boostfs'
-	'gcc-4.9_debug_boost-1.54_boostfs'
-	'gcc-4.9_debug_boost-1.55_boostfs'
-	'gcc-4.9_debug_boost-1.56_boostfs'
-	'gcc-4.9_debug_boost-1.57_boostfs'
-	'gcc-4.9_debug_boost-1.58_boostfs'
-	'gcc-4.9_debug_boost-1.59_boostfs'
-	'gcc-4.9_debug_boost-1.60_boostfs'
-	'gcc-4.9_debug_boost-1.61_boostfs'
-	'gcc-4.9_debug_boost-1.62_boostfs'
-	'gcc-4.9_debug_boost-1.63_boostfs'
-	'gcc-4.9_debug_boost-1.64_boostfs'
+	'gcc-7_debug_boost-1.48'
+	'gcc-7_debug_boost-1.49'
+	'gcc-7_debug_boost-1.50'
+	'gcc-7_debug_boost-1.51'
+	'gcc-7_debug_boost-1.52'
+	'gcc-7_debug_boost-1.53'
+	'gcc-7_debug_boost-1.54'
+	'gcc-7_debug_boost-1.55'
+	'gcc-7_debug_boost-1.56'
+	'gcc-7_debug_boost-1.57'
+	'gcc-7_debug_boost-1.58'
+	'gcc-7_debug_boost-1.59'
+	'gcc-7_debug_boost-1.60'
+	'gcc-7_debug_boost-1.61'
+	'gcc-7_debug_boost-1.62'
+	'gcc-7_debug_boost-1.63'
+	'gcc-7_debug_boost-1.64'
 	'gcc-10_debug_boost-1.65_boostfs'
 	'gcc-10_debug_boost-1.66_boostfs'
 	'gcc-10_debug_boost-1.67_boostfs'
