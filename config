@@ -322,6 +322,7 @@ clang_tidy_checks=(
 	'-hicpp-use-override'
 	'-hicpp-vararg'
 	'-llvm-else-after-return'
+	'-llvm-qualified-auto'
 	# Disable warnings that advertise using non-standard libraries
 	'-abseil-string-find-str-contains'
 	'-altera-unroll-loops'
