@@ -160,7 +160,7 @@ cppcheck_options+=(
 prefix_paths['olddeps']="$qt_gcc48"
 merge_config olddeps cmake-2.8.3
 merge_config olddeps curl-7.20.0
-merge_config olddeps boost-1.48
+merge_config olddeps boost-1.50
 merge_config olddeps sdl-1.2.10
 merge_config olddeps openal-soft-1.0.38
 merge_config olddeps glew-1.5.2
@@ -321,8 +321,6 @@ build_types=(
 	
 	# Test different library versions
 	
-	'gcc-7_debug_boost-1.48'
-	'gcc-7_debug_boost-1.49'
 	'gcc-7_debug_boost-1.50'
 	'gcc-7_debug_boost-1.51'
 	'gcc-7_debug_boost-1.52'
