@@ -343,6 +343,7 @@ clang_tidy_checks=(
 	'-fuchsia-multiple-inheritance' # Forbids non-virtual multiple inheritance
 	'-fuchsia-overloaded-operator' # Forbids overloaded operators
 	'-fuchsia-statically-constructed-objects' # Forbids static objects
+	'-fuchsia-trailing-return' # Mkay
 	'-fuchsia-virtual-inheritance' # Forbids virtual inheritance
 	'-google-default-arguments' # Forbids default arguments on virtual member functions
 	'-google-readability-todo' # Wants usernames in TODOs
