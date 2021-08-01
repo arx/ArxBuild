@@ -388,5 +388,6 @@ count_config_warnings['msvc*']="$boostfs|$nocrashhandler"
 ignore_warnings['clang*xtra*']='padding .* to alignment boundary'
 ignore_warnings["gcc-9*m32*"]="\-Wnoexcept"
 ignore_warnings['gcc-4.9*debug*']='unistd.*\: read(link)? called with bigger length than size of( the)? destination buffer'
+ignore_warnings['gcc-7*']='\-Warray\-bounds'
 ignore_warnings['gcc-8*debug*']='\-Warray\-bounds'
 ignore_warnings['gcc*xtra*']='padding struct size to alignment boundary'
