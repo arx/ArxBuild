@@ -109,8 +109,6 @@ clang_tidy_checks_relaxed+=(
 	'-modernize-return-braced-init-list'
 	'-modernize-use-auto'
 	'-modernize-use-default-member-init'
-	'-modernize-use-equals-default'
-	'-modernize-use-equals-delete'
 	'-modernize-use-nodiscard'
 	'-modernize-use-nullptr'
 	'-modernize-use-using'
