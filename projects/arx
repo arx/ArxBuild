@@ -163,7 +163,7 @@ merge_config olddeps sdl-1.2.10
 merge_config olddeps openal-soft-1.0.38
 merge_config olddeps glew-1.5.2
 merge_config olddeps freetype-2.3.0
-merge_config olddeps glm-0.9.5.0
+merge_config olddeps glm-0.9.9.4
 merge_config olddeps prebuilt-icons
 count_warnings["*olddeps*"]='(Rendering|Generating|Scaling) .*\.(svg|png|ico)'
 
