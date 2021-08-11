@@ -549,6 +549,7 @@ count_errors=(
 	[16]='\:\d+ Assertion'
 	[17]='ERROR\:'
 	[18]='\d+\) test\: .* \([FE]\) line\: \d+'
+	[19]='Assertion .* failed'
 	['msvc-*']='error [A-Z]+\d+ *\:'
 )
 
