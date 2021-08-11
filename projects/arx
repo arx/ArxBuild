@@ -367,6 +367,7 @@ count_config_warnings['gcc-freebsd*']="$boostfs|$nocrashhandler|Looking for (sys
 count_config_warnings['mingw*']="$boostfs"
 count_config_warnings['msvc*']="$boostfs|$nocrashhandler"
 
+ignore_warnings['clang-5*']='\-Wmissing\-braces'
 ignore_warnings['clang*xtra*']='padding .* to alignment boundary'
 ignore_warnings["gcc-9*m32*"]="\-Wnoexcept"
 ignore_warnings['gcc-7*']='\-Warray\-bounds'
