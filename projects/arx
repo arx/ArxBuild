@@ -129,7 +129,6 @@ clang_tidy_checks_relaxed+=(
 	'-readability-convert-member-functions-to-static'
 	'-readability-else-after-return'
 	'-readability-isolate-declaration'
-	'-readability-misleading-indentation'
 	'-readability-redundant-access-specifiers' # conflicts with Qt signal and slot sections
 	'-readability-suspicious-call-argument'
 	'-readability-use-anyofallof'
