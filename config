@@ -194,6 +194,7 @@ cmake_options=(
 	[boost-1.74]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.74/\""
 	[boost-1.75]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.75/\""
 	[boost-1.76]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.76/\""
+	[boost-1.77]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.77/\""
 	[boost-git]="$boost_no_autodetect \"-DBOOST_INCLUDEDIR=$deps/boost-git/\""
 	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.67-libcxx/\""
 	[static]="-DUSE_STATIC_LIBS=1"
