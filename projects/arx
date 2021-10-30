@@ -166,6 +166,7 @@ merge_config olddeps glew-1.5.2
 merge_config olddeps freetype-2.3.0
 merge_config olddeps glm-0.9.9.4
 merge_config olddeps prebuilt-icons
+merge_config olddeps cppunit-1.13.0
 count_warnings["*olddeps*"]='(Rendering|Generating|Scaling) .*\.(svg|png|ico)'
 
 merge_config newdeps cmake-dev
@@ -173,6 +174,8 @@ merge_config newdeps boost-git
 merge_config newdeps glm-git
 merge_config newdeps build-icons
 merge_config newdeps libepoxy-1.2 # not really new
+
+merge_config static cppunit-1.13.0
 
 merge_config m32 qt-5.1-32
 

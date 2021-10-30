@@ -504,6 +504,7 @@ prefix_paths=(
 	[gcc-4.7]="$qt_gcc48;$cppunit_gcc48"
 	[gcc-4.8]="$qt_gcc48;$cppunit_gcc48"
 	[gcc-4.9]="$qt_gcc48;$cppunit_gcc48"
+	[cppunit-1.13.0]="$deps/cppunit-1.13.0-gcc7"
 	[libcxx]="$cppunit_libcxx"
 	[clang-analyzer]="$cppunit_libcxx"
 )
