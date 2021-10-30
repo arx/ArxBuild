@@ -351,7 +351,7 @@ favicons['/images/arx-libertatis.png']='128x128'
 favicons['/favicon.png']='16x16'
 
 covertiy_scan_project='1656'
-travis_ci_project='arx/ArxLibertatis'
+github_project='arx/ArxLibertatis'
 appveyor_project='dscharrer/arxlibertatis'
 
 commit_url=https://github.com/arx/ArxLibertatis/commits/
