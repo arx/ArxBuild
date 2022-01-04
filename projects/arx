@@ -126,6 +126,7 @@ clang_tidy_checks_relaxed+=(
 	'-cppcoreguidelines-virtual-class-destructor'
 	'-concurrency-mt-unsafe'
 	'-google-global-names-in-headers'
+	'-google-readability-casting'
 	'-google-runtime-int'
 	'-misc-non-private-member-variables-in-classes'
 	'-readability-braces-around-statements'
