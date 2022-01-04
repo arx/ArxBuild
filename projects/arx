@@ -340,6 +340,7 @@ build_types=(
 	'gcc-11_debug_boost-1.75_boostfs'
 	'gcc-11_debug_boost-1.76_boostfs'
 	'gcc-11_debug_boost-1.77_boostfs'
+	'gcc-11_debug_boost-1.78_boostfs'
 	
 	$old_compiler'_olddeps_unity'
 	$old_compiler'_olddeps_debug'
