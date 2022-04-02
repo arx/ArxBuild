@@ -13,7 +13,7 @@ default_cmake_options+=' -DRUN_TESTS=1'
 # Some additional arx-specific build options
 cmake_options[debugout]='-DDEBUG=1'
 cmake_options[unity]='-DUNITY_BUILD=1'
-cmake_options[xtra]='-DDEBUG_EXTRA=1 -DSET_NOISY_WARNING_FLAGS=1 -DUSE_LDGOLD=0'
+cmake_options[xtra]='-DDEBUG_EXTRA=1 -DSET_NOISY_WARNING_FLAGS=1 -DUSE_LDGOLD=0 -DUSE_LD=default'
 cmake_options[boostfs]='-DUSE_NATIVE_FS=0'
 
 # The environments for these don't have Qt installed - disable the crash reporter & profiler
@@ -105,6 +105,7 @@ clang_tidy_checks_relaxed+=(
 	'-modernize-avoid-c-arrays'
 	'-modernize-deprecated-headers'
 	'-modernize-loop-convert'
+	'-modernize-macro-to-enum'
 	'-modernize-raw-string-literal'
 	'-modernize-return-braced-init-list'
 	'-modernize-use-auto'
