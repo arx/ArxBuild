@@ -536,6 +536,7 @@ count_warnings=(
 	['flawfinder*']='\:\d+\: +\[\d+\] \([a-z]'
 	['shellcheck*']='\: note\:'
 	['doxygen*']='Warning\:'
+	['include-what-you-use*']='\: error\: (superfluous|add) '\'
 )
 
 # Declare patterns that count as an error.
@@ -579,6 +580,7 @@ declare -A ignore_errors
 ignore_errors=(
 	['style*']='not remade because of errors'
 	['cppcheck*']='\: error\:.*\[.*\]' # not really errors, just "severe" warnings
+	['include-what-you-use*']='\: error\: (superfluous|add) '\'
 )
 
 declare -A count_config_warnings
@@ -627,6 +629,7 @@ group_warnings=(
 	['oclint*']='(?<=\d\: )[^\[\]]*(?= \[([^\]|*]*\|)?P\d+\])'
 	['cppcheck*']='\(error\) Memory leak|(?<=\]\: )\(.*$'
 	['flawfinder*']='(?<=\:  \[[0-9]\] )\([^\)]*\) [^\:]*\:'
+	['include-what-you-use*']='(?<=\: error\: )(superfluous|add)'
 )
 declare -A group_filter
 group_filter=(
