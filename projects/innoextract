@@ -134,6 +134,9 @@ build_types=(
 	'clang-13_libcxx_debug'
 	'clang-13_libcxx'
 	
+	'clang-14_libcxx_debug'
+	'clang-14_libcxx'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx'
 	
