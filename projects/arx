@@ -177,6 +177,7 @@ merge_config newdeps boost-git
 merge_config newdeps glm-git
 merge_config newdeps build-icons
 merge_config newdeps libepoxy-1.2 # not really new
+cmake_options[newdeps]+=' -DUSE_CXX17_FROM_CHARS_FLOAT=1'
 
 merge_config static cppunit-1.13.0
 
