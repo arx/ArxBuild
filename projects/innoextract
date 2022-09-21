@@ -31,6 +31,7 @@ clang_tidy_checks_relaxed+=(
 	'-cert-err58-cpp'
 	'-google-runtime-member-string-references'
 	'-cppcoreguidelines-pro-type-member-init'
+	'-misc-const-correctness'
 	'-misc-non-private-member-variables-in-classes'
 	'-readability-const-return-type'
 	'-readability-else-after-return'
