@@ -3,9 +3,8 @@ body {
 	background: #fafafa;
 	margin: 0;
 	padding: 10px;
-	font-family: "DejaVu Sans", "Bitstream Vera Sans", "Liberation Sans", Arial, sans-serif;
-	font-size: small;
-	font-size-adjust: 0.54;
+	font-family: 'DejaVu Sans', 'Verdana', 'Bitstream Vera Sans', 'Liberation Sans', sans-serif;
+	font-size: 13px;
 	color: #333;
 }
 
