@@ -155,7 +155,7 @@ do_build() {
 		} &> "$dst_time"
 		
 		
-		if [ "$(grep "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$dst_raw")" ] ; then
+		if [ "$(grep -P "make\\: \\*\\*\\* \\[[a-z]*\\] Interrupt" "$dst_raw")" ] ; then
 			die "${esc}[32m[$buildid]${esc}[0m Build cancelled!"
 		fi
 		
