@@ -64,6 +64,14 @@ cmake_options[gcc-armv6j-hf]+=" -DRUN_TARGET='qemu-arm;-L;/usr/armv6j-hardfloat-
 cmake_options[gcc-freebsd-9.1-i686]+=" -DRUN_TESTS=0"
 cmake_options[gcc-freebsd-9.1-x86-64]+=" -DRUN_TESTS=0"
 cmake_options[mingw]+=" -DRUN_TARGET='$toolchains/run.cpp;wine'"
+cmake_options[clang-7]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-8]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-9]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-10]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-11]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-12]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-13]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-14]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/clang-14/lib64/:$deps/clang-14/lib/:\$LD_LIBRARY_PATH'"
 cmake_options[boost-1.69]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.69/lib:\$LD_LIBRARY_PATH'"
 cmake_options[boost-1.77]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.77/lib:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
@@ -71,6 +79,11 @@ cmake_options[gcc-analyzer]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/li
 cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
 
 cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
+
+# TODO update boost https://github.com/boostorg/container_hash/issues/24
+cxx_compiler_options[clang-15]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
+cxx_compiler_options[clang-dev]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
+cxx_compiler_options[clang-analyzer]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
 
 # Compiler for builds that test library/config compatability
 default_compiler='gcc-12'
@@ -247,6 +260,9 @@ build_types=(
 	
 	'clang-14_libcxx_debug'
 	'clang-14_libcxx_unity'
+	
+	'clang-15_libcxx_debug'
+	'clang-15_libcxx_unity'
 	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx_unity'
