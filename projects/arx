@@ -73,7 +73,7 @@ cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
 cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-11'
+default_compiler='gcc-12'
 old_compiler='gcc-7'
 
 # Declare directories containing source code (for cppcheck and flawfinder)
@@ -270,6 +270,9 @@ build_types=(
 	
 	'gcc-11_debug'
 	'gcc-11_unity'
+	
+	'gcc-12_debug'
+	'gcc-12_unity'
 	
 	'gcc-dev_debug'
 	'gcc-dev_unity'
