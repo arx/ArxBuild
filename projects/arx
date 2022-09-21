@@ -408,6 +408,11 @@ count_config_warnings['gcc-bindist*']="$boostfs|$nocrashhandler|Looking for ($ex
 count_config_warnings['gcc-freebsd*']="$boostfs|$nocrashhandler|Looking for (sysctl(byname)?|$expected_symbols) \\- not found"
 count_config_warnings['mingw*']="$boostfs"
 count_config_warnings['msvc*']="$boostfs|$nocrashhandler"
+count_config_warnings[0]+='|Checking interceptable\: __libcpp_verbose_abort \- unsupported'
+count_config_warnings['clang-15*']='Looking for _LIBCPP_ENABLE_ASSERTIONS \- not found'
+count_config_warnings['clang-dev*']='Looking for _LIBCPP_ENABLE_ASSERTIONS \- not found'
+count_config_warnings['gcc-12*']='Checking interceptable\: __glibcxx_assert_fail \- unsupported'
+count_config_warnings['gcc-dev*']='Checking interceptable\: __glibcxx_assert_fail \- unsupported'
 
 ignore_warnings['clang-5*']='\-Wmissing\-braces'
 ignore_warnings['clang*xtra*']='padding .* to alignment boundary'
