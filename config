@@ -34,7 +34,7 @@ set_cmake_toolchain="-DCMAKE_TOOLCHAIN_FILE=$toolchains"
 
 default_cmake_options=''
 
-llvm_dev="/opt/llvm-dev/bin"
+llvm_dev="/opt/secret-llvm-dev/bin"
 
 # Declare possible build options (passed to cmake).
 declare -A cmake_options
