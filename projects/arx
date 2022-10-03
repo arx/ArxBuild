@@ -85,6 +85,8 @@ cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
 
 cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
+cmake_options[oclint]+=' -DCXX_STD_VERSION=2017'
+
 # TODO update boost https://github.com/boostorg/container_hash/issues/24
 cxx_compiler_options[clang-15]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
 cxx_compiler_options[clang-dev]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
