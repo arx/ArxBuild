@@ -32,8 +32,6 @@ cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew"
 cmake_options[prebuilt-icons]="-DICON_TYPE=\"ico;icns;iconset;png\""
 cmake_options[prebuilt-icons]+=" -DDATA_FILES=\"$deps/arx-libertatis-data-git/\""
 cmake_options[build-icons]="-DICON_TYPE=all"
-cmake_options[msvc-14.14-x86]+=" $arx_no_tests"
-cmake_options[msvc-14.14-x64]+=" $arx_no_tests"
 cmake_options[msvc-14.15-x86]+=" $arx_no_tests"
 cmake_options[msvc-14.15-x64]+=" $arx_no_tests"
 cmake_options[msvc-14.16-x86]+=" $arx_no_tests"
@@ -304,9 +302,7 @@ build_types=(
 	'mingw_debugout_lto'
 	'mingw_unity_lto'
 	
-	'msvc-14.14-x86_debug'
-	'msvc-14.14-x64_unity'
-	
+	'msvc-14.15-x86_debug'
 	'msvc-14.15-x64_unity'
 	
 	'msvc-14.16-x64_unity'
