@@ -503,6 +503,7 @@ prefix_paths=(
 	[glm-0.9.5.0]="$deps/glm-0.9.5.0"
 	[glm-0.9.8.5]="$deps/glm-0.9.8.5"
 	[glm-0.9.9.4]="$deps/glm-0.9.9.4"
+	[glm-0.9.9.7]="$deps/glm-0.9.9.7"
 	[gcc-bindist-i686]="$deps/Qt-5.1-32"
 	[gcc-bindist-x86-64]="$deps/Qt-5.1-64"
 	[qt-5.1-32]="$deps/Qt-5.1-32"
