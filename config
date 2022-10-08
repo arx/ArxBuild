@@ -214,7 +214,7 @@ cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
 clang_compilation_database="${cmake_options[clang-dev]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 cmake_options[clang-tidy]="$clang_compilation_database"
 cmake_options[include-what-you-use]="$clang_compilation_database"
-cmake_options[oclint]="$clang_compilation_database"
+cmake_options[oclint]="${cmake_options[clang-5]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 cmake_options[infer]="$clang_compilation_database"
 
 # Declare possible build options (passed to the compiler).
