@@ -345,6 +345,7 @@ clang_tidy_checks=(
 	'-llvmlibc-*' # Only makes sense for libc
 	'-altera-id-dependent-backward-branch' # Not useful outside GPGPU
 	'-android-cloexec-fopen' # Suggests nonstandard flags
+	'-cppcoreguidelines-avoid-do-while' # meh
 	'-cppcoreguidelines-pro-type-reinterpret-cast' # reinterpret_cast is needed
 	'-cppcoreguidelines-pro-type-static-cast-downcast' # Advocates using dynamic_cast
 	'-fuchsia-default-arguments-calls' # Completely forbids calling functions with default arguments
