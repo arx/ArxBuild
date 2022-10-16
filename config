@@ -214,7 +214,7 @@ cmake_options[clang-analyzer]+=" ${cmake_options[libcxx]}"
 clang_compilation_database="${cmake_options[clang-dev]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 cmake_options[clang-tidy]="$clang_compilation_database"
 cmake_options[include-what-you-use]="$clang_compilation_database"
-cmake_options[oclint]="${cmake_options[clang-5]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
+cmake_options[oclint]="${cmake_options[clang-13]} -DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 cmake_options[infer]="$clang_compilation_database"
 
 # Declare possible build options (passed to the compiler).
@@ -434,22 +434,21 @@ include_what_you_use_options=(
 oclint_jcd_options=( )
 
 oclint_options=(
-	-no-analytics
-	-enable-global-analysis
-	-list-enabled-rules
-	-max-priority-1=10000
-	-max-priority-2=10000
-	-max-priority-3=10000
+	--enable-global-analysis
+	--list-enabled-rules
+	--max-priority-1=10000
+	--max-priority-2=10000
+	--max-priority-3=10000
 	# see https://oclint-docs.readthedocs.io/en/stable/rules/index.html
-	-disable-rule ShortVariableName
-	-disable-rule LongVariableName
-	-disable-rule BitwiseOperatorInConditional
+	--disable-rule=ShortVariableName
+	--disable-rule=LongVariableName
+	--disable-rule=BitwiseOperatorInConditional
 	# see http://docs.oclint.org/en/stable/howto/thresholds.html#available-thresholds
-	-rc LONG_LINE=120
-	-rc LONG_METHOD=250
-	-rc NCSS_METHOD=100
-	-rc NPATH_COMPLEXITY=500
-	-rc CYCLOMATIC_COMPLEXITY=25
+	--rc=LONG_LINE=120
+	--rc=LONG_METHOD=250
+	--rc=NCSS_METHOD=100
+	--rc=NPATH_COMPLEXITY=500
+	--rc=CYCLOMATIC_COMPLEXITY=25
 )
 
 scan_build="$llvm_dev/scan-build --use-cc=$llvm_dev/clang --use-c++=$llvm_dev/clang++"
@@ -481,7 +480,7 @@ make_command=(
 	[clang-analyzer]="$scan_build -o \"\$build/results\" make $makeopts"
 	[clang-tidy]='$toolchains/run-clang-tidy.py "$llvm_dev/clang-tidy" -config="$(generate_clang_tidy_config)" "${clang_tidy_options[@]}"'
 	[include-what-you-use]='$toolchains/include-what-you-use "${include_what_you_use_options[@]}"'
-	[oclint]='$deps/oclint-0.13.1/bin/oclint-json-compilation-database "${oclint_jcd_options[@]}" -- "${oclint_options[@]}"'
+	[oclint]='$deps/oclint-22.02/bin/oclint-json-compilation-database "${oclint_jcd_options[@]}" -- "${oclint_options[@]}"'
 )
 
 qt_gcc48="$deps/Qt-5.4-gcc48"
