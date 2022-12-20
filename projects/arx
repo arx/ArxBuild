@@ -114,6 +114,7 @@ clang_tidy_options+=(
 )
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
+	'-bugprone-standalone-empty' # buggy af - ICEs and false positives
 	'-cppcoreguidelines-pro-type-vararg' # Variadic function used for asserts
 	'-readability-magic-numbers' # Too noisy and not very useful
 )
@@ -147,6 +148,7 @@ clang_tidy_checks_relaxed+=(
 	'-google-runtime-int'
 	'-misc-const-correctness'
 	'-misc-non-private-member-variables-in-classes'
+	'-misc-use-anonymous-namespace'
 	'-readability-braces-around-statements'
 	'-readability-convert-member-functions-to-static'
 	'-readability-else-after-return'
