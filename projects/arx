@@ -86,6 +86,7 @@ cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
 # TODO update boost https://github.com/boostorg/container_hash/issues/24
 cxx_compiler_options[clang-15]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
+cxx_compiler_options[clang-16]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
 cxx_compiler_options[clang-dev]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
 cxx_compiler_options[clang-analyzer]+=" -DBOOST_NO_CXX98_FUNCTION_BASE"
 
@@ -271,6 +272,9 @@ build_types=(
 	'clang-15_libcxx_debug'
 	'clang-15_libcxx_unity'
 	
+	'clang-16_libcxx_debug'
+	'clang-16_libcxx_unity'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx_unity'
 	
@@ -407,6 +411,7 @@ count_config_warnings['mingw*']="$boostfs"
 count_config_warnings['msvc*']="$boostfs|$nocrashhandler"
 count_config_warnings[0]+='|Checking interceptable\: __libcpp_verbose_abort \- unsupported'
 count_config_warnings['clang-15*']='Looking for _LIBCPP_ENABLE_ASSERTIONS \- not found'
+count_config_warnings['clang-16*']='Looking for _LIBCPP_ENABLE_ASSERTIONS \- not found'
 count_config_warnings['clang-dev*']='Looking for _LIBCPP_ENABLE_ASSERTIONS \- not found'
 count_config_warnings['gcc-12*']='Checking interceptable\: __glibcxx_assert_fail \- unsupported'
 count_config_warnings['gcc-dev*']='Checking interceptable\: __glibcxx_assert_fail \- unsupported'

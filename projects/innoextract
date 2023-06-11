@@ -141,6 +141,9 @@ build_types=(
 	'clang-15_libcxx_debug'
 	'clang-15_libcxx'
 	
+	'clang-16_libcxx_debug'
+	'clang-16_libcxx'
+	
 	'clang-dev_libcxx_debug'
 	'clang-dev_libcxx'
 	

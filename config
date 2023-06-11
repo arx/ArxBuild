@@ -82,6 +82,7 @@ cmake_options=(
 	[clang-13]="\"$set_cmake_toolchain/clang-13-toolchain.cmake\""
 	[clang-14]="\"$set_cmake_toolchain/clang-14-toolchain.cmake\""
 	[clang-15]="\"$set_cmake_toolchain/clang-15-toolchain.cmake\""
+	[clang-16]="\"$set_cmake_toolchain/clang-16-toolchain.cmake\""
 	[clang-dev]="\"$set_cmake_toolchain/clang-dev-toolchain.cmake\""
 	[msvc-9.0-x86]="\"$set_cmake_toolchain/msvc-9.0-x86-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
 	[msvc-9.0-x64]="\"$set_cmake_toolchain/msvc-9.0-x64-toolchain.cmake\" -DCMAKE_BUILD_TYPE=Release"
