@@ -194,6 +194,9 @@ build_types=(
 	'gcc-12_debug'
 	'gcc-12'
 	
+	'gcc-13_debug'
+	'gcc-13'
+	
 	'gcc-dev_debug'
 	'gcc-dev'
 	

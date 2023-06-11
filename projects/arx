@@ -297,6 +297,9 @@ build_types=(
 	'gcc-12_debug'
 	'gcc-12_unity'
 	
+	'gcc-13_debug'
+	'gcc-13_unity'
+	
 	'gcc-dev_debug'
 	'gcc-dev_unity'
 	
