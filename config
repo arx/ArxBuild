@@ -411,6 +411,7 @@ clang_tidy_config=(
 	['misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic']=1
 	['readability-implicit-bool-conversion.AllowPointerConditions']=1
 	['readability-uppercase-literal-suffix.NewSuffixes']='u;l;ul;ll;ull;f'
+	['cppcoreguidelines-rvalue-reference-param-not-moved.AllowPartialMove']=1
 )
 generate_clang_tidy_config() {
 	local checks=''
