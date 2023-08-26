@@ -116,12 +116,34 @@ clang_tidy_options+=(
 )
 # TODO https://clang.llvm.org/extra/clang-tidy/checks/readability-identifier-naming.html
 clang_tidy_checks+=(
+	"${clang_tidy_checks_nocxx20[@]}"
 	'-bugprone-standalone-empty' # buggy af - ICEs and false positives
 	'-cppcoreguidelines-pro-type-vararg' # Variadic function used for asserts
 	'-readability-magic-numbers' # Too noisy and not very useful
 )
 clang_tidy_checks_relaxed+=(
 	# TODO Consider fixing and enabling these
+	'-bugprone-branch-clone'
+	'-bugprone-easily-swappable-parameters'
+	'-bugprone-implicit-widening-of-multiplication-result'
+	'-bugprone-integer-division'
+	'-bugprone-narrowing-conversions'
+	'-bugprone-switch-missing-default-case'
+	'-cert-err58-cpp'
+	'-concurrency-mt-unsafe'
+	'-cppcoreguidelines-macro-usage'
+	'-cppcoreguidelines-prefer-member-initializer'
+	'-cppcoreguidelines-pro-type-member-init'
+	'-cppcoreguidelines-rvalue-reference-param-not-moved'
+	'-cppcoreguidelines-special-member-functions'
+	'-cppcoreguidelines-virtual-class-destructor'
+	'-google-global-names-in-headers'
+	'-google-readability-casting'
+	'-google-runtime-int'
+	'-misc-const-correctness'
+	'-misc-include-cleaner'
+	'-misc-non-private-member-variables-in-classes'
+	'-misc-use-anonymous-namespace'
 	'-modernize-avoid-c-arrays'
 	'-modernize-deprecated-headers'
 	'-modernize-loop-convert'
@@ -133,26 +155,7 @@ clang_tidy_checks_relaxed+=(
 	'-modernize-use-nodiscard'
 	'-modernize-use-nullptr'
 	'-modernize-use-using'
-	'-cppcoreguidelines-macro-usage'
-	'-cppcoreguidelines-rvalue-reference-param-not-moved'
-	'-bugprone-branch-clone'
-	'-bugprone-easily-swappable-parameters'
-	'-bugprone-implicit-widening-of-multiplication-result'
-	'-bugprone-integer-division'
-	'-bugprone-narrowing-conversions'
-	'-cert-err58-cpp'
-	'-cppcoreguidelines-prefer-member-initializer'
-	'-cppcoreguidelines-pro-type-member-init'
-	'-cppcoreguidelines-special-member-functions'
-	'-cppcoreguidelines-virtual-class-destructor'
-	'-concurrency-mt-unsafe'
-	'-google-global-names-in-headers'
-	'-google-readability-casting'
-	'-google-runtime-int'
-	'-misc-const-correctness'
-	'-misc-include-cleaner'
-	'-misc-non-private-member-variables-in-classes'
-	'-misc-use-anonymous-namespace'
+	'-performance-enum-size'
 	'-readability-braces-around-statements'
 	'-readability-convert-member-functions-to-static'
 	'-readability-else-after-return'

@@ -303,6 +303,7 @@ clang_tidy_checks=(
 	'-cppcoreguidelines-avoid-magic-numbers'
 	'-cppcoreguidelines-c-copy-assignment-signature'
 	'-cppcoreguidelines-explicit-virtual-functions'
+	'-cppcoreguidelines-macro-to-enum'
 	'-cppcoreguidelines-narrowing-conversions'
 	'-cppcoreguidelines-non-private-member-variables-in-classes'
 	'-cppcoreguidelines-use-default-member-init'
@@ -389,7 +390,11 @@ clang_tidy_checks_relaxed=(
 	'-readability-make-member-function-const' # Sometimes functions should semantically not be const
 	'-readability-static-accessed-through-instance' # This is actually more readable in many cases
 )
+clang_tidy_checks_nocxx20=(
+	'-modernize-use-constraints'
+)
 clang_tidy_checks_nocxx11=(
+	"${clang_tidy_checks_nocxx20[@]}"
 	'-modernize-*'
 	'modernize-redundant-void-arg'
 	'modernize-use-bool-literals'
