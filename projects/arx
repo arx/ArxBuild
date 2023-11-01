@@ -79,6 +79,7 @@ cmake_options[boost-1.79]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.79/
 cmake_options[boost-1.80]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.80/lib:\$LD_LIBRARY_PATH'"
 cmake_options[boost-1.81]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.81/lib:\$LD_LIBRARY_PATH'"
 cmake_options[boost-1.82]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.82/lib:\$LD_LIBRARY_PATH'"
+cmake_options[boost-1.83]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.83/lib:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-analyzer]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
@@ -383,6 +384,7 @@ build_types=(
 	'gcc-12_debug_boost-1.80_boostfs'
 	'gcc-12_debug_boost-1.81_boostfs'
 	'gcc-12_debug_boost-1.82_boostfs'
+	'gcc-12_debug_boost-1.83_boostfs'
 	
 	$old_compiler'_olddeps_unity'
 	$old_compiler'_olddeps_debug'
