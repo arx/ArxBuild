@@ -209,7 +209,7 @@ cmake_options=(
 	[boost-1.82]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.82/\""
 	[boost-1.83]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.83/\""
 	[boost-git]="$boost_no_autodetect \"-DBOOST_INCLUDEDIR=$deps/boost-git/\""
-	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.80-libcxx/\""
+	[libcxx]="$boost_no_autodetect \"-DBOOST_ROOT=$deps/boost-1.83-libcxx/\""
 	[static]="-DUSE_STATIC_LIBS=1"
 	[lto]="-DUSE_STATIC_LIBS=1"
 	[glm-git]="-DCMAKE_INCLUDE_PATH=$deps/glm-git/"
