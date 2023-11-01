@@ -594,6 +594,7 @@ ignore_warnings=(
 	['msvc-analyzer*']='^[cC]\:\\'
 	['cppcheck*']='has a constructor with 1 argument that is not explicit' # better handled by other tools
 	['gcc-1*_debug*']='‘__builtin_memcpy’ reading \d+ bytes from a region of size \d+'
+	['gcc-dev*']='\: warning\:  [ 0-9]*\|'
 )
 
 # Declare patterns for errors that should be ignored.
