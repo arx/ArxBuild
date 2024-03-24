@@ -390,6 +390,7 @@ clang_tidy_checks_relaxed=(
 	'-misc-confusable-identifiers' # Warns on O vs 0 and I vs 1
 	'-misc-misplaced-widening-cast' # Warns on cast to enum
 	'-modernize-deprecated-headers' # Not always possible
+	'-readability-avoid-nested-conditional-operator' # Meh
 	'-readability-function-cognitive-complexity' # Arbitrary metric
 	'-readability-make-member-function-const' # Sometimes functions should semantically not be const
 	'-readability-static-accessed-through-instance' # This is actually more readable in many cases
@@ -411,6 +412,7 @@ declare -A clang_tidy_config
 clang_tidy_config=(
 	['bugprone-argument-comment.StrictMode']=1
 	['bugprone-narrowing-conversions.PedanticMode']=1
+	['bugprone-unused-return-value.AllowCastToVoid']=1
 	['cppcoreguidelines-prefer-member-initializer.UseAssignment']=1
 	['cppcoreguidelines-pro-type-member-init.IgnoreArrays']=1
 	['cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions']=1
