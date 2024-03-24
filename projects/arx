@@ -88,7 +88,7 @@ cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
 cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
 # Compiler for builds that test library/config compatability
-default_compiler='gcc-12'
+default_compiler='gcc-13'
 old_compiler='gcc-7'
 
 # Declare directories containing source code (for cppcheck and flawfinder)
@@ -354,6 +354,7 @@ build_types=(
 	
 	$default_compiler'_m32_debug'
 	$default_compiler'_m32'
+	$default_compiler'_m32_unity'
 	
 	'gcc-armv6j-hf_unity_lto'
 	
@@ -392,9 +393,9 @@ build_types=(
 	
 	$old_compiler'_olddeps_unity'
 	$old_compiler'_olddeps_debug'
-	$default_compiler'_newdeps_unity'
-	$default_compiler'_newdeps_debug'
-	$default_compiler'_newdeps_unity_m32'
+	'gcc-dev_newdeps_unity'
+	'gcc-dev_newdeps_debug'
+	'gcc-dev_newdeps_m32'
 	'clang-dev_libcxx_newdeps_unity'
 	
 	'include-what-you-use'
@@ -432,6 +433,7 @@ count_config_warnings['clang-17*']='Looking for _LIBCPP_ENABLE_HARDENED_MODE \- 
 count_config_warnings['clang-18*']='Looking for _LIBCPP_HARDENING_MODE \- not found'
 count_config_warnings['clang-dev*']='Looking for _LIBCPP_HARDENING_MODE \- not found'
 count_config_warnings['gcc-12*']='Checking interceptable\: __glibcxx_assert_fail \- unsupported'
+count_config_warnings['gcc-13*']='Checking interceptable\: __glibcxx_assert_fail \- unsupported'
 count_config_warnings['gcc-dev*']='Checking interceptable\: __glibcxx_assert_fail \- unsupported'
 
 ignore_warnings['clang-5*']='\-Wmissing\-braces'
