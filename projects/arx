@@ -28,7 +28,7 @@ cmake_options[static]+=" -DEpoxy_USE_STATIC_LIBS=0 -DFreetype_USE_STATIC_LIBS=0"
 arx_no_qt="-DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 
 arx_no_tests="-DBUILD_TESTS=0"
-cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew"
+cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew -DWITH_QT=5"
 cmake_options[prebuilt-icons]="-DICON_TYPE=\"ico;icns;iconset;png\""
 cmake_options[prebuilt-icons]+=" -DDATA_FILES=\"$deps/arx-libertatis-data-git/\""
 cmake_options[build-icons]="-DICON_TYPE=all"
