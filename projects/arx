@@ -85,6 +85,8 @@ cmake_options[boost-1.85]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.85/
 cmake_options[gcc-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-analyzer]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
+cmake_options[clang-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/secret-llvm-dev/lib64/:/opt/secret-llvm-dev/lib32/:\$LD_LIBRARY_PATH'"
+cmake_options[clang-analyzer]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/secret-llvm-dev/lib64/:/opt/secret-llvm-dev/lib32/:\$LD_LIBRARY_PATH'"
 
 cmake_options[msvc-14.0-x64]+=' -DUSE_LTO=0' # ICE
 
