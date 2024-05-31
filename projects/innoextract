@@ -269,9 +269,6 @@ build_types=(
 	'gcc-bindist-i686_lto'
 	'gcc-bindist-x86-64_lto'
 	
-	'gcc-freebsd-9.1-i686_debug'
-	'gcc-freebsd-9.1-x86-64_lto'
-	
 	# Test different library versions
 	
 	'gcc-4.9_debug_boost-1.37'
