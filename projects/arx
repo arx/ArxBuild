@@ -191,7 +191,7 @@ cppcheck_options+=(
 )
 
 prefix_paths['olddeps']="$qt_gcc48"
-merge_config olddeps cmake-2.8.3
+merge_config olddeps cmake-3.12
 merge_config olddeps curl-7.20.0
 merge_config olddeps boost-1.58
 merge_config olddeps sdl-1.2.10
