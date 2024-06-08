@@ -28,6 +28,7 @@ cmake_options[static]+=" -DEpoxy_USE_STATIC_LIBS=0 -DFreetype_USE_STATIC_LIBS=0"
 arx_no_qt="-DBUILD_CRASHREPORTER=0 -DBUILD_PROFILER=0"
 
 arx_no_tests="-DBUILD_TESTS=0"
+cmake_options[libcxx]+=" -DWITH_QT=5" # TODO need libcxx build of Qt6 for QUnhandledException::QUnhandledException(std::exception_ptr)
 cmake_options[olddeps]+=" -DWITH_SDL=1 -DWITH_OPENGL=glew -DWITH_QT=5"
 cmake_options[prebuilt-icons]="-DICON_TYPE=\"ico;icns;iconset;png\""
 cmake_options[prebuilt-icons]+=" -DDATA_FILES=\"$deps/arx-libertatis-data-git/\""
@@ -82,6 +83,7 @@ cmake_options[boost-1.82]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.82/
 cmake_options[boost-1.83]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.83/lib:\$LD_LIBRARY_PATH'"
 cmake_options[boost-1.84]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.84/lib:\$LD_LIBRARY_PATH'"
 cmake_options[boost-1.85]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=$deps/boost-1.85/lib:\$LD_LIBRARY_PATH'"
+cmake_options[gcc-7]+=" -DWITH_QT=5" # missing std::Filesystem
 cmake_options[gcc-dev]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-analyzer]+=" -DRUN_TARGET='env;LD_LIBRARY_PATH=/opt/gcc-dev/lib64/:/opt/gcc-dev/lib32/:\$LD_LIBRARY_PATH'"
 cmake_options[gcc-analyzer]+=" -DUSE_LTO=0" # OOM
