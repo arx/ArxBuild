@@ -301,6 +301,7 @@ clang_tidy_checks=(
 	'-cert-exp42-c'
 	'-cert-fio38-c'
 	'-cert-flp37-c'
+	'-cert-int09-c'
 	'-cert-msc30-c'
 	'-cert-oop11-cpp'
 	'-cert-str34-c'
@@ -377,6 +378,7 @@ clang_tidy_checks=(
 	'-misc-no-recursion' # Recursion is fine
 	'-modernize-use-trailing-return-type' # A bit excessive...
 	'-readability-implicit-bool-conversion' # These are just too useful
+	'-readability-math-missing-parentheses' # A bit excessive
 )
 clang_tidy_checks_relaxed=(
 	'-altera-struct-pack-align' # Some structs have to be packed
